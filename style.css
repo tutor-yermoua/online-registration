@@ -610,13 +610,13 @@ select {
 ----------------------------------------- */
 .selected-course-item {
     position: relative;
-    width: 100%;             /* ໃຫ້ກ່ອງຍືດເຕັມຄວາມກວ້າງຂອງກ່ອງແມ່ */
-    box-sizing: border-box;  /* ປ້ອງກັນບໍ່ໃຫ້ padding ມາບີບເນື້ອຫາ */
-    padding: 16px 16px;      /* ຕັ້ງ padding ຊ້າຍ-ຂວາໃຫ້ເປັນປົກກະຕິ (ປະມານ 16px) */
+    width: 100%;                  /* ໃຫ້ກ່ອງສີເທົາຂະຫຍາຍເຕັມຄວາມກວ້າງ */
+    padding: 16px 45px 16px 16px; /* ເທິງ: 16px, ຂວາ: 45px (ຫຼົບປຸ່ມຖັງຂີ້ເຫຍື້ອ), ລຸ່ມ: 16px, ຊ້າຍ: 16px */
     margin-bottom: 12px;
-    background: #f8fafc; 
+    background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
+    word-break: break-word;       /* ป້ອງກັນບໍ່ໃຫ້ຕົວໜັງສືຍາວເກີນໄປແລ້ວຕົກແຖວແບບຜິດປົກກະຕິ */
 }
 
 /* ປຸ່ມຖັງຂີ້ເຫຍື້ອ: ສີແດງ ບໍ່ມີຂອບ ຢູ່ມຸມຂວາເທິງສຸດ */
