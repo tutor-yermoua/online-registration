@@ -362,12 +362,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                 }
-            }, 1000);
+            }, 500);
 
             // ລໍຖ້າອີກ 1.5 ວິນາທີ (ລວມເປັນ 2.5 ວິ) ແລ້ວ Refresh ໜ້າເວັບ
             setTimeout(() => {
                 location.reload(); 
-            }, 2500);
+            }, 2000);
         });
     }
 });
