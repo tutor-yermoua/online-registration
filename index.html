@@ -23,7 +23,9 @@
             
             <!-- ================= PAGE 1 ================= -->
             <div class="form-page" id="page-1">
-                <div class="section-title">🎓 ຂໍ້ມູນສ່ວນຕົວ</div>
+                <div class="section-title">
+                    <span class="icon-box icon-personal"><i class="fa-solid fa-user"></i></span> ຂໍ້ມູນສ່ວນຕົວ
+                </div>
                 
                 <!-- ຊື່: ເຊື່ອງປ້າຍຊື່ໄວ້, ສະແດງຕອນກົດ -->
                 <div class="input-group-box">
@@ -43,8 +45,10 @@
                     </div>
                 </div>
 
-                <div class="section-title">📍 ທີ່ຢູ່ປະຈຸບັນ</div>
-                
+                <div class="section-title">
+                    <span class="icon-box icon-address"><i class="fa-solid fa-location-dot"></i></span> ທີ່ຢູ່ປັດຈຸບັນ
+                </div>
+                            
               <!-- 1. ແຂວງ: ສະແດງປ້າຍຊື່ຄ້າງໄວ້ຕະຫຼອດ -->
                 <div class="input-group-box always-show">
                     <span class="floating-label">ແຂວງ</span>
@@ -71,9 +75,9 @@
                         <i class="fa-solid fa-chevron-down dropdown-icon"></i>
                     </div>
                 </div>
-
-                <div class="section-title">💬 ຊ່ອງທາງການຕິດຕໍ່</div>
-
+                <div class="section-title">
+                    <span class="icon-box icon-contact"><i class="fa-solid fa-comments"></i></span> ຊ່ອງທາງການຕິດຕໍ່
+                </div>
                 <!-- WhatsApp: ເຊື່ອງປ້າຍຊື່ໄວ້, ສະແດງຕອນກົດ -->
                 <div class="input-group-box">
                     <span class="floating-label">ເບີ WhatsApp</span>
@@ -88,7 +92,7 @@
                     <span class="floating-label">Facebook</span>
                     <div class="input-field">
                         <i class="fa-brands fa-facebook icon"></i>
-                        <input type="text" name="facebook" placeholder="Facebook" onfocus="this.placeholder='ປ້ອນຊື່ Facebook'" onblur="this.placeholder='Facebook'" required>
+                        <input type="text" name="facebook" placeholder="ຊື່ Facebook" onfocus="this.placeholder='ປ້ອນຊື່ Facebook'" onblur="this.placeholder='ຊື່ Facebook'" required>
                     </div>
                 </div>
 
@@ -539,7 +543,7 @@
                         </div>
                     </div>
                 </div>
-<!-- 1. ສ່ວນສະແດງລາຍວິຊາທີ່ເລືອກ -->
+      <!-- 1. ສ່ວນສະແດງລາຍວິຊາທີ່ເລືອກ -->
         <div class="section-block-title" style="margin-top: 25px;">
             <div class="s-icon-box"><i class="fa-solid fa-book-bookmark"></i></div>
             <span>ລາຍວິຊາທີ່ນັກຮຽນເລືອກ</span>
@@ -577,8 +581,11 @@
             </div>
         </div>
                 <div class="button-group-bottom">
-                    <button class="btn-back-step" id="backToStep1Bottom"><i class="fa-solid fa-arrow-left"></i> ກັບຄືນ</button>
-                    <button class="btn-save" id="finalSubmitBtn">ບັນທຶກຂໍ້ມູນ</button>
+                    <button type="button" class="btn-back-step" id="backToStep1Bottom">
+                        <i class="fa-solid fa-arrow-left"></i> ກັບຄືນ
+                    </button>
+                    <button class="btn-save" id="finalSubmitBtn">ບັນທຶກຂໍ້ມູນ
+                    </button>
                 </div>
 
 

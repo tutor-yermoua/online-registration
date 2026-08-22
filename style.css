@@ -37,8 +37,8 @@ body {
 
 /* ຈັດຂອບຮູບໂລໂກ້ໃຫ້ເປັນວົງມົນ ມີຂອບສີຂາວ ແລະ ເງົາ */
 .logo-img {
-    width: 90px; /* ຄວາມກວ້າງຂອງຮູບໂລໂກ້ */
-    height: 90px; /* ຄວາມສູງຂອງຮູບໂລໂກ້ */
+    width: 140px; /* ຄວາມກວ້າງຂອງຮູບໂລໂກ້ */
+    height: 140px; /* ຄວາມສູງຂອງຮູບໂລໂກ້ */
     object-fit: cover; /* ຈັດຮູບພາບໃຫ້ເຕັມພື້ນທີ່ໂດຍບໍ່ໃຫ້ບິດເບືອນ */
     border-radius: 50%; /* ເຮັດໃຫ້ຮູບພາບເປັນວົງມົນ */
     border: 3px solid #ffffff; /* ເພີ່ມຂອບສີຂາວອ້ອມຮູບໂລໂກ້ */
@@ -62,7 +62,7 @@ body {
 
 /* --- ຈັດການສ່ວນເນື້ອໃນຟອມ --- */
 .form-page {
-    padding: 25px; /* រະຍະຫ່າງຂອບໃນຂອງໜ້າຟອມ */
+    padding: 10px 25px; /* រະຍະຫ່າງຂອບໃນຂອງໜ້າຟອມ */
 }
 
 .section-title {
@@ -72,7 +72,7 @@ body {
     margin: 20px 0 12px 0; /* រະຍະຫ່າງຂອບນອກຂອງຫົວຂໍ້ໝວດໝູ່ */
     display: flex; /* ໃຊ້ Flexbox จัดລຽງໄອຄອນແລະຂໍ້ຄວາມ */
     align-items: center; /* จัดຕຳແໜ່ງຕາມລວງຕັ້ງໃຫ້ກົງກັນ */
-    gap: 8px; /* រະຍະຫ່າງລະຫວ່າງໄອຄອນແລະຂໍ້ຄວາມ */
+    /* gap: px; រະຍະຫ່າງລະຫວ່າງໄອຄອນແລະຂໍ້ຄວາມ */
 }
 
 /* --- Input Group Box & Floating Label --- */
@@ -843,3 +843,39 @@ select {
     justify-content: center;
     animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
+
+.icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    margin-right: 8px;
+}
+/* 1. ຂໍ້ມູນສ່ວນຕົວ (ສີຟ້າ) */
+.icon-personal {
+    background-color: #eff6ff;
+    color: #2563eb;
+}
+
+/* 2. ທີ່ຢູ່ປັດຈຸບັນ (ສີແດງ) */
+.icon-address {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+/* 3. ຊ່ອງທາງການຕິດຕໍ່ (ສີຂຽວ) */
+.icon-contact {
+    background-color: #ecfdf5;
+    color: #9a3412;
+}
+/* 4. ປັບສີສະເພາະ Icon ທີ່ຢູ່ໃນ input-field ໂດຍໃຊ້ class .icon ທີ່ມີຢູ່ແລ້ວ */
+.input-field .fa-whatsapp.icon {
+    color: #059669; /* ສີຂຽວສຳລັບ WhatsApp */
+}
+
+.input-field .fa-facebook.icon {
+    color: #2563eb; /* ສີຟຳສຳລັບ Facebook */
+}
+
