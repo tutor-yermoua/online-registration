@@ -604,19 +604,19 @@ select {
     -moz-appearance: none;
     appearance: none;
 }
-
 /* -----------------------------------------
-   CSS ສສຳລັບສ່ວນສະແດງລາຍວິຊາທີ່ເລືອກ
+    CSS ສຳລັບສ່ວນສະແດງລາຍວິຊາທີ່ເລືອກ
 ----------------------------------------- */
+
+/* ກ່ອງແຕ່ລະວິຊາທີ່ຖືກເລືອກ */
 .selected-course-item {
     position: relative;
-    width: 100%;                  /* ໃຫ້ກ່ອງສີເທົາຂະຫຍາຍເຕັມຄວາມກວ້າງ */
-    padding: 16px 45px 16px 16px; /* ເທິງ: 16px, ຂວາ: 45px (ຫຼົບປຸ່ມຖັງຂີ້ເຫຍື້ອ), ລຸ່ມ: 16px, ຊ້າຍ: 16px */
+    padding: 16px;
     margin-bottom: 12px;
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    word-break: break-word;       /* ป້ອງກັນບໍ່ໃຫ້ຕົວໜັງສືຍາວເກີນໄປແລ້ວຕົກແຖວແບບຜິດປົກກະຕິ */
+    word-break: break-word;
 }
 
 /* ປຸ່ມຖັງຂີ້ເຫຍື້ອ: ສີແດງ ບໍ່ມີຂອບ ຢູ່ມຸມຂວາເທິງສຸດ */
@@ -637,12 +637,12 @@ select {
     background: #fee2e2 !important;
 }
 
-/* ຊື່ວິຊາຮຽນ (ເວ้นพื้นที่ด้านขวาไม่ให้ทับปุ่มถังขยะ) */
+/* ຊື່ວິຊາຮຽນ (ເພີ່ມ padding-right ໃຫ້ກວ້າງຂຶ້ນ ເພື່ອຫຼົບປຸ່ມຖັງຂີ້ເຫຍື້ອ ແລະ ບໍ່ໃຫ້ "ມ.7" ຕົກແຖວ) */
 .selected-course-title {
     font-size: 15px;
     font-weight: bold;
     color: #1e293b;
-    padding-right: 35px;
+    padding-right: 50px; 
     margin-bottom: 4px;
 }
 
@@ -654,7 +654,7 @@ select {
     margin-bottom: 10px;
 }
 
-/* ລາຍລະອຽດ ເວລາ ແລະ ວັນທີຮຽນ ພ້ອມ Icon ວາງຕາມລວງຕັ້ງ */
+/* ລายລະອຽດ ເວລາ ແລະ ວັນທີຮຽນ ພ້ອມ Icon ວາງຕາມລວງຕັ້ງ */
 .course-details-list {
     display: flex;
     flex-direction: column;
