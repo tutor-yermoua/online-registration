@@ -180,12 +180,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. ລະບົບເລືອກວິຊາ
+    // 3. ລະບົບເລືອກວິຊາ (ປັບໃຫ້ເລືອກໄດ້ພຽງ 1 ວິຊາເທົ່ານັ້ນ)
     window.selectedCourses = [];
 
     courseCards.forEach(card => {
         card.addEventListener('click', () => {
+            // ເອົາ class 'selected' ອອກຈາກທຸກໆກາດອື່ນກ່ອນ ເພື່ອໃຫ້ເລືອກໄດ້ແຄ່ 1 ວິຊາ
+            courseCards.forEach(c => {
+                if (c !== card) c.classList.remove('selected');
+            });
+
+            // ສະຫຼັບສະຖານະ selected ຂອງກາດທີ່ຖືກຄລິກ
             card.classList.toggle('selected');
+
             const courseName = card.getAttribute('data-name') || 'ວິຊາຮຽນ';
             const coursePrice = parseFloat(card.getAttribute('data-price')) || 0;
             const courseTime = card.getAttribute('data-time') || '-';
@@ -196,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const courseYear = card.getAttribute('data-year') || '2026-2027';
 
             if (card.classList.contains('selected')) {
-                window.selectedCourses.push({ 
+                window.selectedCourses = [{ 
                     name: courseName, 
                     price: coursePrice, 
                     time: courseTime, 
@@ -204,10 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     cat: courseCat, 
                     year: courseYear, 
                     scholarship: 'not_received' 
-                });
+                }];
             } else {
-                window.selectedCourses = window.selectedCourses.filter(c => c.name !== courseName);
+                window.selectedCourses = [];
             }
+
             updateSummary();
             updateBadgeCounts();
         });
