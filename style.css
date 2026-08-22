@@ -10,7 +10,7 @@ html, body {
 
 body {
     font-family: 'Noto Sans Lao', 'Phetsarath OT', sans-serif;
-    padding: 20px 12px; /* 👈 ໄລຍະຫ່າງຂອບຊ້າຍ ແລະ ຂວາ 12px ທີ່ຈະເຮັດໃຫ້ເຫັນພື້ນຫຼັງ */
+    padding: 12px 12px; /* 👈 ໄລຍະຫ່າງຂອບຊ້າຍ ແລະ ຂວາ 12px ທີ່ຈະເຮັດໃຫ້ເຫັນພື້ນຫຼັງ */
     display: flex;
     justify-content: center;
     align-items: center;
