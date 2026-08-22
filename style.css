@@ -830,3 +830,16 @@ select {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+/* ກ່ອງສີຂາວພື້ນຫຼັງສະແດງຜົນສຳເລັດ */
+.success-modal-card {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 16px; /* ມຸມມົນປະມານນີ້ກຳລັງສວຍງາມ (ຫຼືປັບເປັນ 12px ຕາມມັກ) */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}

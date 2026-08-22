@@ -324,51 +324,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzUbXASpDaA8Gw7iBbGHPpIxbhv_g-JfJjklIKuDEJ0A5V1IES5seA0UHCkp3aPe5A-/exec";
 
-            // 1. ຊອກຫາ Container ຂອງຟອມ (ແນະນຳໃຫ້ຫໍ່ຟອມຂັ້ນ2 ໄວ້ໃນ div ທີ່ມີ position relative ຖ້າຍັງບໍ່ມີ)
-            const formContainer = document.getElementById('step2Container'); 
-            if (formContainer) {
-                formContainer.style.position = 'relative'; // ປ້ອງກັນກໍລະນີຍັງບໍ່ໄດ້ຕັ້ງ
-            }
-
-            // ສ້າງ Overlay ສະແດງວົງມົນໝູນ "ກຳລັງບັນທຶກຂໍ້ມູນ" ທັບເທິງຟອມ
             // ສ້າງ Overlay ສະແດງວົງມົນໝູນ "ກຳລັງບັນທຶກຂໍ້ມູນ" ໄວ້ກາງຈໍ
             const loadingOverlay = document.createElement('div');
             loadingOverlay.className = 'form-overlay-box';
             loadingOverlay.id = 'formProcessingOverlay';
             loadingOverlay.innerHTML = `
                 <div class="center-spinner"></div>
-                <div style="color: #334155; font-size: 15px; font-weight: 500;">ກຳລັງບັນທຶກຂໍ້ມູນ</div>
+                <div style="color: #334155; font-size: 15px; font-weight: 500; margin-top: 10px;">ກຳລັງບັນທຶກຂໍ້ມູນ</div>
             `;
-            document.body.appendChild(loadingOverlay); // ປ່ຽນມາໃຊ້ໂຕນີ້ແທນ
-            if (formContainer) formContainer.appendChild(loadingOverlay);
+            document.body.appendChild(loadingOverlay);
 
+            // ສົ່ງຂໍ້ມູນໄປ Google Sheets (ໃຊ້ no-cors)
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
-            })
-            .then(() => {
-                // 2. ປ່ຽນເນື້ອໃນ Overlay ເປັນເຄື່ອງໝາຍຕິກສີຂຽວ ແລະ ຂໍ້ຄວາມ "ລົງທະບຽນສຳເລັດແລ້ວ"
+            });
+
+            // ຕັ້ງເວລາ ໃຫ້ວົງມົນໝູນໂຊว์ກ່ອນ 1 ວິນາທີ ແລ້ວຈຶ່ງປ່ຽນເປັນກ່ອງສີຂາວພ້ອມເຄື່ອງໝາຍຕິກຖືກ
+            setTimeout(() => {
                 if (loadingOverlay) {
                     loadingOverlay.innerHTML = `
-                        <div class="success-circle-large">
-                            <i class="fa-solid fa-check"></i>
+                        <div class="success-modal-card">
+                            <div class="success-circle-large" style="margin-bottom: 15px;">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div style="color: #1e293b; font-size: 16px; font-weight: 600;">ລົງທະບຽນສຳເລັດແລ້ວ</div>
                         </div>
-                        <div style="color: #1e293b; font-size: 16px; font-weight: 600;">ລົງທະບຽນສຳເລັດແລ້ວ</div>
                     `;
                 }
+            }, 1000);
 
-                // 3. ລໍຖ້າ 1.5 ວິນາທີ ແລ້ວ Refresh ກັບໄປໜ້າທຳອິດ
-                setTimeout(() => {
-                    location.reload(); 
-                }, 1500);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                if (loadingOverlay) loadingOverlay.remove();
-                alert('ເກີດຂໍ້ຜິດພາດໃນການບັນທຶກ!');
-            });
+            // ລໍຖ້າອີກ 1.5 ວິນາທີ (ລວມເປັນ 2.5 ວິ) ແລ້ວ Refresh ໜ້າເວັບ
+            setTimeout(() => {
+                location.reload(); 
+            }, 2500);
         });
     }
 });
