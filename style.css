@@ -608,11 +608,10 @@ select {
 /* -----------------------------------------
    CSS ສສຳລັບສ່ວນສະແດງລາຍວິຊາທີ່ເລືອກ
 ----------------------------------------- */
-
 /* ກ່ອງແຕ່ລະວິຊາທີ່ຖືກເລືອກ */
 .selected-course-item {
     position: relative;
-    padding: 16px;
+    padding: 16px 35px;
     margin-bottom: 12px;
     background: #f8fafc;
     border: 1px solid #e2e8f0;
