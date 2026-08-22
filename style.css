@@ -1,25 +1,35 @@
-/* --- ຕັ້ງຄ່າຟອນ ແລະ ພື້ນຖານທົ່ວໄປ --- */
+/* --- ຕັ້ງຄ່າຮາກຖານ ແລະ ພື້ນຫຼັງ (ແກ້ໄຂໃຫ້ມີໄລຍະຫ່າງຊ້າຍ-ຂວາ) --- */
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #0f172a; /* ສີພື້ນຫຼັງເຂັ້ມດ້ານຊ້າຍ-ຂວາ */
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Noto Sans Lao', sans-serif; /* ກຳหนดຟອນມາດຕະຖານພາສາລາວ */
-    background-color: #0f172a; /* ຕາມໂທນສີພື້ນหลังເຂັ້ມໃນຕົວຢ່າງຂອງທ່ານ */
-    margin: 0; /* ຍົກເລີກໄລຍະຫ່າງຂອບນອກທົ່ວໄປ */
-    padding: 20px 10px; /* 👈 ໃຫ້มีຂອບຊ້າຍ-ຂວາ 10px ຕະຫຼອດ */
-    display: flex; /* ໃຊ້ Flexbox ຈັດຮູບແບບການວາງຕຳແໜ່ງ */
-    justify-content: center; /* จัดເນື້ອໃນໃຫ້ຢູ່ກາງຕາມລວງນອນ */
-    align-items: center; /* จัดເນື້ອໃນໃຫ້ຢູ່ກາງຕາມລວງຕັ້ງ */
-    min-height: 100vh; /* កຳหนดຄວາມສູງຂັ້ນຕ່ຳໃຫ້ເຕັມໜ້າຈໍ */
+    font-family: 'Noto Sans Lao', 'Phetsarath OT', sans-serif;
+    padding: 20px 12px; /* 👈 ໄລຍະຫ່າງຂອບຊ້າຍ ແລະ ຂວາ 12px ທີ່ຈະເຮັດໃຫ້ເຫັນພື້ນຫຼັງ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* --- Form Container --- */
 .form-container {
-  width: 92%;        /* 👈 ໃຫ້ຟອມກວ້າງ 92% ຂອງໜ້າຈໍສະເໝີ ບໍ່ວ່າຈະຈໍຫຍັງ */
-    max-width: 450px;  /* 👈 ບໍ່ໃຫ້ກາຍ 450px ເວລາຢູ່ຈໍໃຫຍ່ */
+    width: 100%;         /* 👈 ໃຫ້ຍືດຕາມພື້ນທີ່ທີ່ກຳນົດ */
+    max-width: 450px;    /* 👈 ບໍ່ໃຫ້ກາຍ 450px ເວລາຢູ່ຈໍໃຫຍ່ (ຄອມ) */
     background: #ffffff;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
 }
 
+* {
+    box-sizing: border-box;
+}
 /* --- Header & Logo Styling (ຈັດຂອບໂລໂກ້) --- */
 .form-header {
     background: #0033ff; /* ສີພື້ນຫຼັງສ່ວນຫົວຟອມເປັນສີຟ້າ */
