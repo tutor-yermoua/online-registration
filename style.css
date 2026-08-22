@@ -608,12 +608,13 @@ select {
 /* -----------------------------------------
    CSS ສສຳລັບສ່ວນສະແດງລາຍວິຊາທີ່ເລືອກ
 ----------------------------------------- */
-/* ກ່ອງແຕ່ລະວິຊາທີ່ຖືກເລືອກ */
 .selected-course-item {
     position: relative;
-    padding: 16px 35px;
+    width: 100%;             /* ໃຫ້ກ່ອງຍືດເຕັມຄວາມກວ້າງຂອງກ່ອງແມ່ */
+    box-sizing: border-box;  /* ປ້ອງກັນບໍ່ໃຫ້ padding ມາບີບເນື້ອຫາ */
+    padding: 16px 16px;      /* ຕັ້ງ padding ຊ້າຍ-ຂວາໃຫ້ເປັນປົກກະຕິ (ປະມານ 16px) */
     margin-bottom: 12px;
-    background: #f8fafc;
+    background: #f8fafc; 
     border: 1px solid #e2e8f0;
     border-radius: 12px;
 }
