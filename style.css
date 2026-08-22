@@ -12,12 +12,13 @@ body {
 
 /* --- Form Container --- */
 .form-container {
-    width: 100%; /* ກຳหนดຄວາມກວ້າງໃຫ້ເຕັມພື້ນທີ່ */
-    max-width: 480px; /* កຳหนดຄວາມກວ້າງສູງສຸດຂອງຟອມ */
-    background: #ffffff; /* ສີພື້ນຫຼັງຂອງກ່ອງຟອມເປັນສີຂາວ */
-    border-radius: 20px; /* ເຮັດໃຫ້ມຸມຂອງກ່ອງມົນຂຶ້ນ */
-    overflow: hidden; /* ເຊື່ອງເນື້ອໃນສ່ວນທີ່ລົ້ນອອກນອກຂອບມົນ */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* ເພີ່ມເງາະໃຫ້ກ່ອງຟອມມີມິຕິ */
+    width: 90%; /* 👈 ໃຫ້ມັນກວ້າງ 90% ຂອງໜ້າຈໍ, ເຫຼືອ 10% ໄວ້ເປັນຂອບຊ້າຍ-ຂວາ */
+    max-width: 420px; /* 👈 ຫຼຸດຂະໜາດສູງສຸດລົງໜ້ອຍໜຶ່ງ ໃຫ້ເໝາະກັບມືຖື */
+    margin: 0 auto; /* 👈 ຈັດให้อยู่ກາງ */
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 /* --- Header & Logo Styling (ຈັດຂອບໂລໂກ້) --- */
