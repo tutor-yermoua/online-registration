@@ -619,7 +619,7 @@ select {
     word-break: break-word;
 }
 
-/* ປຸ່ມຖັງຂີ້ເຫຍື້ອ: ສີແດງ ບໍ່ມີຂອບ ຢູ່ມຸມຂວາເທິງສຸດ */
+/* ປຸ່ມຖັງຂີ້ເຫຍື້ອ: ໃຫ້ກັບມາວາງຢູ່ມຸມຂວາເທິງສຸດຄືເກົ່າ */
 .delete-course-btn {
     position: absolute;
     top: 12px;
@@ -632,18 +632,20 @@ select {
     padding: 4px 6px;
     border-radius: 6px;
     transition: background 0.2s;
+    z-index: 10;
 }
 .delete-course-btn:hover {
     background: #fee2e2 !important;
 }
 
-/* ຊື່ວິຊາຮຽນ (ເພີ່ມ padding-right ໃຫ້ກວ້າງຂຶ້ນ ເພື່ອຫຼົບປຸ່ມຖັງຂີ້ເຫຍື້ອ ແລະ ບໍ່ໃຫ້ "ມ.7" ຕົກແຖວ) */
+/* ຊື່ວິຊາຮຽນ: ເວັ້ນຂອບຂວາໃຫ້ກວ້າງຂຶ້ນ (50px) ເພື່ອບໍ່ให้ປຸ່ມຖັງຂີ້ເຫຍື້ອມາທັບ */
 .selected-course-title {
-    font-size: 15px;
+    font-size: 14px; 
     font-weight: bold;
     color: #1e293b;
     padding-right: 50px; 
     margin-bottom: 4px;
+    line-height: 1.4;
 }
 
 /* ລາຄາຄ່າຮຽນ */
@@ -654,7 +656,7 @@ select {
     margin-bottom: 10px;
 }
 
-/* ລายລະອຽດ ເວລາ ແລະ ວັນທີຮຽນ ພ້ອມ Icon ວາງຕາມລວງຕັ້ງ */
+/* ລາຍລະອຽດ ເວລາ ແລະ ວັນທີຮຽນ ພ້ອມ Icon ວາງຕາມລວງຕັ້ງ */
 .course-details-list {
     display: flex;
     flex-direction: column;
