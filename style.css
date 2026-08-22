@@ -3,7 +3,7 @@ body {
     font-family: 'Noto Sans Lao', sans-serif; /* ກຳหนดຟອນມາດຕະຖານພາສາລາວ */
     background-color: #0f172a; /* ຕາມໂທນສີພື້ນหลังເຂັ້ມໃນຕົວຢ່າງຂອງທ່ານ */
     margin: 0; /* ຍົກເລີກໄລຍະຫ່າງຂອບນອກທົ່ວໄປ */
-    padding: 20px 16; /* ເພີ່ມໄລຍະຫ່າງຂອບໃນດ້ານເທິງແລະລຸ່ມ */
+    padding: 20px 10px; /* 👈 ໃຫ້มีຂອບຊ້າຍ-ຂວາ 10px ຕະຫຼອດ */
     display: flex; /* ໃຊ້ Flexbox ຈັດຮູບແບບການວາງຕຳແໜ່ງ */
     justify-content: center; /* จัดເນື້ອໃນໃຫ້ຢູ່ກາງຕາມລວງນອນ */
     align-items: center; /* จัดເນື້ອໃນໃຫ້ຢູ່ກາງຕາມລວງຕັ້ງ */
@@ -12,9 +12,8 @@ body {
 
 /* --- Form Container --- */
 .form-container {
-    width: 90%; /* 👈 ໃຫ້ມັນກວ້າງ 90% ຂອງໜ້າຈໍ, ເຫຼືອ 10% ໄວ້ເປັນຂອບຊ້າຍ-ຂວາ */
-    max-width: 420px; /* 👈 ຫຼຸດຂະໜາດສູງສຸດລົງໜ້ອຍໜຶ່ງ ໃຫ້ເໝາະກັບມືຖື */
-    margin: 0 auto; /* 👈 ຈັດให้อยู่ກາງ */
+  width: 92%;        /* 👈 ໃຫ້ຟອມກວ້າງ 92% ຂອງໜ້າຈໍສະເໝີ ບໍ່ວ່າຈະຈໍຫຍັງ */
+    max-width: 450px;  /* 👈 ບໍ່ໃຫ້ກາຍ 450px ເວລາຢູ່ຈໍໃຫຍ່ */
     background: #ffffff;
     border-radius: 20px;
     overflow: hidden;
