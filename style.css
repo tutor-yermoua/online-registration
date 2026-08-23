@@ -1020,3 +1020,151 @@ select {
     display: block;
     margin: 0 auto;
 }
+/* --- ປັບຫຼຸດຄວາມສູງ ແລະ ຂະໜາດໃຫ້ກະທັດຮັດຍິ່ງຂຶ້ນ --- */
+.modal-content {
+    background-color: #701c3a;
+    padding: 20px;
+    border-radius: 14px;
+    width: 420px;
+    max-width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-bottom: 8px;
+    padding: 0 5px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ກ່ອງສີຂາວດ້ານໃນ (ປັບໃຫ້ຄວາມສູງເທົ່າກັນທັງສອງໜ້າ) */
+.modal-white-box {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    
+    /* 🟢 เพิ่มສ່ວນນີ້ເພື່ອລັອກຄວາມສູງໃຫ້ເທົ່າກັນເປ๊ะໆ (ຖ້າສູງ ຫຼື ຕຳໄປ ສາມາດປັບຕົວເລກ 420px ນี้ໄດ້) */
+    height: 480px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
+
+.qr-title-text {
+    text-align: center;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.qr-img {
+    display: block;
+    max-width: 200px; /* ປັບຂະໜາດ QR Code ໃຫ້ເໝາະສົມກັບຄວາມສູງກ່ອງ */
+    height: auto;
+    margin: 0 auto 8px auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.account-details {
+    background-color: #fff1f2;
+    border: 1px solid #fecdd3;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #334155;
+}
+
+.account-details p {
+    margin: 2px 0;
+}
+
+/* ປຸ່ມກົດໃນ Modal */
+.confirm-pay-btn {
+    background-color: #701c3a;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* ສ່ວນອັບໂຫຼດສະລິບ */
+.upload-dropzone {
+    border: 2px dashed #cbd5e1;
+    padding: 120px 15px; /* ເພີ່ມ Padding ດ້ານໃນກ່ອງອັບໂຫຼດ ເພື່ອໃຫ້ມັນຍືດເຕັມຄວາມສູງພໍດີກັບໜ້າ QR */
+    text-align: center;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background-color: #f8fafc;
+    cursor: pointer;
+}
+
+/* --- CSS ສຳລັບສ່ວນອັບໂຫຼດສະລິບ --- */
+.slip-title-style {
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 18px;
+}
+
+.slip-title-span {
+    color: #e13269;
+}
+
+.slip-label-style {
+    display: block;
+    cursor: pointer;
+}
+
+.slip-dropzone-style {
+    border: 2px dashed #e13269;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    background-color: #f9f9f9;
+    transition: 0.3s;
+    overflow: hidden;
+}
+
+.slip-icon-style {
+    font-size: 40px;
+    color: #e13269;
+    margin-bottom: 15px;
+}
+
+.slip-main-text {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.slip-sub-text {
+    font-size: 12px;
+    color: #777;
+    margin: 0;
+}

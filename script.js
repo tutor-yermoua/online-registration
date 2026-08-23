@@ -371,17 +371,144 @@ window.onclick = function(event) {
     }
 };
 
-// 5. ຟັງຊັນກວດຈັບມືຖື ແລະ ເປີດແອັບ BCEL One
-window.openBcelApp = function(event) {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
-    if (!isMobile) {
-        event.preventDefault(); // ປ້ອງກັນບໍ່ໃຫ້ເປີດໃນຄອມ
-        alert("ຄຳເຕືອນ: ການເປີດແອັບທະນາຄານໂດຍກົງໃຊ້ໄດ້ສະເພາະເທິງໂທລະສັບມືຖືເທົ່ານັ້ນ! (ໃນຄອມພິວເຕີໃຫ້ໃຊ້ໂທລະສັບສະແກນ QR Code ຈາກໜ້າຈໍ)");
-    } else {
-        // ຖ້າເປັນມືຖື: ໃຫ້ລະບົບພະຍາຍາມເປີດແອັບ BCEL One
-        // ໂດຍທີ່ໜ້າເວັບປັດຈຸບັນຈະຍັງคงຄ້າງຢູ່ background ຕາມที่คุณต้องการ
-        event.preventDefault();
-        window.location.href = "bcelone://app";
+// --- ລະບົບການຊຳລະຄ່າເທີມ ແລະ ສົ່ງສະລິບ ---
+
+// 1. ເປີດ Modal: ຕອນກົດປຸ່ມ "ຊຳລະຄ່າເທີມ" ໃຫ້ບັງຄັບຣີເຊັດກັບມາເປັນໜ້າ QR Code (ໜ້າ 1) ສະເໝີ
+function openQRModal() {
+    const modal = document.getElementById('qrModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        
+        // ບັງຄັບໃຫ້ສະແດງໜ້າ QR Code ແລະ ເຊື່ອງໜ້າສົ່ງສະລິບທຸກຄັ້ງທີ່ເປີດໃໝ່
+        const qrSection = document.getElementById('qrSection');
+        const uploadSlipSection = document.getElementById('uploadSlipSection');
+        
+        if (qrSection && uploadSlipSection) {
+            qrSection.style.display = 'block';
+            uploadSlipSection.style.display = 'none';
+        }
+
+        // ເຄຼຍໄຟລ໌ຮູບສະລິບທີ່ເຄີຍເລືອກໄວ້ (ໃຫ້ົງກັບ id="slipFile" ໃນ HTML)
+        const slipFile = document.getElementById('slipFile');
+        if (slipFile) {
+            slipFile.value = '';
+        }
     }
-};
+}
+
+// 2. ປິດ Modal (ກົດ X ອອກ): ປິດປົກກະຕິ
+function closeQRModal() {
+    const modal = document.getElementById('qrModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// 3. ເວລາກົດປຸ່ມ "ບັນທຶກຮູບ QR Code": ດາວໂຫລດຮູບລົງເຄື່ອງ + ປ່ຽນໄປໜ້າສົ່ງສະລິບ
+function saveQRCode() {
+    // ສ້າງ Link ດາວໂຫລດຮູບ QR Code ລົງເຄື່ອງອັດຕະໂນມັດ
+    const imagePath = 'Logo/QR Code.png'; // ເສັ້ນທາງຮູບຂອງທ່ານ
+    const link = document.createElement('a');
+    link.href = imagePath;
+    link.download = 'QR_Code_Payment.png'; // ຊື່ໄຟລ໌ທີ່ຈະບັນທຶກລົງເຄື່ອງ
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    alert("ດາວໂຫລດ ແລະ ບັນທຶກ QR Code ລົງເຄື່ອງສຳເລັດ!");
+
+    // ຫຼັງຈາກບັນທຶກແລ້ວ ໃຫ້ປ່ຽນໄປໜ້າອັບໂຫຼດສະລິບ
+    const qrSection = document.getElementById('qrSection');
+    const uploadSlipSection = document.getElementById('uploadSlipSection');
+
+    if (qrSection && uploadSlipSection) {
+        qrSection.style.display = 'none';
+        uploadSlipSection.style.display = 'block';
+    }
+}
+
+// 4. ເວລາກົດປຸ່ມ "ໂອນເງິນແລ້ວ": ບັນທຶກ ແລະ ປິດ Modal ໂດຍບໍ່ໃຫ້ໜ້າເວັບ Refresh
+function submitSlip() {
+    const slipFile = document.getElementById('slipFile');
+    
+    // ตรวจสอบວ່າຜູ້ໃຊ້ເລືອກຮູບສະລິບແລ້ວ ຫຼືຍັງ
+    if (slipFile && slipFile.files.length === 0) {
+        alert("ກະລຸນາເລືອກຮູບສະລິບການໂອນເງິນກ່ອນ!");
+        return;
+    }
+
+    // ── ຖ້າທ່ານມີການສົ່ງข้อมูลໄປ Server (Backend) ໃຫ້ຂຽນ Code fetch() ໄວ້ບ່ອນນີ້ ──
+
+    alert("ສົ່ງສະລິບ ແລະ ບັນທຶກຂໍ້ມູນສຳເລັດ!");
+    
+    // ປິດ Modal ທີ່ຂຶ້ນມາ QR ຢູ່ນັ້ນອອກ
+    closeQRModal();
+    
+    // ຖ້າຕ້ອງການໃຫ້ປຸ່ມ "ຊຳລະຄ່າເທີມ" ໃນໜ້າຫຼັກປ່ຽນເປັນ "ຊຳລະແລ້ວ" (ຕົວຢ່າງ)
+    // ທ່ານສາມາດຂຽນລະຫັດອັບເດດ UI ຕື່ມໄດ້ບ່ອນນີ້ ໂດຍບໍ່ຕ້ອງໃຊ້ location.reload();
+}
+
+// ຟັງຊັນສຳລັບສະແດງຮູບ Preview ໃນກ່ອງ Dropzone
+function showImagePreview(file) {
+    const dropzoneContent = document.getElementById('dropzoneContent');
+    if (!dropzoneContent) return;
+
+    // ตรวจสอบວ່າແມ່ນໄຟລ໌ຮູບພາບແທ້ບໍ່
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            // ປ່ຽນເນື້ອໃນໃນກ່ອງໃຫ້ເປັນຮູບພາບທີ່ຜູ້ໃຊ້ອັບໂຫຼດ
+            dropzoneContent.innerHTML = `
+                <img src="${e.target.result}" alt="Slip Preview" style="max-width: 100%; max-height: 150px; border-radius: 10px; object-fit: contain; margin-bottom: 10px;">
+                <p style="font-size: 14px; color: #28a745; font-weight: bold; margin: 0;">✅ ເລືອກຮູບແລ້ວ: ${file.name}</p>
+                <p style="font-size: 11px; color: #666; margin: 5px 0 0 0;">(ຄລິກ ຫຼື ລາກຮູບໃໝ່ເພື່ອປ່ຽນ)</p>
+            `;
+        }
+        
+        reader.readAsDataURL(file);
+    }
+}
+
+// 1. ເວລາກົດຄລິກເລືອກໄຟລ໌ຜ່ານ input file ປົກກະຕິ
+const slipFile = document.getElementById('slipFile');
+if (slipFile) {
+    slipFile.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            showImagePreview(this.files[0]);
+        }
+    });
+}
+
+// 2. ເວລາກະລາກຮູບມາວາງ (Drag and Drop)
+const dropZone = document.getElementById('dropZone');
+if (dropZone && slipFile) {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => {
+            dropZone.style.backgroundColor = '#f1d4df';
+        }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => {
+            dropZone.style.backgroundColor = '#f9f9f9';
+        }, false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+
+        if (files && files.length > 0) {
+            slipFile.files = files; // ຍັດໄຟລ໌ໃສ່ input
+            showImagePreview(files[0]); // ເອີ້ນໃຊ້ຟັງຊັນສະແດງຮູບ Preview
+        }
+    }, false);
+}
