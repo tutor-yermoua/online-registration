@@ -414,9 +414,6 @@ function saveQRCode() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-
-    alert("ດາວໂຫລດ ແລະ ບັນທຶກ QR Code ລົງເຄື່ອງສຳເລັດ!");
-
     // ຫຼັງຈາກບັນທຶກແລ້ວ ໃຫ້ປ່ຽນໄປໜ້າອັບໂຫຼດສະລິບ
     const qrSection = document.getElementById('qrSection');
     const uploadSlipSection = document.getElementById('uploadSlipSection');
@@ -511,4 +508,52 @@ if (dropZone && slipFile) {
             showImagePreview(files[0]); // ເອີ້ນໃຊ້ຟັງຊັນສະແດງຮູບ Preview
         }
     }, false);
+}
+
+// 3. ເວລາກົດປຸ່ມ "ບັນທຶກຮູບ QR Code": ສະແດງວົງມົນປິ່ນ -> ປ່ຽນເປັນຕິກຖືກສຳເລັດ -> ໄປໜ້າສະລິບ
+function saveQRCode() {
+    const loadingModal = document.getElementById('customLoadingModal');
+    const loadingIconContainer = document.getElementById('loadingIconContainer');
+    const loadingText = document.getElementById('loadingText');
+
+    if (loadingModal) {
+        // 1. ເປີດ Modal ໂຫຼດຂຶ້ນມາ (ສະແດງວົງມົນປິ່ນ + ກຳລັງບັນທຶກ...)
+        loadingModal.style.display = 'flex';
+        loadingIconContainer.innerHTML = `<div class="spinner-circle"></div>`;
+        loadingText.innerHTML = `ກຳລັງບັນທຶກ<span class="dots"></span>`;
+    }
+
+    // 2. ສ້າງ Link ດາວໂຫລດຮູບ QR Code ລົງເຄື່ອງ
+    const imagePath = 'Logo/QR Code.png'; // ເສັ້ນທາງຮູບຂອງທ່ານ
+    const link = document.createElement('a');
+    link.href = imagePath;
+    link.download = 'QR_Code_Payment.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // 3. ຫຼັງຈາກຜ່ານໄປ 1.2 ວິນາທີ ໃຫ້ປ່ຽນເປັນເຄື່ອງໝາຍຕິກຖືກສຳເລັດ
+    setTimeout(function() {
+        if (loadingIconContainer && loadingText) {
+            loadingIconContainer.innerHTML = `<div class="success-check-circle">✓</div>`;
+            loadingText.innerHTML = `ບັນທຶກຮູບສຳເລັດ`;
+        }
+
+        // 4. ຫຼັງຈາກສະແດງສຳເລັດອີກ 0.8 ວິນາທີ ໃຫ້ປິດ Modal ແລ້ວເດ້ງໄປໜ້າສົ່ງສະລິບ
+        setTimeout(function() {
+            if (loadingModal) {
+                loadingModal.style.display = 'none';
+            }
+
+            // ປ່ຽນໄປໜ້າອັບໂຫຼດສະລິບ
+            const qrSection = document.getElementById('qrSection');
+            const uploadSlipSection = document.getElementById('uploadSlipSection');
+
+            if (qrSection && uploadSlipSection) {
+                qrSection.style.display = 'none';
+                uploadSlipSection.style.display = 'block';
+            }
+        }, 800); // ໜ່ວງເວລາອ່ານຂໍ້ຄວາມສຳເລັດ 0.8 ວິນາທີ
+
+    }, 1200); // ເວລາກຳລັງໂຫຼດ 1.2 ວິນາທີ
 }
