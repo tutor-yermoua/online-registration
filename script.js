@@ -423,28 +423,37 @@ function saveQRCode() {
         uploadSlipSection.style.display = 'block';
     }
 }
-
-// 4. ເວລາກົດປຸ່ມ "ໂອນເງິນແລ້ວ": ບັນທຶກ ແລະ ປິດ Modal ໂດຍບໍ່ໃຫ້ໜ້າເວັບ Refresh
+// 4. ເວລາກົດປຸ່ມ "ໂອນເງິນແລ້ວ": ສະແດງ Loading 2 ວິນາທີ -> ປິດ Modal -> ກັບມາໜ້າລົງທະບຽນ
 function submitSlip() {
     const slipFile = document.getElementById('slipFile');
-    
-    // ตรวจสอบວ່າຜູ້ໃຊ້ເລືອກຮູບສະລິບແລ້ວ ຫຼືຍັງ
+
+    // ตรวจสอบว่าผู้ใช้เลือกรูประสลิบแล้ว หรือยัง
     if (slipFile && slipFile.files.length === 0) {
-        alert("ກະລຸນາເລືອກຮູບສະລິບການໂອນເງິນກ່ອນ!");
+        alert("ກະລຸນາເລືອກຮູບສະລິບທານໂອນເງິນກ່ອນ!");
         return;
     }
 
-    // ── ຖ້າທ່ານມີການສົ່ງข้อมูลໄປ Server (Backend) ໃຫ້ຂຽນ Code fetch() ໄວ້ບ່ອນນີ້ ──
+    // 1. ສ້າງ Element ຂອງ Loading Overlay ຂຶ້ນມາສະແດງຊົ່ວຄາວ
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'loading-overlay';
+    loadingDiv.innerHTML = `
+        <div class="spinner"></div>
+        <div class="loading-text">ກຳລັງບັນທຶກ</div>
+    `;
+    document.body.appendChild(loadingDiv);
 
-    alert("ສົ່ງສະລິບ ແລະ ບັນທຶກຂໍ້ມູນສຳເລັດ!");
-    
-    // ປິດ Modal ທີ່ຂຶ້ນມາ QR ຢູ່ນັ້ນອອກ
-    closeQRModal();
-    
-    // ຖ້າຕ້ອງການໃຫ້ປຸ່ມ "ຊຳລະຄ່າເທີມ" ໃນໜ້າຫຼັກປ່ຽນເປັນ "ຊຳລະແລ້ວ" (ຕົວຢ່າງ)
-    // ທ່ານສາມາດຂຽນລະຫັດອັບເດດ UI ຕື່ມໄດ້ບ່ອນນີ້ ໂດຍບໍ່ຕ້ອງໃຊ້ location.reload();
+    // 2. หน่วงเวลาไว้ 2 ວິນາທີ (2000 milliseconds)
+    setTimeout(function() {
+        // ລຶບ Loading ອອກ
+        loadingDiv.remove();
+
+        // 3. ปิด Modal ທີ່ຂຶ້ນມາ QR ຢู່ນັ້ນອອກ
+        if (typeof closeQRModal === 'function') {
+            closeQRModal();
+        }
+
+    }, 2000); // 2 ວິນາທີ
 }
-
 // ຟັງຊັນສຳລັບສະແດງຮູບ Preview ໃນກ່ອງ Dropzone
 function showImagePreview(file) {
     const dropzoneContent = document.getElementById('dropzoneContent');
@@ -455,12 +464,10 @@ function showImagePreview(file) {
         const reader = new FileReader();
         
         reader.onload = function(e) {
-            // ປ່ຽນເນື້ອໃນໃນກ່ອງໃຫ້ເປັນຮູບພາບທີ່ຜູ້ໃຊ້ອັບໂຫຼດ
-            dropzoneContent.innerHTML = `
-                <img src="${e.target.result}" alt="Slip Preview" style="max-width: 100%; max-height: 150px; border-radius: 10px; object-fit: contain; margin-bottom: 10px;">
-                <p style="font-size: 14px; color: #28a745; font-weight: bold; margin: 0;">✅ ເລືອກຮູບແລ້ວ: ${file.name}</p>
-                <p style="font-size: 11px; color: #666; margin: 5px 0 0 0;">(ຄລິກ ຫຼື ລາກຮູບໃໝ່ເພື່ອປ່ຽນ)</p>
-            `;
+           // ປ່ຽນໃຫ້ຮູບຂະຫຍາຍໃຫຍ່ເຕັມກ໋ອງພດີ
+        dropzoneContent.innerHTML = `
+            <img src="${e.target.result}" alt="Slip Preview" style="width: 72%; height: 72%; object-fit: cover; border-radius: 4px;">
+        `;
         }
         
         reader.readAsDataURL(file);

@@ -591,14 +591,13 @@
 
                 <div class="account-details">
                     <p><strong>ℹ️ ລາຍລະອຽດບັນຊີ:</strong></p>
-                    <p>ທະນາຄານ: BCEL (ທພຕລ)</p>
+                    <p>ທະນາຄານ: BCEL (ຫໍພະຕໍ່)</p>
                     <p>ຊື່ບັນຊີ: YERMOUA KERMOUA MR</p>
                     <p>ເລກບັນຊີ: 052-12-00-01901348-001</p>
                 </div>
 
                 <button type="button" class="confirm-pay-btn" onclick="saveQRCode()">ບັນທຶກຮູບ QR Code</button>
             </div>
-
 <!-- ສ່ວນທີ 2: ຟອມສົ່ງສະລິບໂອນເງິນ (ສະແດງຂຶ້ນມາຫຼັງຈາກບັນທຶກ QR ແລ້ວ) -->
 <div id="uploadSlipSection" style="display: none;">
     <div class="slip-upload-box">
@@ -610,14 +609,12 @@
         <!-- ກ່ອງ Dropzone -->
         <label for="slipFile" class="slip-label-style">
             <div id="dropZone" class="upload-dropzone slip-dropzone-style">
-                
                 <!-- ຈຸດສະແດງເນື້ອໃນ ແລະ ຮູບ Preview -->
                 <div id="dropzoneContent">
                     <i class="fas fa-file-invoice-dollar slip-icon-style"></i>
                     <p class="slip-main-text">ຄລິກ ຫຼື ລາກຮູບສະລິບໃສ່ນີ້</p>
                     <p class="slip-sub-text">ຮອງຮັບ PNG, JPG, JPEG</p>
                 </div>
-
             </div>
             <input type="file" id="slipFile" accept="image/*" style="display: none;">
         </label>
@@ -626,9 +623,7 @@
     <!-- ປຸ່ມ "ໂອນເງິນແລ້ວ" -->
     <button type="button" class="confirm-pay-btn" onclick="submitSlip()">ໂອນເງິນແລ້ວ</button>
 </div>
-        </div>
-    </div>
-</div>
+
 <!-- Custom Loading & Success Modal -->
 <div id="customLoadingModal" class="custom-loading-overlay">
     <div class="custom-loading-box">
@@ -638,6 +633,7 @@
         <p id="loadingText" class="loading-text-style">ກຳລັງບັນທຶກ<span class="dots"></span></p>
     </div>
 </div>
+
 <script src="script.js"></script>
 </body>
 </html>
