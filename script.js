@@ -509,21 +509,20 @@ if (dropZone && slipFile) {
         }
     }, false);
 }
-
-// 3. ເວລາກົດປຸ່ມ "ບັນທຶກຮູບ QR Code": ສະແດງວົງມົນປິ່ນ -> ປ່ຽນເປັນຕິກຖືກສຳເລັດ -> ໄປໜ້າສະລິບ
+// 3. ເວລາກົດປຸ່ມ "ບັນທຶກຮູບ QR Code": ສະແດງວົງມົນປິ່ນ 5 ວິນາທີ -> ປ່ຽນເປັນຕິກຖືກ "ບັນທຶກຮູບສຳເລັດ" 5 ວິນາທີ -> ໄປໜ້າສະລິບ
 function saveQRCode() {
     const loadingModal = document.getElementById('customLoadingModal');
     const loadingIconContainer = document.getElementById('loadingIconContainer');
     const loadingText = document.getElementById('loadingText');
 
     if (loadingModal) {
-        // 1. ເປີດ Modal ໂຫຼດຂຶ້ນມາ (ສະແດງວົງມົນປິ່ນ + ກຳລັງບັນທຶກ...)
+        // 1. ເປີດ Modal ຂຶ້ນມາສະແດງວົງມົນປິ່ນ
         loadingModal.style.display = 'flex';
         loadingIconContainer.innerHTML = `<div class="spinner-circle"></div>`;
         loadingText.innerHTML = `ກຳລັງບັນທຶກ<span class="dots"></span>`;
     }
 
-    // 2. ສ້າງ Link ດາວໂຫລດຮູບ QR Code ລົງເຄື່ອງ
+    // 2. ສ້າງຄຳສັ່ງດາວໂຫຼດຮູບ QR Code ລົງເຄື່ອງ
     const imagePath = 'Logo/QR Code.png'; // ເສັ້ນທາງຮູບຂອງທ່ານ
     const link = document.createElement('a');
     link.href = imagePath;
@@ -532,14 +531,15 @@ function saveQRCode() {
     link.click();
     document.body.removeChild(link);
 
-    // 3. ຫຼັງຈາກຜ່ານໄປ 1.2 ວິນາທີ ໃຫ້ປ່ຽນເປັນເຄື່ອງໝາຍຕິກຖືກສຳເລັດ
+    // 3. ໃຫ້ສະແດງວົງມົນປິ່ນ "ກຳລັງບັນທຶກ..." ໄວ້ 5 ວິນາທີ
     setTimeout(function() {
         if (loadingIconContainer && loadingText) {
+            // ປ່ຽນເປັນເຄື່ອງໝາຍຕິກຖືກ ແລະ ສະແດງຄຳວ່າ "ບັນທຶກຮູບສຳເລັດ"
             loadingIconContainer.innerHTML = `<div class="success-check-circle">✓</div>`;
             loadingText.innerHTML = `ບັນທຶກຮູບສຳເລັດ`;
         }
 
-        // 4. ຫຼັງຈາກສະແດງສຳເລັດອີກ 0.8 ວິນາທີ ໃຫ້ປິດ Modal ແລ້ວເດ້ງໄປໜ້າສົ່ງສະລິບ
+        // 4. ໃຫ້ຄ້າງໜ້າ "ບັນທຶກຮູບສຳເລັດ" ໄວ້ອີກ 5 ວິນາທີ (ລວມເປັນ 10 ວິນາທີ) ຈຶ່ງປ່ຽນໄປໜ້າສົ່ງສະລິບ
         setTimeout(function() {
             if (loadingModal) {
                 loadingModal.style.display = 'none';
@@ -553,7 +553,7 @@ function saveQRCode() {
                 qrSection.style.display = 'none';
                 uploadSlipSection.style.display = 'block';
             }
-        }, 800); // ໜ່ວງເວລາອ່ານຂໍ້ຄວາມສຳເລັດ 0.8 ວິນາທີ
+        }, 1000); // 5 ວິນາທີສຳລັບຕອນສະແດງຜົນສຳເລັດ
 
-    }, 1200); // ເວລາກຳລັງໂຫຼດ 1.2 ວິນາທີ
+    }, 5000); // 5 ວິນາທີສຳລັບຕອນກຳລັງໂຫຼດ
 }
