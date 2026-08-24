@@ -1268,3 +1268,11 @@ select {
     transform: scale(0.95); /* เอັບເຟັກຍຸບລົງຕອນຄລິກ */
 }
 
+.custom-loading-box {
+    background: white;
+    padding: 20px 15px; /* ຫຼຸດ padding ລົງ */
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 170px;       /* 👈 ປັບຫຼຸດຄວາມກວ້າງລົງເຫຼືອເທົ່ານີ້ ຮັບຮອງວាកະທັດຮັດບໍ່ບັງຮູບສະລິບແນ່ນອນ! */
+}

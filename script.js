@@ -426,33 +426,44 @@ function saveQRCode() {
 // 4. ເວລາກົດປຸ່ມ "ໂອນເງິນແລ້ວ": ສະແດງ Loading 2 ວິນາທີ -> ປິດ Modal -> ກັບມາໜ້າລົງທະບຽນ
 function submitSlip() {
     const slipFile = document.getElementById('slipFile');
-
-    // ตรวจสอบว่าผู้ใช้เลือกรูประสลิบแล้ว หรือยัง
+    
+    // 1. ตรวจสอบว่าผู้ໃຊ້ເລືອກຮູບສະລິບແລ້ວ ຫຼือกຍັງ
     if (slipFile && slipFile.files.length === 0) {
-        alert("ກະລຸນາເລືອກຮູບສະລິບທານໂອນເງິນກ່ອນ!");
+        alert("ກະລຸນາເລືອກຮູບສະລິບການໂອນເງິນກ່ອນ!");
         return;
     }
 
-    // 1. ສ້າງ Element ຂອງ Loading Overlay ຂຶ້ນມາສະແດງຊົ່ວຄາວ
-    const loadingDiv = document.createElement('div');
-    loadingDiv.className = 'loading-overlay';
-    loadingDiv.innerHTML = `
-        <div class="spinner"></div>
-        <div class="loading-text">ກຳລັງສົ່ງ</div>
-    `;
-    document.body.appendChild(loadingDiv);
+    // 2. ເປີດ Modal ໂຫຼດໂຕດຽວກัน (customLoadingModal) ຂຶ້ນມາສະແດງວົງມົນປິ່ນ "ກຳລັງສົ່ງ"
+    const loadingModal = document.getElementById('customLoadingModal');
+    const loadingIconContainer = document.getElementById('loadingIconContainer');
+    const loadingText = document.getElementById('loadingText');
 
-    // 2. หน่วงเวลาไว้ 2 ວິນາທີ (2000 milliseconds)
+    if (loadingModal) {
+        loadingModal.style.display = 'flex';
+        if (loadingIconContainer) loadingIconContainer.innerHTML = `<div class="spinner-circle"></div>`;
+        if (loadingText) loadingText.innerHTML = `ກຳລັງສົ່ງ<span class="dots"></span>`;
+    }
+
+    // 3. ໃຫ້ສະແດງວົງມົນປິ່ນ "ກຳລັງສົ່ງ" ไว้ 1.5 ວິນາທີ
     setTimeout(function() {
-        // ລຶບ Loading ອອກ
-        loadingDiv.remove();
-
-        // 3. ปิด Modal ທີ່ຂຶ້ນມາ QR ຢู່ນັ້ນອອກ
-        if (typeof closeQRModal === 'function') {
-            closeQRModal();
+        if (loadingIconContainer && loadingText) {
+            // ປ່ຽນເປັນຕິກຖືກ ແລະ ສະແດງຄຳວ່າ "ສົ່ງສຳເລັດ"
+            loadingIconContainer.innerHTML = `<div class="success-check-circle">✓</div>`;
+            loadingText.innerHTML = `ສົ່ງສຳເລັດ`;
         }
 
-    }, 2000); // 2 ວິນາທີ
+        // 4. ຄ້າງໄວ້ອີກ 1 ວິນາທີ ແລ້ວປິດ Modal ໂຫຼດ ແລະ ປິດ Modal ໃຫຍ່ (closeQRModal) ອອກເລີຍ
+        setTimeout(function() {
+            if (loadingModal) {
+                loadingModal.style.display = 'none';
+            }
+            // ປິດ Modal ໃຫຍ່ທັງໝົດ
+            if (typeof closeQRModal === 'function') {
+                closeQRModal();
+            }
+        }, 1000); // 1 ວິນາທີຕອນສະແດງຜົນສຳເລັດ
+
+    }, 1500); // 1.5 ວິນາທີຕອນກຳລັງສົ່ງ
 }
 // ຟັງຊັນສຳລັບສະແດງຮູບ Preview ໃນກ່ອງ Dropzone
 function showImagePreview(file) {
