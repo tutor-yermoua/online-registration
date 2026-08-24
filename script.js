@@ -260,11 +260,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let div = document.createElement('div');
             div.className = 'selected-course-item';
             div.innerHTML = `
-                <button type="button" class="delete-course-btn" onclick="removeCourse('${course.name}')" title="ລຶບວິຊານີ້">
+                <button type="button" class="delete-course-btn" onclick="removeCourse('${course.name}')" >
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
                 <div class="selected-course-title">${course.name}</div>
-                <div class="selected-course-price">ຄ່າຮຽນ ${course.price.toLocaleString()}ກີບ</div>
+                <div class="selected-course-price">ຄ່າຮຽນ ${course.price.toLocaleString()}ກີບ/ເທີມ</div>
                 <div class="course-details-list">
                     <div class="course-detail-row">
                         <i class="fa-regular fa-clock"></i>
@@ -438,7 +438,7 @@ function submitSlip() {
     loadingDiv.className = 'loading-overlay';
     loadingDiv.innerHTML = `
         <div class="spinner"></div>
-        <div class="loading-text">ກຳລັງບັນທຶກ</div>
+        <div class="loading-text">ກຳລັງສົ່ງ</div>
     `;
     document.body.appendChild(loadingDiv);
 
@@ -563,4 +563,55 @@ function saveQRCode() {
         }, 1000); // 5 ວິນາທີສຳລັບຕອນສະແດງຜົນສຳເລັດ
 
     }, 2500); // 5 ວິນາທີສຳລັບຕອນກຳລັງໂຫຼດ
+}
+
+function copyAccountNumber() {
+    const accountNumber = "052-12-00-01901348-001";
+
+    navigator.clipboard.writeText(accountNumber).then(() => {
+        showCopyNotification("ກ໋ອບປີ້ແລ້ວ✨");
+    }).catch(err => {
+        console.error("ບໍ່ສາມາດຄັດລອກໄດ້: ", err);
+    });
+}
+
+function showCopyNotification(message) {
+    // ຊອກຫາກ່ອງ "ລາຍລະອຽດບັນຊີ"
+    const accountDetailsBox = document.querySelector(".account-details");
+    if (!accountDetailsBox) return;
+
+    // ຖ້າມີອັນເກົ່າໃຫ້ລຶບອອກກ່ອນ
+    const existingToast = document.getElementById("copyToast");
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    const toast = document.createElement("div");
+    toast.id = "copyToast";
+    toast.innerText = message;
+    
+    // ຕັ້ງຄ່າ CSS ໃຫ້ຢູ່ກາງພາຍໃນກ່ອງລາຍລະອຽດບັນຊີ
+    toast.style.position = "absolute";
+    toast.style.top = "50%";
+    toast.style.left = "50%";
+    toast.style.transform = "translate(-50%, -50%)";
+    toast.style.backgroundColor = "rgba(255, 255, 255, 0.95)"; // ພື້ນຫຼັງສີຂາວໂປ່ງໃສໜ້ອຍໜຶ່ງ ໃຫ້ອ່ານງ່າຍ
+    toast.style.color = "#16a34a"; // ຕົວໜັງສືສີຂຽວ
+    toast.style.padding = "8px 16px";
+    toast.style.borderRadius = "6px";
+    toast.style.fontWeight = "bold";
+    toast.style.fontSize = "14px";
+    toast.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)";
+    toast.style.zIndex = "99";
+    toast.style.transition = "opacity 0.3s ease";
+
+    // เอาໄປເພີ່ມໃສ່ໃນກ່ອງ account-details
+    accountDetailsBox.style.position = "relative"; // ຮັບປະກັນວ່າກ່ອງແມ່ເປັນ relative
+    accountDetailsBox.appendChild(toast);
+
+    // ເວລາ 1.5 ວິນາທີແລ້ວໃຫ້ເຟດຫາຍໄປ
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+    }, 1500);
 }

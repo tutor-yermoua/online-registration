@@ -576,7 +576,7 @@
 <div id="qrModal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
         <div class="modal-header">
-            <h3>🏢 ຊຳລະຄ່າລົງທະບຽນ</h3>
+            <h3><i class="fas fa-wallet"></i> ຊຳລະຄ່າລົງທະບຽນ</h3>
             <button type="button" class="close-btn" onclick="closeQRModal()">&times;</button>
         </div>
         
@@ -593,7 +593,9 @@
                     <p><strong>ℹ️ ລາຍລະອຽດບັນຊີ:</strong></p>
                     <p>ທະນາຄານ: BCEL (ຫໍພະຕໍ່)</p>
                     <p>ຊື່ບັນຊີ: YERMOUA KERMOUA MR</p>
-                    <p>ເລກບັນຊີ: 052-12-00-01901348-001</p>
+                    <p>ເລກບັນຊີ: <span id="accountNum">052-12-00-01901348-001</span> <i class="fas fa-copy copy-icon" onclick="copyAccountNumber()"></i>
+                    </p>
+
                 </div>
 
                 <button type="button" class="confirm-pay-btn" onclick="saveQRCode()">ບັນທຶກຮູບ QR Code</button>
@@ -621,7 +623,7 @@
     </div>
 
     <!-- ປຸ່ມ "ໂອນເງິນແລ້ວ" -->
-    <button type="button" class="confirm-pay-btn" onclick="submitSlip()">ໂອນເງິນແລ້ວ</button>
+    <button type="button" class="confirm-pay-btn" onclick="submitSlip()">ສົ່ງຮູບສະລິບໂອນເງິນ</button>
 </div>
 
 <!-- Custom Loading & Success Modal -->

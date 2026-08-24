@@ -311,6 +311,7 @@ body {
 .course-card.selected {
     border-color: #22c55e; /* ປ່ຽນສີຂອບເປັນສີຂຽວເມື່ອກາດຖືກເລືອກ */
     background: #f0fdf4; /* ປ່ຽນສີພື້ນຫຼັງເປັນສີຂຽວອ່ອນເມື່ອກາດຖືກເລືອກ */
+    border-width: 1.5px;
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1); /* ເພີ່ມເງົາສີຂຽວເມື່ອກາດຖືກເລືອກ */
 }
 
@@ -468,7 +469,7 @@ body {
 }
 
 .btn-back-step {
-    width: 38%; /* ຄວາມກว้างຂອງປຸ່ມຍ້ອນກັບ */
+    width: 30%; /* ຄວາມກว้างຂອງປຸ່ມຍ້ອນກັບ */
     background: #e2e8f0; /* ສີພື້ນຫຼັງປຸ່ມຍ້ອນກັບເປັນສີເທົາ */
     color: #334155; /* ສີຕົວໜັງສືປຸ່ມຍ້ອນກັບ */
     border: none; /* ຍົກເລີກເສັ້ນຂອບປຸ່ມ */
@@ -522,40 +523,6 @@ body {
     color: #2563eb;
     font-size: 18px;
 }
-
-/* ສະໄຕລ໌ສຳຫຼັບປຸ່ມເລືອກທຶນ */
-.scholarship-btn-group {
-    display: flex;
-    gap: 10px;
-    margin: 12px 0;
-}
-
-.scholarship-btn {
-    flex: 1;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    border: 1px solid #cbd5e1;
-    background: #ffffff;
-    color: #64748b;
-    transition: all 0.2s ease;
-    text-align: center;
-}
-
-.scholarship-btn.active-not {
-    border-color: #10b981;
-    background: #ecfdf5;
-    color: #047857;
-}
-
-.scholarship-btn.active-rec {
-    border-color: #10b981;
-    background: #ecfdf5;
-    color: #047857;
-}
-
 .delete-course-btn {
     background: none;
     border: none;
@@ -565,13 +532,10 @@ body {
     padding: 0;
 }
 
-.btn-back-step:hover {
-    background: #cbd5e1; /* ປ່ຽນສີພື້ນຫຼັງໃຫ້ເຂັ້ມຂຶ້ນເວລາเอาເມົ້າຊີ້ */
-}
-
 .btn-save {
-    width: 62%; /* ຄວາມກວ້າງຂອງປຸ່ມບັນທຶກ */
-    background: #3b82f6; /* ສີພື້ນຫຼັງປຸ່ມບັນທຶກເປັນສີຟ້າ */
+    width: 30%; /* ຄວາມກວ້າງຂອງປຸ່ມບັນທຶກ */
+    margin-left: auto;
+    background: blue; /* ສີພື້ນຫຼັງປຸ່ມບັນທຶກເປັນສີຟ້າ */
     color: white; /* ສີຕົວໜັງສືປຸ່ມບັນທຶກເປັນສີຂາວ */
     border: none; /* ຍົກເລີກເສັ້ນຂອບປຸ່ມ */
     padding: 14px; /* រະຍະຫ່າງຂອບໃນຂອງປຸ່ມ */
@@ -586,6 +550,7 @@ body {
 .btn-save:hover {
     background: #2563eb; /* ປ່ຽນສີພື້ນຫຼັງປຸ່ມບັນທຶກໃຫ້ເຂັ້ມຂຶ້ນເວລາเอาເມົ້າຊີ້ */
     box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); /* ເພີ່ມເງົາໃຫ້ເດັ່ນຂຶ້ນເວລາเอาເມົ້າຊີ້ */
+
 }
 
 /* ---------------------------------------------------- */
@@ -708,35 +673,6 @@ select {
 .info-badge.green {
     background: #ecfdf5;
     color: #059669;
-}
-
-/* ກຸ່ມປຸ່ມເລືອກທຶນການສຶກສາ (ບໍ່ໄດ້ທຶນ / ໄດ້ທຶນ) */
-.scholarship-btn-group {
-    display: flex;
-    gap: 8px;
-}
-
-.scholarship-btn {
-    flex: 1;
-    padding: 7px 10px;
-    font-size: 13px;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 1px solid #e2e8f0;
-    background: #ffffff;
-    color: #64748b;
-    transition: all 0.2s;
-}
-.scholarship-btn.active-not {
-    border-color: #cbd5e1;
-    background: #e2e8f0;
-    color: #334155;
-}
-.scholarship-btn.active-rec {
-    border-color: #10b981;
-    background: #10b981;
-    color: #ffffff;
 }
 
 /* ຈັດຮູບແບບກ່ອງ Custom Dropdown ແລະ ບັງຄັບໃຫ້ສະແດງປະມານ 5 ລາຍການພ້ອມ Scrollbar */
@@ -1314,3 +1250,21 @@ select {
     60% { content: '..'; }
     80%, 100% { content: '...'; }
 }
+
+.copy-icon {
+    margin-left: 8px;
+    cursor: pointer;
+    color: orange; /* ສີຂອງໄອຄອນ (ສີເທົາເຂັ້ມ) */
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.copy-icon:hover {
+    color: #2563eb; /* 変ສີຟ້າເວລາເອົາເມົ້າຊີ້ */
+    transform: scale(1.1); /* ຂະຫຍາຍໃຫຍ່ຂຶ້ນເລັກນ້ອຍເວລາເອົາເມົ້າຊີ້ */
+}
+
+.copy-icon:active {
+    transform: scale(0.95); /* เอັບເຟັກຍຸບລົງຕອນຄລິກ */
+}
+
