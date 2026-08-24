@@ -379,7 +379,6 @@ function openQRModal() {
     if (modal) {
         modal.style.display = 'flex';
         
-        // ບັງຄັບໃຫ້ສະແດງໜ້າ QR Code ແລະ ເຊື່ອງໜ້າສົ່ງສະລິບທຸກຄັ້ງທີ່ເປີດໃໝ່
         const qrSection = document.getElementById('qrSection');
         const uploadSlipSection = document.getElementById('uploadSlipSection');
         
@@ -388,7 +387,6 @@ function openQRModal() {
             uploadSlipSection.style.display = 'none';
         }
 
-        // ເຄຼຍໄຟລ໌ຮູບສະລິບທີ່ເຄີຍເລືອກໄວ້ (ໃຫ້ົງກັບ id="slipFile" ໃນ HTML)
         const slipFile = document.getElementById('slipFile');
         if (slipFile) {
             slipFile.value = '';
@@ -396,7 +394,7 @@ function openQRModal() {
     }
 }
 
-// 2. ປິດ Modal (ກົດ X ອອກ): ປິດປົກກະຕິ
+// 2. ປິດ Modal (ກົດ X ອອກ)
 function closeQRModal() {
     const modal = document.getElementById('qrModal');
     if (modal) {
@@ -404,36 +402,59 @@ function closeQRModal() {
     }
 }
 
-// 3. ເວລາກົດປຸ່ມ "ບັນທຶກຮູບ QR Code": ດາວໂຫລດຮູບລົງເຄື່ອງ + ປ່ຽນໄປໜ້າສົ່ງສະລິບ
+// 3. ເວລາກົດປຸ່ມ "ບັນທຶກຮູບ QR Code": ສະແດງວົງມົນປິ່ນ -> ດາວໂຫລດຮູບ -> ໄປໜ້າສົ່ງສະລິບ
 function saveQRCode() {
-    // ສ້າງ Link ດາວໂຫລດຮູບ QR Code ລົງເຄື່ອງອັດຕະໂນມັດ
-    const imagePath = 'Logo/QR Code.png'; // ເສັ້ນທາງຮູບຂອງທ່ານ
+    const loadingModal = document.getElementById('customLoadingModal');
+    const loadingIconContainer = document.getElementById('loadingIconContainer');
+    const loadingText = document.getElementById('loadingText');
+
+    if (loadingModal) {
+        loadingModal.style.display = 'flex';
+        loadingIconContainer.innerHTML = `<div class="spinner-circle"></div>`;
+        loadingText.innerHTML = `ກຳລັງບັນທຶກ<span class="dots"></span>`;
+    }
+
+    // ສ້າງຄຳສັ່ງດາວໂຫຼດຮູບ QR Code ລົງເຄື່ອງ
+    const imagePath = 'Logo/QR Code.png';
     const link = document.createElement('a');
     link.href = imagePath;
-    link.download = 'QR_Code_Payment.png'; // ຊື່ໄຟລ໌ທີ່ຈະບັນທຶກລົງເຄື່ອງ
+    link.download = 'QR_Code_Payment.png';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    // ຫຼັງຈາກບັນທຶກແລ້ວ ໃຫ້ປ່ຽນໄປໜ້າອັບໂຫຼດສະລິບ
-    const qrSection = document.getElementById('qrSection');
-    const uploadSlipSection = document.getElementById('uploadSlipSection');
 
-    if (qrSection && uploadSlipSection) {
-        qrSection.style.display = 'none';
-        uploadSlipSection.style.display = 'block';
-    }
+    setTimeout(function() {
+        if (loadingIconContainer && loadingText) {
+            loadingIconContainer.innerHTML = `<div class="success-check-circle">✓</div>`;
+            loadingText.innerHTML = `ບັນທຶກຮູບສຳເລັດ`;
+        }
+
+        setTimeout(function() {
+            if (loadingModal) {
+                loadingModal.style.display = 'none';
+            }
+
+            const qrSection = document.getElementById('qrSection');
+            const uploadSlipSection = document.getElementById('uploadSlipSection');
+
+            if (qrSection && uploadSlipSection) {
+                qrSection.style.display = 'none';
+                uploadSlipSection.style.display = 'block';
+            }
+        }, 1000);
+
+    }, 2500);
 }
-// 4. ເວລາກົດປຸ່ມ "ໂອນເງິນແລ້ວ": ສະແດງ Loading 2 ວິນາທີ -> ປິດ Modal -> ກັບມາໜ້າລົງທະບຽນ
+
+// 4. ເວລາກົດປຸ່ມ "ສົ່ງຮູບສະລິບໂອນເງິນ"
 function submitSlip() {
     const slipFile = document.getElementById('slipFile');
     
-    // 1. ตรวจสอบว่าผู้ໃຊ້ເລືອກຮູບສະລິບແລ້ວ ຫຼือกຍັງ
     if (slipFile && slipFile.files.length === 0) {
         alert("ກະລຸນາເລືອກຮູບສະລິບການໂອນເງິນກ່ອນ!");
         return;
     }
 
-    // 2. ເປີດ Modal ໂຫຼດໂຕດຽວກัน (customLoadingModal) ຂຶ້ນມາສະແດງວົງມົນປິ່ນ "ກຳລັງສົ່ງ"
     const loadingModal = document.getElementById('customLoadingModal');
     const loadingIconContainer = document.getElementById('loadingIconContainer');
     const loadingText = document.getElementById('loadingText');
@@ -444,48 +465,43 @@ function submitSlip() {
         if (loadingText) loadingText.innerHTML = `ກຳລັງສົ່ງ<span class="dots"></span>`;
     }
 
-    // 3. ໃຫ້ສະແດງວົງມົນປິ່ນ "ກຳລັງສົ່ງ" ไว้ 1.5 ວິນາທີ
     setTimeout(function() {
         if (loadingIconContainer && loadingText) {
-            // ປ່ຽນເປັນຕິກຖືກ ແລະ ສະແດງຄຳວ່າ "ສົ່ງສຳເລັດ"
             loadingIconContainer.innerHTML = `<div class="success-check-circle">✓</div>`;
             loadingText.innerHTML = `ສົ່ງສຳເລັດ`;
         }
 
-        // 4. ຄ້າງໄວ້ອີກ 1 ວິນາທີ ແລ້ວປິດ Modal ໂຫຼດ ແລະ ປິດ Modal ໃຫຍ່ (closeQRModal) ອອກເລີຍ
         setTimeout(function() {
             if (loadingModal) {
                 loadingModal.style.display = 'none';
             }
-            // ປິດ Modal ໃຫຍ່ທັງໝົດ
             if (typeof closeQRModal === 'function') {
                 closeQRModal();
             }
-        }, 1000); // 1 ວິນາທີຕອນສະແດງຜົນສຳເລັດ
+        }, 1000);
 
-    }, 1500); // 1.5 ວິນາທີຕອນກຳລັງສົ່ງ
+    }, 1500);
 }
+
 // ຟັງຊັນສຳລັບສະແດງຮູບ Preview ໃນກ່ອງ Dropzone
 function showImagePreview(file) {
     const dropzoneContent = document.getElementById('dropzoneContent');
     if (!dropzoneContent) return;
 
-    // ตรวจสอบວ່າແມ່ນໄຟລ໌ຮູບພາບແທ້ບໍ່
     if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
         
         reader.onload = function(e) {
-           // ປ່ຽນໃຫ້ຮູບຂະຫຍາຍໃຫຍ່ເຕັມກ໋ອງພດີ
-        dropzoneContent.innerHTML = `
-            <img src="${e.target.result}" alt="Slip Preview" style="width: 72%; height: 72%; object-fit: cover; border-radius: 4px;">
-        `;
+            dropzoneContent.innerHTML = `
+                <img src="${e.target.result}" alt="Slip Preview" style="width: 72%; height: 72%; object-fit: cover; border-radius: 4px;">
+            `;
         }
         
         reader.readAsDataURL(file);
     }
 }
 
-// 1. ເວລາກົດຄລິກເລືອກໄຟລ໌ຜ່ານ input file ປົກກະຕິ
+// Event Listener ສຳລັບ Input File
 const slipFile = document.getElementById('slipFile');
 if (slipFile) {
     slipFile.addEventListener('change', function(e) {
@@ -495,7 +511,7 @@ if (slipFile) {
     });
 }
 
-// 2. ເວລາກະລາກຮູບມາວາງ (Drag and Drop)
+// Event Listener ສຳລັບ Drag and Drop
 const dropZone = document.getElementById('dropZone');
 if (dropZone && slipFile) {
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -522,56 +538,8 @@ if (dropZone && slipFile) {
         const files = dt.files;
 
         if (files && files.length > 0) {
-            slipFile.files = files; // ຍັດໄຟລ໌ໃສ່ input
-            showImagePreview(files[0]); // ເອີ້ນໃຊ້ຟັງຊັນສະແດງຮູບ Preview
+            slipFile.files = files;
+            showImagePreview(files[0]);
         }
     }, false);
-}
-// 3. ເວລາກົດປຸ່ມ "ບັນທຶກຮູບ QR Code": ສະແດງວົງມົນປິ່ນ 5 ວິນາທີ -> ປ່ຽນເປັນຕິກຖືກ "ບັນທຶກຮູບສຳເລັດ" 5 ວິນາທີ -> ໄປໜ້າສະລິບ
-function saveQRCode() {
-    const loadingModal = document.getElementById('customLoadingModal');
-    const loadingIconContainer = document.getElementById('loadingIconContainer');
-    const loadingText = document.getElementById('loadingText');
-
-    if (loadingModal) {
-        // 1. ເປີດ Modal ຂຶ້ນມາສະແດງວົງມົນປິ່ນ
-        loadingModal.style.display = 'flex';
-        loadingIconContainer.innerHTML = `<div class="spinner-circle"></div>`;
-        loadingText.innerHTML = `ກຳລັງບັນທຶກ<span class="dots"></span>`;
-    }
-
-    // 2. ສ້າງຄຳສັ່ງດາວໂຫຼດຮູບ QR Code ລົງເຄື່ອງ
-    const imagePath = 'Logo/QR Code.png'; // ເສັ້ນທາງຮູບຂອງທ່ານ
-    const link = document.createElement('a');
-    link.href = imagePath;
-    link.download = 'QR_Code_Payment.png';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // 3. ໃຫ້ສະແດງວົງມົນປິ່ນ "ກຳລັງບັນທຶກ..." ໄວ້ 5 ວິນາທີ
-    setTimeout(function() {
-        if (loadingIconContainer && loadingText) {
-            // ປ່ຽນເປັນເຄື່ອງໝາຍຕິກຖືກ ແລະ ສະແດງຄຳວ່າ "ບັນທຶກຮູບສຳເລັດ"
-            loadingIconContainer.innerHTML = `<div class="success-check-circle">✓</div>`;
-            loadingText.innerHTML = `ບັນທຶກຮູບສຳເລັດ`;
-        }
-
-        // 4. ໃຫ້ຄ້າງໜ້າ "ບັນທຶກຮູບສຳເລັດ" ໄວ້ອີກ 5 ວິນາທີ (ລວມເປັນ 10 ວິນາທີ) ຈຶ່ງປ່ຽນໄປໜ້າສົ່ງສະລິບ
-        setTimeout(function() {
-            if (loadingModal) {
-                loadingModal.style.display = 'none';
-            }
-
-            // ປ່ຽນໄປໜ້າອັບໂຫຼດສະລິບ
-            const qrSection = document.getElementById('qrSection');
-            const uploadSlipSection = document.getElementById('uploadSlipSection');
-
-            if (qrSection && uploadSlipSection) {
-                qrSection.style.display = 'none';
-                uploadSlipSection.style.display = 'block';
-            }
-        }, 1000); // 5 ວິນາທີສຳລັບຕອນສະແດງຜົນສຳເລັດ
-
-    }, 2500); // 5 ວິນາທີສຳລັບຕອນກຳລັງໂຫຼດ
 }
