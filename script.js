@@ -792,3 +792,51 @@ if (dropZone && slipFile) {
         }
     }, false);
 }
+
+// 1. ຟັງຊັນຫຍໍ້ຮູບສຳລັບມືຖື
+function compressImageForOCR(file, callback) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        const img = new Image();
+        img.onload = function () {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 1000; // 📉 ຕັດຂະໜາດລົງມາໃຫ້ມືຖືປະມວນຜົນສະບາຍ
+            let width = img.width;
+            let height = img.height;
+
+            if (width > MAX_WIDTH) {
+                height = Math.round((height *= MAX_WIDTH / width));
+                width = MAX_WIDTH;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(function (blob) {
+                const resizedFile = new File([blob], file.name, {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+                callback(resizedFile);
+            }, 'image/jpeg', 0.8);
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+// 2. ເອົາມາຄອບ Event ຕອນຜູ້ໃຊ້ອັບໂຫຼດຮູບສະລິບ (Input File)
+const slipInput = document.getElementById('slipInputFile'); // ປ່ຽນ ID ໃຫ້ກົງກັບ HTML ຂອງນ້ອງ
+if (slipInput) {
+    slipInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // 🌟 ຫຍໍ້ຮູບກ່ອນສົ່ງເຂົ້າ Tesseract ຮັບຮອງມືຖືບໍ່ແຄຣັຊ!
+        compressImageForOCR(file, function(compressedFile) {
+            processSlipVerification(compressedFile);
+        });
+    });
+}
