@@ -558,8 +558,7 @@ function saveQRCode() {
 
     }, 2500);
 }
-
-// 🚀 ຟັງຊັນອ່ານສະລິບແບບ Dynamic 100% ຜ່ານ Tesseract.js
+// 🚀 ຟັງຊັນອ່ານສະລິບແບບ Direct OCR ຜ່ານ Tesseract.js (ເນັ້ນຈັບ LAK ແລະ ຕົວເລກ)
 function processSlipVerification(file) {
     const submitBtn = document.getElementById('submitSlipBtn') || document.querySelector('.confirm-pay-btn');
     if (!submitBtn) return;
@@ -569,24 +568,40 @@ function processSlipVerification(file) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = `ກຳລັງກວດສອບ<span class="dots"><span>.</span><span>.</span><span>.</span></span>`;
 
-    // 1. ດຶງຄ່າເທີມຈາກວິຊາທີ່ຜູ້ໃຊ້ເລືອກຢູ່ປັດຈຸບັນແບບ Dynamic
+    // 1. ดຶງຄ່າເທີມຈາກວິຊາທີ່ຜູ້ໃຊ້ເລືອກຢູ່ປັດຈຸບັນ
     let coursePrice = 0;
     if (window.selectedCourses && window.selectedCourses.length > 0) {
         coursePrice = window.selectedCourses[0].price; 
     }
 
-    // 2. ນຳໃຊ້ Tesseract.js ອ່ານຮູບສະລິບ (ຮອງຮັບ ພາສາອັງກິດ, ລາວ, ໄທ)
+    // 2. 🌟 ປ່ຽນມາໃຊ້ສະເພາະ 'eng' ເພື່ອໃຫ້ມັນອ່ານຕົວເລກ ແລະ LAK ໄດ້ຊັດເຈນທີ່ສຸດ (ບໍ່ໃຫ້ພາສາລາວກວນ)
     Tesseract.recognize(
         file,
-        'eng+lao+tha',
+        'eng',
         { 
             logger: m => console.log(m.status),
             tessedit_ocr_engine_mode: 1 
         }
     ).then(({ data: { text } }) => {
-        console.log("OCR Result:\n", text);
+        console.log("OCR Result (Clean):\n", text);
 
-        let amountStr = parseAmountFromOCR(text);
+        // 🌟 ຟັງຊັນຍ່ອຍ: ຊອກຫາສະເພາະຕົວເລກທີ່ມີ , ແລະ ຕາມຫຼັງດ້ວຍ LAK
+        let amountStr = null;
+        
+        // Regular Expression ຊອກຫາຮູບແບບ ຕົວເລກທີ່ມີຈຸດເຊັ່ນ 484,000 ຕາມດ້ວຍ LAK
+        const regex = /([\d,]+\.\d{2}\s*LAK|[\d,]+\s*LAK)/gi;
+        const matches = text.match(regex);
+
+        if (matches && matches.length > 0) {
+            // ເອົາຄ່າທຳອິດທີ່ຈັບໄດ້ ແລ້ວຕັດຄຳວ່າ LAK ອອກ ເຫຼືອແຕ່ຕົວເລກ
+            let rawMatch = matches[0];
+            amountStr = rawMatch.replace(/LAK/gi, '').trim();
+        } else {
+            // ຖ້າຫາແບບມີ LAK ບໍ່ເຈັບ ໃຫ້ລອງໃຊ້ Function ເກົ່າທີ່ນ້ອງມີ (parseAmountFromOCR) ຊ່ວຍສຳຮອງ
+            if (typeof parseAmountFromOCR === 'function') {
+                amountStr = parseAmountFromOCR(text);
+            }
+        }
 
         if (!amountStr) {
             alert("⚠️ ບໍ່ພົບຈຳນວນເງິນໃນສະລິບ, ກະລຸນາເລືອກຮູບສະລິບໃໝ່ທີ່ຊັດເຈນກວ່ານີ້");
@@ -597,7 +612,7 @@ function processSlipVerification(file) {
             return;
         }
 
-        // 🟢 ບັນທຶກຄ່າເງິນທີ່ອ່ານໄດ້ລົງໃນຕົວແປ global ທີ່ເຮົາກຽມໄວ້
+        // 🟢 ບັນທຶກຄ່າເງິນທີ່ອ່ານໄດ້
         extractedMoney = amountStr;
         window.paidAmountFromSlip = parseFloat(amountStr.replace(/,/g, '')) || 0;
 
@@ -640,7 +655,6 @@ function processSlipVerification(file) {
         submitBtn.innerHTML = `ສົ່ງຮູບສະລິບໂອນເງິນ`;
     });
 }
-
 // ຟັງຊັນຊ່ວຍດຶງຕົວເລກຈຳນວນເງິນຈາກຂໍ້ຄວາມ OCR
 function parseAmountFromOCR(text) {
     let cleanText = text.replace(/\s+/g, ' ');
