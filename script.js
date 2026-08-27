@@ -1,3 +1,5 @@
+let extractedMoney = "";
+
 // 1. ເປີດ-ປິດ ປຸ່ມ Dropdown
 function toggleDropdown(listId) {
     document.querySelectorAll('.dropdown-list').forEach(list => {
@@ -50,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 provinceSelectedText.textContent = province;
                 provinceListEl.style.display = 'none';
 
-                // ໂຫຼດເມືອງຕໍ່
                 if (districtListEl && districtSelectedText) {
                     districtSelectedText.textContent = '----- ກະລຸນາເລືອກເມືອງ -----';
                     districtListEl.innerHTML = '';
@@ -70,11 +71,97 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+// =============================================================
+    // 1. ລະບົບກວດສອບ (Validation) ເວລາກົດປຸ່ມ "ຕໍ່ໄປ"
+    // =============================================================
     if (registrationForm) {
         registrationForm.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            let isValid = true;
+
+            // ເຊັກ Input ທົ່ວໄປ (ຊື່, ໂຮງຮຽນ, WhatsApp, Facebook)
+            const allInputs = document.querySelectorAll('input[type="text"], input[type="tel"]');
+            
+            allInputs.forEach(input => {
+                const groupContainer = input.closest('.input-group-box');
+
+                if (!input.value.trim()) {
+                    if (groupContainer) groupContainer.classList.add('input-error-border');
+                    isValid = false;
+                } else {
+                    if (groupContainer) groupContainer.classList.remove('input-error-border');
+                }
+            });
+
+            // ເຊັກຊ່ອງ ແຂວງ ແລະ ເມືອງ
+            const dropdownBoxes = document.querySelectorAll('.input-group-box.always-show');
+            
+            dropdownBoxes.forEach(box => {
+                const selectedTextSpan = box.querySelector('span[id$="SelectedText"]');
+                if (selectedTextSpan) {
+                    const textValue = selectedTextSpan.textContent.trim();
+                    if (textValue.includes('ກະລຸນາເລືອກ')) {
+                        box.classList.add('input-error-border');
+                        isValid = false;
+                    } else {
+                        box.classList.remove('input-error-border');
+                    }
+                }
+            });
+
+            // ຖ້າຂໍ້ມູນຍັງບໍ່ຄົບ ໃຫ້ຢຸດການສົ່ງຟອມ (ຂອບຈະແດງໝົດທຸກຊ່ອງທີ່ຫວ່າງ)
+            if (!isValid) {
+                return; 
+            }
+
+            // ຖ້າຜ່ານໝົດແລ້ວ ໄປໜ້າຖັດໄປ
             if (page1) page1.style.display = 'none';
             if (step2Container) step2Container.style.display = 'block';
+        });
+    }
+
+    // =============================================================
+    // 2. ເວລາກົດຄລິກ (Focus) ໃຫ້ລຶບຂອບແດງທັງໝົດ ແລ້ວຊ່ອງທີ່ກົດຈະເປັນສີຟ້າ
+    // =============================================================
+    const allTextInputs = document.querySelectorAll('input[type="text"], input[type="tel"]');
+    
+    allTextInputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            // ລຶບຂອບສີແດງອອກຈາກທຸກໆກ່ອງ (ໃຫ້ກັບຄືນເປັນສີເທົາປົກກະຕິ)
+            const allGroups = document.querySelectorAll('.input-group-box');
+            allGroups.forEach(group => {
+                group.classList.remove('input-error-border');
+            });
+        });
+
+        // ເວລາມີການພິມຂໍ້ມູນລົງໄປ ກໍລຶບຂອບສີແດງອອກເຊັ່ນກັນ
+        input.addEventListener('input', () => {
+            const groupContainer = input.closest('.input-group-box');
+            if (input.value.trim() !== '' && groupContainer) {
+                groupContainer.classList.remove('input-error-border');
+            }
+        });
+    });
+
+    // =============================================================
+    // 3. ເວລາມີການກົດເລືອກ ແຂວງ ຫຼື ເມືອງ ໃຫ້ລຶບຂອບສີແດງອອກທັງໝົດເຊັ່ນກັນ
+    // =============================================================
+    if (typeof provinceListEl !== 'undefined' && provinceListEl) {
+        provinceListEl.querySelectorAll('li').forEach(li => {
+            li.addEventListener('click', () => {
+                const allGroups = document.querySelectorAll('.input-group-box');
+                allGroups.forEach(g => g.classList.remove('input-error-border'));
+            });
+        });
+    }
+
+    if (typeof districtListEl !== 'undefined' && districtListEl) {
+        districtListEl.addEventListener('click', (e) => {
+            if (e.target.tagName === 'LI') {
+                const allGroups = document.querySelectorAll('.input-group-box');
+                allGroups.forEach(g => g.classList.remove('input-error-border'));
+            }
         });
     }
 
@@ -180,31 +267,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. ລະບົບເລືອກວິຊາ (ປັບໃຫ້ເລືອກໄດ້ພຽງ 1 ວິຊາເທົ່ານັ້ນ)
+    // 3. ລະບົບເລືອກວິຊາ (ໃຫ້ເລືອກໄດ້ພຽງ 1 ວິຊາເທົ່ານັ້ນ)
     window.selectedCourses = [];
 
     courseCards.forEach(card => {
         card.addEventListener('click', () => {
-            courseCards.forEach(c => {
-                if (c !== card) c.classList.remove('selected');
-            });
+            const isAlreadySelected = card.classList.contains('selected');
 
-            card.classList.toggle('selected');
+            courseCards.forEach(c => c.classList.remove('selected'));
+            window.selectedCourses = []; 
 
-            const courseName = card.getAttribute('data-name') || 'ວິຊາຮຽນ';
-            const coursePrice = parseFloat(card.getAttribute('data-price')) || 0;
-            const courseTime = card.getAttribute('data-time') || '-';
-            const courseDays = card.getAttribute('data-days') || '-';
+            if (!isAlreadySelected) {
+                card.classList.add('selected');
 
-            if (card.classList.contains('selected')) {
-                window.selectedCourses = [{ 
+                const courseName = card.getAttribute('data-name') || 'ວິຊາຮຽນ';
+                const coursePrice = parseFloat(card.getAttribute('data-price')) || 0;
+                const courseTime = card.getAttribute('data-time') || '-';
+                const courseDays = card.getAttribute('data-days') || '-';
+
+                window.selectedCourses.push({ 
                     name: courseName, 
                     price: coursePrice, 
                     time: courseTime, 
                     days: courseDays 
-                }];
-            } else {
-                window.selectedCourses = [];
+                });
             }
 
             updateSummary();
@@ -219,31 +305,19 @@ document.addEventListener('DOMContentLoaded', () => {
         updateBadgeCounts();
     };
 
-    // ==========================================
-    // 💡 ລະບົບເປີດ-ປິດ Modal QR Code (ອັບເດດໃໝ່)
-    // ==========================================
-    window.payCourse = function(courseName, price) {
-        const modal = document.getElementById('qrModal');
-        if (modal) {
-            modal.style.display = 'flex'; // ສະແດງ Pop-up QR Code ຂຶ້ນມາ
-        } else {
-            // ຖ້າຫາກຍັງບໍ່ໄດ້ສ້າງ HTML Modal ໃຫ້ແຈ້ງເຕືອນສຳຮອງ
-            alert('ກົດຊຳລະຄ່າເທີມສຳລັບວິຊາ: ' + courseName + ' ຈຳນວນເງິນ ' + price.toLocaleString() + ' ກີບ');
+    window.payCourse = function() {
+        if (!window.selectedCourses || window.selectedCourses.length === 0) {
+            alert('ກະລຸນາເລືອກວິຊາຮຽນກ່ອນຊຳລະຄ່າເທີມ!');
+            return;
         }
+        openQRModal();
     };
 
-    // ຟັງຊັນສຳລັບປິດ Modal QR Code
     window.closeQRModal = function() {
         const modal = document.getElementById('qrModal');
         if (modal) {
             modal.style.display = 'none';
         }
-    };
-
-    // ຟັງຊັນປຸ່ມຢືນຢັນການໂອນເງິນໃນ Modal
-    window.finishPayment = function() {
-        alert('ຢືນຢັນການໂອນເງິນສຳເລັດ!');
-        closeQRModal();
     };
 
     window.updateSummary = function() {
@@ -265,6 +339,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
                 <div class="selected-course-title">${course.name}</div>
                 <div class="selected-course-price">ຄ່າຮຽນ ${course.price.toLocaleString()}ກີບ/ເທີມ</div>
+                
+                <div style="margin-top: -8px; margin-bottom: 2px;font-size: 13px;">
+                    ${course.paymentStatus || ''}
+                </div>
+
                 <div class="course-details-list">
                     <div class="course-detail-row">
                         <i class="fa-regular fa-clock"></i>
@@ -275,17 +354,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>ຮຽນ: <strong>${course.days}</strong></span>
                     </div>
                 </div>
-                <div style="margin-top: 12px;">
-                    <button type="button" class="btn-pay-course" onclick="payCourse('${course.name}', ${course.price})" style="width: 100%; padding: 8px; background-color: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
-                        <i class="fa-solid fa-credit-card" style="margin-right: 5px;"></i> ຊຳລະຄ່າເທີມ
-                    </button>
-                </div>
             `;
             container.appendChild(div);
         });
+
+        let totalSum = window.selectedCourses.reduce((sum, c) => sum + c.price, 0);
+        let allPaid = window.selectedCourses.every(c => c.isPaid);
+
+        let payActionDiv = document.createElement('div');
+        payActionDiv.style.marginTop = '12px';
+        payActionDiv.innerHTML = `
+            <button type="button" class="btn-pay-course" onclick="payCourse()" style="width: 100%; padding: 10px; background-color: ${allPaid ? '#16a34a' : '#2563eb'}; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                <i class="fa-solid fa-credit-card" style="margin-right: 5px;"></i> ${allPaid ? 'ໂອນເງິນແລ້ວ' : 'ຊຳລະຄ່າເທີມ'}
+            </button>
+        `;
+        container.appendChild(payActionDiv);
     };
 
-    // 4. ລະບົບສົ່ງຂໍ້ມູນໄປ Google Sheets
     const finalSubmitBtn = document.getElementById('finalSubmitBtn'); 
     if (finalSubmitBtn) {
         finalSubmitBtn.addEventListener('click', () => {
@@ -294,24 +379,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // 1. ດຶງຂໍ້ມູນທົ່ວໄປຈາກຟອມ
             const studentName = document.querySelector('input[name="fullname"]')?.value || 'ບໍ່ໄດ້ລະບຸ';
             const school = document.querySelector('input[name="school"]')?.value || '';
-
             const provinceText = document.getElementById('provinceSelectedText')?.textContent || '';
             const districtText = document.getElementById('districtSelectedText')?.textContent || '';
             const province = provinceText.includes('ກະລຸນາ') ? '' : provinceText;
             const district = districtText.includes('ກະລຸນາ') ? '' : districtText;
-
             const whatsapp = document.querySelector('input[name="whatsapp"]')?.value || '';
             const facebook = document.querySelector('input[name="facebook"]')?.value || '';
-
             const courseName = window.selectedCourses.map(c => c.name).join(', ');
-            const totalCoursePrice = window.selectedCourses.reduce((sum, c) => sum + c.price, 0);
-            const coursePriceFormatted = totalCoursePrice.toLocaleString() + ' ກີບ';
+            
+            // 2. ຄ່າເທີມລວມທັງໝົດແບບ Dynamic
+            const totalCoursePrice = window.selectedCourses.reduce((sum, c) => sum + (c.price || 0), 0);
+
+            // 3. 🟢 ດຶງ "ຈຳນວນເງິນໃນສະລິບ" ທີ່ອ່ານໄດ້ຈາກ OCR ມາໃຊ້
+            let slipPaidAmount = 0;
+            
+            if (typeof extractedMoney !== 'undefined' && extractedMoney !== null && extractedMoney !== "") {
+                slipPaidAmount = parseFloat(extractedMoney.replace(/,/g, '')) || 0;
+            } else if (typeof detectedAmount !== 'undefined' && detectedAmount !== null) {
+                slipPaidAmount = detectedAmount; 
+            } else if (window.paidAmountFromSlip !== undefined) {
+                slipPaidAmount = window.paidAmountFromSlip; 
+            } else {
+                slipPaidAmount = totalCoursePrice;
+            }
+
+            if (isNaN(slipPaidAmount) || slipPaidAmount <= 0) {
+                slipPaidAmount = totalCoursePrice;
+            }
+
+            // 4. 🟢 ຄິດໄລ່ "ເງິນທີ່ຍັງເຫຼືອ (ຄ້າງຈ່າຍ)" = ຄ່າເທີມລວມ - ເງິນໃນສະລິບ
+            let remainingAmount = totalCoursePrice - slipPaidAmount;
+            if (remainingAmount < 0) remainingAmount = 0;
 
             const noteInput = document.querySelector('input[name="note"]');
             const note = noteInput ? noteInput.value : '-';
 
+            // 5. ຫໍ່ຂໍ້ມູນສົ່ງໄປ Google Sheets (ໃຊ້ຄ່າທີ່ຄິດໄລ່ຈິງຈາກສະລິບ)
             const formData = {
                 studentName: studentName,
                 school: school,
@@ -319,29 +425,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 district: district,
                 whatsapp: whatsapp,
                 facebook: facebook,
-                courseName: courseName,          
-                coursePrice: coursePriceFormatted, 
-                note: note                      
+                courseName: courseName,           
+                coursePrice: totalCoursePrice.toLocaleString() + ' ກີບ', 
+                paidAmount: slipPaidAmount.toLocaleString() + ' ກີບ',         // ເງິນທີ່ຈ່າຍແລ້ວ (ຕາມສະລິບ)
+                remainingAmount: remainingAmount.toLocaleString() + ' ກີບ',   // ເງິນທີ່ຍັງເຫຼືອ (ຄ້າງຈ່າຍ)
+                note: note                    
             };
 
-            const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzUbXASpDaA8Gw7iBbGHPpIxbhv_g-JfJjklIKuDEJ0A5V1IES5seA0UHCkp3aPe5A-/exec";
+            const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxbUjtd5M4c8aS46YXYfKhlFSIqDfXX4OEb-z8Cd2jcJFhCsDXJE5K4F_mWpVFzB6WD/exec";
 
+            // ສະແດງ Pop-up ກຳລັງບັນທຶກ
             const loadingOverlay = document.createElement('div');
             loadingOverlay.className = 'form-overlay-box';
             loadingOverlay.id = 'formProcessingOverlay';
             loadingOverlay.innerHTML = `
                 <div class="center-spinner"></div>
-                <div style="color: #334155; font-size: 15px; font-weight: 500; margin-top: 10px;">ກຳລັງບັນທຶກຂໍ້ມູນ</div>
+                <div style="color: #334155; font-size: 15px; font-weight: 500; margin-top: 10px;">ກຳລັງບັນທຶກຂໍ້ມູນ...</div>
             `;
             document.body.appendChild(loadingOverlay);
 
+            // ສົ່ງຂໍ້ມູນໄປ Google Sheets
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
-
             setTimeout(() => {
                 if (loadingOverlay) {
                     loadingOverlay.innerHTML = `
@@ -360,9 +469,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 2000);
         });
     }
+    
 });
 
-// ປິດ Dropdown ເວລາຄລິກບ່ອນອື່ນນອກກ່ອງ
 window.onclick = function(event) {
     if (!event.target.closest('.custom-dropdown')) {
         document.querySelectorAll('.dropdown-list').forEach(list => {
@@ -371,9 +480,8 @@ window.onclick = function(event) {
     }
 };
 
-// --- ລະບົບການຊຳລະຄ່າເທີມ ແລະ ສົ່ງສະລິບ ---
+// --- ລະບົບການຊຳລະຄ່າເທີມ ແລະ ສົ່ງສະລິບ (ຮອງຮັບ Tesseract.js) ---
 
-// 1. ເປີດ Modal: ຕອນກົດປຸ່ມ "ຊຳລະຄ່າເທີມ" ໃຫ້ບັງຄັບຣີເຊັດກັບມາເປັນໜ້າ QR Code (ໜ້າ 1) ສະເໝີ
 function openQRModal() {
     const modal = document.getElementById('qrModal');
     if (modal) {
@@ -391,10 +499,17 @@ function openQRModal() {
         if (slipFile) {
             slipFile.value = '';
         }
+
+        const submitBtn = document.getElementById('submitSlipBtn') || document.querySelector('.confirm-pay-btn');
+        if (submitBtn) {
+            submitBtn.style.backgroundColor = '#94a3b8';
+            submitBtn.style.cursor = 'not-allowed';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `ສົ່ງຮູບສະລິບໂອນເງິນ`;
+        }
     }
 }
 
-// 2. ປິດ Modal (ກົດ X ອອກ)
 function closeQRModal() {
     const modal = document.getElementById('qrModal');
     if (modal) {
@@ -402,7 +517,6 @@ function closeQRModal() {
     }
 }
 
-// 3. ເວລາກົດປຸ່ມ "ບັນທຶກຮູບ QR Code": ສະແດງວົງມົນປິ່ນ -> ດາວໂຫລດຮູບ -> ໄປໜ້າສົ່ງສະລິບ
 function saveQRCode() {
     const loadingModal = document.getElementById('customLoadingModal');
     const loadingIconContainer = document.getElementById('loadingIconContainer');
@@ -414,7 +528,6 @@ function saveQRCode() {
         loadingText.innerHTML = `ກຳລັງບັນທຶກ<span class="dots"></span>`;
     }
 
-    // ສ້າງຄຳສັ່ງດາວໂຫຼດຮູບ QR Code ລົງເຄື່ອງ
     const imagePath = 'Logo/QR Code.png';
     const link = document.createElement('a');
     link.href = imagePath;
@@ -446,57 +559,177 @@ function saveQRCode() {
     }, 2500);
 }
 
-// 4. ເວລາກົດປຸ່ມ "ສົ່ງຮູບສະລິບໂອນເງິນ"
-function submitSlip() {
-    const slipFile = document.getElementById('slipFile');
+// 🚀 ຟັງຊັນອ່ານສະລິບແບບ Dynamic 100% ຜ່ານ Tesseract.js
+function processSlipVerification(file) {
+    const submitBtn = document.getElementById('submitSlipBtn') || document.querySelector('.confirm-pay-btn');
+    if (!submitBtn) return;
+
+    submitBtn.style.backgroundColor = '#94a3b8';
+    submitBtn.style.cursor = 'not-allowed';
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `ກຳລັງກວດສອບ<span class="dots"><span>.</span><span>.</span><span>.</span></span>`;
+
+    // 1. ດຶງຄ່າເທີມຈາກວິຊາທີ່ຜູ້ໃຊ້ເລືອກຢູ່ປັດຈຸບັນແບບ Dynamic
+    let coursePrice = 0;
+    if (window.selectedCourses && window.selectedCourses.length > 0) {
+        coursePrice = window.selectedCourses[0].price; 
+    }
+
+    // 2. ນຳໃຊ້ Tesseract.js ອ່ານຮູບສະລິບ (ຮອງຮັບ ພາສາອັງກິດ, ລາວ, ໄທ)
+    Tesseract.recognize(
+        file,
+        'eng+lao+tha',
+        { 
+            logger: m => console.log(m.status),
+            tessedit_ocr_engine_mode: 1 
+        }
+    ).then(({ data: { text } }) => {
+        console.log("OCR Result:\n", text);
+
+        let amountStr = parseAmountFromOCR(text);
+
+        if (!amountStr) {
+            alert("⚠️ ບໍ່ພົບຈຳນວນເງິນໃນສະລິບ, ກະລຸນາເລືອກຮູບສະລິບໃໝ່ທີ່ຊັດເຈນກວ່ານີ້");
+            submitBtn.style.backgroundColor = '#94a3b8';
+            submitBtn.style.cursor = 'not-allowed';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `ສົ່ງຮູບສະລິບໂອນເງິນ`;
+            return;
+        }
+
+        // 🟢 ບັນທຶກຄ່າເງິນທີ່ອ່ານໄດ້ລົງໃນຕົວແປ global ທີ່ເຮົາກຽມໄວ້
+        extractedMoney = amountStr;
+        window.paidAmountFromSlip = parseFloat(amountStr.replace(/,/g, '')) || 0;
+
+        let transferredAmount = window.paidAmountFromSlip;
+        let remainingAmount = coursePrice - transferredAmount;
+
+        // ກໍລະນີຈ່າຍເກີນຄ່າເທີມ
+        if (transferredAmount > coursePrice) {
+            showOverpaymentAlert();
+            submitBtn.style.backgroundColor = '#94a3b8';
+            submitBtn.style.cursor = 'not-allowed';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `ສົ່ງຮູບສະລິບໂອນເງິນ`;
+            return;
+        }
+
+        // 3. ອັບເດດສະຖານະການຊຳລະເງິນ
+        window.selectedCourses.forEach(course => {
+            if (transferredAmount === coursePrice) {
+                course.paymentStatus = `<span style="color: #16a34a; font-weight: 600;">( <i class="fa-solid fa-circle-check"></i> ຈ່າຍແລ້ວ )</span>`;
+                course.isPaid = true;
+            } else {
+                let formattedRemaining = remainingAmount.toLocaleString('en-US');
+                course.paymentStatus = `<span style="color: #dc2626; font-weight: 600;">( ຍັງ ${formattedRemaining} ກີບ )</span>`;
+                course.isPaid = false;
+            }
+        });
+
+        submitBtn.style.backgroundColor = '#781134';
+        submitBtn.style.cursor = 'pointer';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `ໂອນເງິນແລ້ວ`;
+
+    }).catch(err => {
+        console.error(err);
+        alert("❌ ເກີດຂໍ້ຜິດພາດໃນການອ່ານຮູບສະລິບ");
+        submitBtn.style.backgroundColor = '#94a3b8';
+        submitBtn.style.cursor = 'not-allowed';
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `ສົ່ງຮູບສະລິບໂອນເງິນ`;
+    });
+}
+
+// ຟັງຊັນຊ່ວຍດຶງຕົວເລກຈຳນວນເງິນຈາກຂໍ້ຄວາມ OCR
+function parseAmountFromOCR(text) {
+    let cleanText = text.replace(/\s+/g, ' ');
+    let matches = cleanText.match(/\b\d{1,3}(?:,\d{3})+(?:\.\d{2})?\b/g);
     
-    if (slipFile && slipFile.files.length === 0) {
-        alert("ກະລຸນາເລືອກຮູບສະລິບການໂອນເງິນກ່ອນ!");
+    if (matches && matches.length > 0) {
+        return matches[0]; 
+    }
+    return null;
+}
+
+// ຟັງຊັນສະແດງ Pop-up ແຈ້ງເຕືອນໂອນເກີນ ວາງທັບເທິງຮູບສະລິບ
+function showOverpaymentAlert() {
+    let existingAlert = document.getElementById('overpaymentPopup');
+    if (existingAlert) existingAlert.remove();
+
+    const dropZone = document.getElementById('dropZone') || document.getElementById('uploadSlipSection');
+    if (!dropZone) return;
+
+    dropZone.style.position = 'relative';
+
+    const alertBox = document.createElement('div');
+    alertBox.id = 'overpaymentPopup';
+    alertBox.style.cssText = `
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(255, 255, 255, 0.92);
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        animation: fadeIn 0.3s ease-out;
+    `;
+
+    alertBox.innerHTML = `
+        <div style="width: 60px; height: 60px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 12px; border: 2px solid #fee2e2;">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 28px; color: #dc2626;"></i>
+        </div>
+        <div style="font-weight: 600; color: #1e293b; font-size: 15px; margin-bottom: 6px;">ແຈ້ງເຕືອນການໂອນເງິນ</div>
+        <div style="color: #64748b; font-size: 13px; max-width: 260px; line-height: 1.4;">ກະລຸນາກວດສະລິບໂອນຂອງທ່ານຄືນ! ໂອນເກີນຄ່າເທີມແລ້ວ</div>
+    `;
+
+    dropZone.appendChild(alertBox);
+
+    setTimeout(() => {
+        if (alertBox) {
+            alertBox.style.opacity = '0';
+            alertBox.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => alertBox.remove(), 500);
+        }
+    }, 4000);
+}
+
+// ເມື່ອຜູ້ໃຊ້ກົດປຸ່ມຫຼັງຈາກກວດສອບສຳເລັດ
+function submitSlip() {
+    const submitBtn = document.getElementById('submitSlipBtn') || document.querySelector('.confirm-pay-btn');
+    
+    if (submitBtn && submitBtn.disabled) {
+        alert("ກະລຸນາ ຖ້າໃຫ້ລະບົບກວດສອບສະລິບໃຫ້ສຳເລັດກ່ອນ!");
         return;
     }
 
-    const loadingModal = document.getElementById('customLoadingModal');
-    const loadingIconContainer = document.getElementById('loadingIconContainer');
-    const loadingText = document.getElementById('loadingText');
-
-    if (loadingModal) {
-        loadingModal.style.display = 'flex';
-        if (loadingIconContainer) loadingIconContainer.innerHTML = `<div class="spinner-circle"></div>`;
-        if (loadingText) loadingText.innerHTML = `ກຳລັງສົ່ງ<span class="dots"></span>`;
-    }
-
-    setTimeout(function() {
-        if (loadingIconContainer && loadingText) {
-            loadingIconContainer.innerHTML = `<div class="success-check-circle">✓</div>`;
-            loadingText.innerHTML = `ສົ່ງສຳເລັດ`;
+    const slipFile = document.getElementById('slipFile');
+    if (slipFile && slipFile.files.length > 0) {
+        if (typeof updateSummary === 'function') {
+            updateSummary();
         }
-
-        setTimeout(function() {
-            if (loadingModal) {
-                loadingModal.style.display = 'none';
-            }
-            if (typeof closeQRModal === 'function') {
-                closeQRModal();
-            }
-        }, 1000);
-
-    }, 1500);
+        closeQRModal();
+    } else {
+        alert("ກະລຸນາເລືອກຮູບສະລິບກ່ອນ!");
+    }
 }
 
-// ຟັງຊັນສຳລັບສະແດງຮູບ Preview ໃນກ່ອງ Dropzone
 function showImagePreview(file) {
     const dropzoneContent = document.getElementById('dropzoneContent');
     if (!dropzoneContent) return;
 
     if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
-        
         reader.onload = function(e) {
             dropzoneContent.innerHTML = `
                 <img src="${e.target.result}" alt="Slip Preview" style="width: 72%; height: 72%; object-fit: cover; border-radius: 4px;">
             `;
         }
-        
         reader.readAsDataURL(file);
     }
 }
@@ -507,6 +740,7 @@ if (slipFile) {
     slipFile.addEventListener('change', function(e) {
         if (this.files && this.files[0]) {
             showImagePreview(this.files[0]);
+            processSlipVerification(this.files[0]); 
         }
     });
 }
@@ -540,6 +774,7 @@ if (dropZone && slipFile) {
         if (files && files.length > 0) {
             slipFile.files = files;
             showImagePreview(files[0]);
+            processSlipVerification(files[0]); 
         }
     }, false);
 }

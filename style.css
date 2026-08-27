@@ -221,6 +221,7 @@ body {
 .form-title p {
     font-size: 13px; /* ຂະໜາດຕົວໜັງສືຄຳອະທິບາຍຫົວຂໍ້ */
     color: #64748b; /* ສີຕົວໜັງສືຄຳອະທິບາຍ */
+    margin-top: -8px;
 }
 
 /* Filter Buttons */
@@ -1053,7 +1054,7 @@ select {
 .modal-white-box {
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     height: auto;
     min-height: 420px; /* ຄວາມສູງຂັ້ນຕ່ຳໃຫ້ພໍດີກັບໜ້າ QR Code */
@@ -1061,17 +1062,21 @@ select {
     flex-direction: column;
     justify-content: space-between; /* ดันຫົວຂໍ້ຂຶ້ນເທິງ ແລະ ดັນປຸ່ມລົງລຸ່ມສຸດພໍດີ */
 }
-
 /* ສ່ວນອັບໂຫຼດສະລິບ */
 .upload-dropzone {
     border: 2px dashed #cbd5e1;
-    padding: 20px 25px;
+    padding: 10px 25px;
     min-height: 345px;
     text-align: center;
     border-radius: 6px;
     margin-bottom: 10px;
     background-color: #f8fafc;
     cursor: pointer;
+    /* 👈 ໃຫ້ເພີ່ມ 3 ສາຍນີ້ລົງໄປເພື່ອຈັດໃຫ້ເນື້ອຫາຢູ່ເຄິ່ງກາງພໍດີ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* --- CSS ສຳລັບສ່ວນອັບໂຫຼດສະລິບ --- */
@@ -1275,4 +1280,66 @@ select {
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     width: 170px;       /* 👈 ປັບຫຼຸດຄວາມກວ້າງລົງເຫຼືອເທົ່ານີ້ ຮັບຮອງວាកະທັດຮັດບໍ່ບັງຮູບສະລິບແນ່ນອນ! */
+}
+@keyframes slideRight {
+    0% {
+        transform: translateX(0px);
+        opacity: 0.2;
+    }
+    50% {
+        transform: translateX(6px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0px);
+        opacity: 0.2;
+    }
+}
+.dots {
+    display: inline-block;
+    position: relative;
+}
+.dots span {
+    display: inline-block;
+    animation: slideRight 1.2s infinite ease-in-out;
+}
+.dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+.dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+/* ປັບຂະໜາດຮູບສະລິບໂອນເງິນຂ້າງໃນໃຫ້ໃຫຍ່ຂຶ້ນ */
+#dropzoneContent img {
+    width: 100% !important; /* ໃຫ້ຮູບຂະຫຍາຍເຕັມຄວາມກວ້າງຂອງກ່ອງ */
+    max-width: 320px !important; /* ປັບຂະໜາດສູງສຸດຕາມຕ້ອງການ (ຖ້າຢախໃຫ້ໃຫຍ່ຂຶ້ນອີກ ສາມາດເພີ່ມເລກນີ້ໄດ້) */
+    height: auto !important;
+    object-fit: contain !important; 
+    transform: scale(1.25) !important; /* 👈 ປັບຄ່າ scale ໂຕນີ້ເພີ່ມຂຶ້ນ (ຈາກ 1.15 ເປັນ 1.25 ຫຼື 1.3) ເພື່ອດຶງຮູບໃຫ້ໃຫຍ່ຂຶ້ນຕາມใจມັກ */
+    transition: transform 0.2s ease-in-out;
+}
+/* 1. ເມື່ອເກີດ Error: ປ່ຽນແຕ່ສີຂອບເດີມໃຫ້ເປັນສີແດງ ແລະ ພື້ນຫຼັງເປັນສີແດງຈືດ ໂດຍບໍ່ເພີ່ມຂອບໃໝ່ */
+.input-group-box.input-error-border,
+.input-group-box.always-show.input-error-border {
+    border-color: #dc2626 !important;
+    background-color: #fef2f2 !important;
+}
+
+/* 2. ເມື່ອກົດຄລິກ (Focus/Active) ເຂົ້າໄປໃນຊ່ອງນັ້ນ: ໃຫ້ປ່ຽນເປັນຂອບສີຟ້າຕາມປົກກະຕິ */
+.input-group-box:focus-within {
+    border-color: #3b82f6 !important; /* ສີຟ້າ */
+    background-color: #ffffff !important;
+}
+
+/* 3. ປ້ອງກັນບໍ່ໃຫ້ Element ດ້ານໃນມີພື້ນຫຼັງມາບັງ */
+.input-group-box.input-error-border *,
+.input-group-box.input-error-border input, 
+.input-group-box.input-error-border select,
+.input-group-box.input-error-border textarea {
+    background-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
