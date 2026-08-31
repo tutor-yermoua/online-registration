@@ -327,3 +327,90 @@ body {
 .form-page .section-title:first-child {
     margin-top: 0px !important;
 }
+
+/* Styling ສຳລັບ Modal Loading Overlay */
+#loadingModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-content {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 250px;
+}
+
+/* ວົງມົນໝຸນ (Spinner) */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #4CAF50; /* ສີຂຽວ */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ຂໍ້ຄວາມກຳລັງບັນທຶກ ພ້ອມ 3 ຈ້ຳເຄື່ອນທີ່ */
+.loading-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    font-family: 'Phetsarath OT', sans-serif;
+}
+
+.dots::after {
+    content: '';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+}
+
+/* ຕອນສຳເລັດ (Success Icon) */
+.success-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 28px;
+    margin-bottom: 15px;
+    animation: popIn 0.3s ease-in-out;
+}
+@keyframes popIn {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+/* ເພີ່ມຄວາມໝັ້ນໃຈໃຫ້ Success Icon ຢູ່ກາງພໍດີເປະ */
+.success-icon {
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -19,7 +19,7 @@
             <p>ຕິວເຕີ້ເຢີມົວ • ສອນເພີ່ມກຽມນັກຮຽນເກັ່ງ</p>
         </div>
 
-        <!-- 🌟 Step Indicator (ເພີ່ມເຂົ້າມາໄວ້ໃນກ່ອງສີຂາວ ພາຍໃຕ້ຫົວຂໍ້ສີຟ້າ) -->
+        <!-- 🌟 Step Indicator -->
         <div class="step-indicator-container">
             <div class="step-wrapper">
                 <div class="step-bg-line"></div>
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <form id="registrationForm" action="next_page.php" method="POST" enctype="multipart/form-data">
+        <form id="registrationForm" action="http://localhost:3000/register" method="POST" enctype="multipart/form-data">
             
             <!-- ================= PAGE 1 ================= -->
             <div class="form-page" id="page-1">
@@ -42,7 +42,7 @@
                     <span class="floating-label">ຊື່ ແລະ ນາມສະກຸນ</span>
                     <div class="input-field">
                         <i class="fa-solid fa-user icon"></i>
-                        <input type="text" name="fullname" placeholder="ຊື່ ແລະ ນາມສະກຸນ" onfocus="this.placeholder='ປ້ອນຊື່ ແລະ ນາມສະກຸນ'" onblur="this.placeholder='ຊື່ ແລະ ນາມສະກຸນ'">
+                        <input type="text" name="Fullname" placeholder="ຊື່ ແລະ ນາມສະກຸນ" onfocus="this.placeholder='ປ້ອນຊື່ ແລະ ນາມສະກຸນ'" onblur="this.placeholder='ຊື່ ແລະ ນາມສະກຸນ'" required>
                     </div>
                 </div>
 
@@ -50,7 +50,7 @@
                     <span class="floating-label">ໂຮງຮຽນ</span>
                     <div class="input-field">
                         <i class="fa-solid fa-school icon"></i>
-                        <input type="text" name="school" placeholder="ໂຮງຮຽນ" onfocus="this.placeholder='ປ້ອນຊື່ໂຮງຮຽນ'" onblur="this.placeholder='ໂຮງຮຽນ'">
+                        <input type="text" name="School" placeholder="ໂຮງຮຽນ" onfocus="this.placeholder='ປ້ອນຊື່ໂຮງຮຽນ'" onblur="this.placeholder='ໂຮງຮຽນ'" required>
                     </div>
                 </div>
 
@@ -67,6 +67,8 @@
                         <ul id="provinceList" class="dropdown-list" style="display: none;"></ul>
                         <i class="fa-solid fa-chevron-down dropdown-icon"></i>
                     </div>
+                    <!-- ซ่อน input ເກັບຄ່າແຂວງສົ່ງໃຫ້ Node.js -->
+                    <input type="hidden" id="Province" name="Province" required>
                 </div>
 
                 <div class="input-group-box always-show" style="margin-bottom: 18px;">
@@ -78,6 +80,8 @@
                         <ul id="districtList" class="dropdown-list" style="display: none;"></ul>
                         <i class="fa-solid fa-chevron-down dropdown-icon"></i>
                     </div>
+                    <!-- ซ่อน input ເກັບຄ່າເມືອງສົ່ງໃຫ້ Node.js -->
+                    <input type="hidden" id="District" name="District" required>
                 </div>
 
                 <div class="section-title">
@@ -88,10 +92,10 @@
                     <span class="floating-label">ເບີ WhatsApp</span>
                     <div class="input-field">
                         <i class="fa-brands fa-whatsapp icon"></i>
-                        <input type="tel" name="whatsapp" maxlength="11" placeholder="ເບີ WhatsApp" 
+                        <input type="tel" name="Whatsapp" maxlength="11" placeholder="ເບີ WhatsApp" 
                                onfocus="this.placeholder='ປ້ອນເບີ WhatsApp'" 
                                onblur="this.placeholder='ເບີ WhatsApp'"
-                               oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);">
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" required>
                     </div>
                 </div>
 
@@ -99,7 +103,7 @@
                     <span class="floating-label">Facebook</span>
                     <div class="input-field">
                         <i class="fa-brands fa-facebook icon"></i>
-                        <input type="text" name="facebook" placeholder="ຊື່ Facebook" onfocus="this.placeholder='ປ້ອນຊື່ Facebook'" onblur="this.placeholder='ຊື່ Facebook'">
+                        <input type="text" name="Facebook" placeholder="ຊື່ Facebook" onfocus="this.placeholder='ປ້ອນຊື່ Facebook'" onblur="this.placeholder='ຊື່ Facebook'" required>
                     </div>
                 </div>
 
@@ -182,19 +186,20 @@
                     </div>
                 </div>
                 <div>
-                    <button type="button" class="btn-prev" onclick="prevPage()" style="width: 100%; background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-arrow-left"></i> ກับຄືນ</button>
+                    <button type="button" class="btn-prev" onclick="prevPage()" style="width: 100%; background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-arrow-left"></i> ກັບຄືນ</button>
                 </div>
             </div>
 
             <!-- ================= PAGE 3 ================= -->
             <div class="form-page" id="page-3" style="display: none;">
                 
-                <div style="display: none;">
-                    <p id="selectedCourseName"></p>
-                    <p id="selectedCoursePrice"></p>
+                <!-- Hidden inputs ເກັບຊື່ ແລະ ລາຄາຄອສ ໃຫ້ກົງກັບ Database (`course_name`, `course_price`) -->
+                <div>
+                    <input type="hidden" id="selectedCourseNameInput" name="Course_name">
+                    <input type="hidden" id="selectedCoursePriceInput" name="Course_price">
                 </div>
 
-                <div class="section-title" style="margin-top: -10px; margin-bottom: 15px;">                    <span class="icon-box" style="color: #10b981;"><i class="fa-solid fa-qrcode"></i></span> ຊຳລະຄ່າເທີມ
+                <div class="section-title" style="margin-top: -5px; margin-bottom: 15px;">                    <span class="icon-box" style="color: #10b981;"><i class="fa-solid fa-qrcode"></i></span> ຊຳລະຄ່າເທີມ
                 </div>
                 <p style="font-size: 14px; color: #666; margin-top: -18px; margin-bottom: 16px;margin-left: 38px;">ສະແກນ QR ຜ່ານແອບທະນາຄານ (BCEL One)</p>
 
@@ -233,10 +238,11 @@
                     </div>
                     <div id="slipPlaceholder">
                         <i class="fa-solid fa-file-lines" style="font-size: 32px; color: #f87171; margin-bottom: 8px;"></i>
-                        <p style="font-size: 14px; color: #334155; font-weight: 600;">ຄລິກ ຫຼື ລາກຮູບສະລິບໃສ່ນี้</p>
+                        <p style="font-size: 14px; color: #334155; font-weight: 600;">ຄລິກ ຫຼື ລາກຮູບສະລິບໃສ່ນີ້</p>
                         <p style="font-size: 12px; color: #64748b; margin-top: 4px;">ຮອງຮັບ PNG, JPG, JPEG</p>
                     </div>
-                    <input type="file" id="slipInput" name="slip_image" accept="image/*" style="display: none;" onchange="previewImage(event, 'slipPreviewImg', 'slipPreviewContainer', 'slipPlaceholder')">
+                    <!-- ກຳນົດ name="slip_image" ໃຫ້ກົງກັບ Database -->
+                    <input type="file" id="slipInput" name="Slip_image" accept="image/*" style="display: none;" onchange="previewImage(event, 'slipPreviewImg', 'slipPreviewContainer', 'slipPlaceholder')" required>
                 </div>
 
                 <div class="section-title" style="font-size: 15px; margin-bottom: 8px;">
@@ -248,20 +254,35 @@
                     </div>
                     <div id="studentPlaceholder">
                         <i class="fa-solid fa-user-tie" style="font-size: 32px; color: #f87171; margin-bottom: 8px;"></i>
-                        <p style="font-size: 14px; color: #334155; font-weight: 600;">ຄລິກ ຫຼື ລາກຮູບນັກຮຽນໃສ່ນี้</p>
+                        <p style="font-size: 14px; color: #334155; font-weight: 600;">ຄລິກ ຫຼື ລາກຮູບນັກຮຽນໃສ່ນີ້</p>
                         <p style="font-size: 12px; color: #64748b; margin-top: 4px;">ຮອງຮັບ PNG, JPG, JPEG</p>
                     </div>
-                    <input type="file" id="studentImgInput" name="student_image" accept="image/*" style="display: none;" onchange="previewImage(event, 'studentPreviewImg', 'studentPreviewContainer', 'studentPlaceholder')">
+                    <!-- ກຳນົດ name="student_image" ໃຫ້ກົງກັບ Database -->
+                    <input type="file" id="studentImgInput" name="Student_image" accept="image/*" style="display: none;" onchange="previewImage(event, 'studentPreviewImg', 'studentPreviewContainer', 'studentPlaceholder')" required>
                 </div>
 
                 <div style="display: flex; gap: 10px;">
                     <button type="button" class="btn-prev" onclick="prevPage()" style="flex: 1; background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-arrow-left"></i> ກັບຄືນ</button>
-                    <button type="submit" class="btn-submit" style="flex: 2; background: #10b981; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-check"></i> ສົ່ງຂໍ້ມູນລົງທะບຽນ</button>
+                    <button type="submit" class="btn-submit" style="flex: 2; background: #10b981; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-check"></i> ສົ່ງຂໍ້ມູນລົງທະບຽນ</button>
                 </div>
             </div>
         </form>
     </div>
-
+<!-- Modal Loading & Success Overlay -->
+<div id="loadingModal">
+    <div class="loading-content">
+        <!-- ພາກສ່ວນສະແດງຕອນກຳລັງໂຫຼດ -->
+        <div id="spinnerBox">
+            <div class="spinner"></div>
+            <div class="loading-text">ກຳລັງບັນທຶກ<span class="dots"></span></div>
+        </div>   
+        <!-- ພາກສ່ວນສະແດງຕອນສຳເລັດ (ເຊື່ອງໄວ້ກ່ອນ) -->
+        <div id="successBox" style="display: none;">
+            <div class="success-icon">✓</div>
+            <div class="loading-text" style="color: #4CAF50; font-weight: bold;">ບັນທຶກຂໍ້ມູນສຳເລັດ</div>
+        </div>
+    </div>
+</div>
     <script src="script.js"></script>
 </body>
 </html>

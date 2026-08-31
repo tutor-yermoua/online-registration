@@ -1,27 +1,32 @@
-// ປະກາດຕົວແປເລີ່ມຕົ້ນຢູ່ໜ້າ 1 ສະເໝີ
+// ປະກາດຕົວແປຄວບຄຸມໜ້າປັດຈຸບັນ
 let currentPage = 1;
 
-// ຟັງຊັນສະຫຼັບໜ້າ (ປ້ອງກັນບໍ່ໃຫ້ໜ້າລວມກັນ ແລະ ເກັບສະຖານະໄວ້)
+// ຟັງຊັນສະຫຼັບໜ້າ ແລະ ອັບເດດ Step Indicator ພ້ອມກັນ
 function showPage(pageNumber) {
+    // ຊ່ອນທຸກໜ້າ
     document.getElementById('page-1').style.display = 'none';
     document.getElementById('page-2').style.display = 'none';
     document.getElementById('page-3').style.display = 'none';
     
+    // ສະແດງໜ້າທີ່ຕ້ອງການ
     const targetPage = document.getElementById('page-' + pageNumber);
     if (targetPage) {
         targetPage.style.display = 'block';
         currentPage = pageNumber;
         window.scrollTo(0, 0);
     }
+    
+    // ອັບເດດ Progress Bar ດ້ານເທິງ
+    updateStepIndicator(currentPage);
 }
 
 // ຟັງຊັນກົດປຸ່ມ "ຕໍ່ໄປ" (ຈາກໜ້າ 1 ໄປໜ້າ 2)
 function nextPage() {
     if (currentPage === 1) {
-        // ກວດສອບວ່າເລືອກແຂວງແລ້ວ ຫຼືຍັງ
+        // ກວດສອບວ່າປ້ອນຊື່ ແລະ ເລືອກແຂວງແລ້ວ ຫຼືຍັງ
         const provinceText = document.getElementById('provinceSelectedText').innerText;
         if (provinceText.includes('-----') || provinceText === '') {
-            alert('ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ!');
+            alert('ກະລຸນາເລືອກແຂວງ ແລະ ປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ!');
             return;
         }
     }
@@ -38,7 +43,30 @@ function prevPage() {
     }
 }
 
-// 1. ເປີດ-ປິດ ປຸ່ມ Dropdown
+// ຟັງຊັນຈັດການ Progress Bar ດ້ານເທິງ
+function updateStepIndicator(step) {
+    const stepItems = document.querySelectorAll('.step-item');
+    stepItems.forEach((item, index) => {
+        if ((index + 1) <= step) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+
+    const progressLine = document.getElementById('progressLine');
+    if (progressLine) {
+        if (step === 1) {
+            progressLine.style.width = '0%';
+        } else if (step === 2) {
+            progressLine.style.width = '48%';
+        } else if (step === 3) {
+            progressLine.style.width = '92%';
+        }
+    }
+}
+
+// 1. ເປີດ-ປິດ ປຸ່ມ Dropdown ຂອງແຂວງ-ເມືອງ
 function toggleDropdown(listId) {
     document.querySelectorAll('.dropdown-list').forEach(list => {
         if (list.id !== listId) list.style.display = 'none';
@@ -49,10 +77,16 @@ function toggleDropdown(listId) {
     }
 }
 
-// ຟັງຊັນເລືອກຄອສແລ້ວສົ່ງຄ່າໄປໜ້າຊຳລະເງິນ (Page 3)
+// ຟັງຊັນເລືອກຄອສແລ້ວເກັບຄ່າລົງ Hidden Input ພ້ອມຍ້າຍໄປໜ້າ 3 (ຊຳລະເງິນ)
 function selectCourseAndPay(courseName, coursePrice) {
-    document.getElementById('selectedCourseName').innerText = 'ຊື່ຄອສ: ' + courseName;
-    document.getElementById('selectedCoursePrice').innerText = 'ລາຄາ: ' + coursePrice;
+    // ຍັດຄ່າໃສ່ Hidden Input ເພື່ອສົ່ງໃຫ້ Node.js / Database
+    const nameInput = document.getElementById('selectedCourseNameInput');
+    const priceInput = document.getElementById('selectedCoursePriceInput');
+    
+    if (nameInput) nameInput.value = courseName;
+    if (priceInput) priceInput.value = coursePrice;
+
+    // ຍ້າຍໄປໜ້າ 3
     showPage(3);
 }
 
@@ -64,7 +98,7 @@ function copyAccountNumber() {
     });
 }
 
-// ຟັງຊັນສະແດງຕົວຢ່າງຮູບພາບກ່ອນອັບໂຫຼດ
+// ຟັງຊັນສະແດງຕົວຢ່າງຮູບພາບກ່ອນອັບໂຫຼດ (ສະລິບ ແລະ ຮູບນັກຮຽນ)
 function previewImage(event, imgId, containerId, placeholderId) {
     const file = event.target.files[0];
     if (file) {
@@ -78,10 +112,9 @@ function previewImage(event, imgId, containerId, placeholderId) {
     }
 }
 
-// ໂຫຼດຂໍ້ມູນແຂວງ ແລະ ເມືອງ
+// ໂຫຼດຂໍ້ມູນແຂວງ ແລະ ເມືອງ ພ້ອມກຳນົດຄ່າເລີ່ມຕົ້ນເມື່ອເປີດເວັບ
 document.addEventListener('DOMContentLoaded', () => {
-    // ໃຫ້ແນ່ໃຈວ່າສະແດງໜ້າ 1 ເປັນຄ່າເລີ່ມຕົ້ນເມື່ອໂຫຼດເວັບ
-    showPage(1);
+    showPage(1); // ໃຫ້ເລີ່ມຕົ້ນທີ່ໜ້າ 1 ສະເໝີ
 
     const laoData = {
         "ນະຄອນຫຼວງວຽງຈັນ": ["ຈັນທະບູລີ", "ສີໂຄດຕະບອງ", "ໄຊເສດຖາ", "ສີສັດຕະນາກ", "ນາຊາຍທອງ", "ໄຊທານີ", "ຫາດຊາຍຟອງ", "ສັງທອງ", "ປາກງື່ມ"],
@@ -106,8 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const provinceListEl = document.getElementById('provinceList');
     const provinceSelectedText = document.getElementById('provinceSelectedText');
+    const provinceInput = document.getElementById('Province'); 
     const districtListEl = document.getElementById('districtList');
     const districtSelectedText = document.getElementById('districtSelectedText');
+    const districtInput = document.getElementById('District'); 
 
     if (provinceListEl && provinceSelectedText) {
         provinceListEl.innerHTML = '';
@@ -116,17 +151,21 @@ document.addEventListener('DOMContentLoaded', () => {
             li.textContent = province;
             li.onclick = function() {
                 provinceSelectedText.textContent = province;
+                if (provinceInput) provinceInput.value = province; 
                 provinceListEl.style.display = 'none';
 
                 if (districtListEl && districtSelectedText) {
                     districtSelectedText.textContent = '----- ກະລຸນາເລືອກເມືອງ -----';
+                    if (districtInput) districtInput.value = '';
                     districtListEl.innerHTML = '';
+                    
                     let districts = laoData[province] || [];
                     districts.forEach(district => {
                         let liDist = document.createElement('li');
                         liDist.textContent = district;
                         liDist.onclick = function() {
                             districtSelectedText.textContent = district;
+                            if (districtInput) districtInput.value = district; 
                             districtListEl.style.display = 'none';
                         };
                         districtListEl.appendChild(liDist);
@@ -137,108 +176,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-function updateStepIndicator(currentStep) {
-    const steps = document.querySelectorAll('.step-item');
-    const progressLine = document.getElementById('progressLine');
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('registrationForm');
 
-    // ປັບຄວາມຍາວເສັ້ນສີຂຽວ
-    if (currentStep === 1) {
-        progressLine.style.width = '0%';
-    } else if (currentStep === 2) {
-        progressLine.style.width = '50%';
-    } else if (currentStep === 3) {
-        progressLine.style.width = '100%';
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+
+            const loadingModal = document.getElementById('loadingModal');
+            const spinnerBox = document.getElementById('spinnerBox');
+            const successBox = document.getElementById('successBox');
+
+            // 1. ເປີດ Modal ໃຫ້ວົງມົນໝຸນ
+            if (loadingModal) loadingModal.style.display = 'flex';
+            if (spinnerBox) spinnerBox.style.display = 'block';
+            if (successBox) successBox.style.display = 'none';
+            try {
+                const formData = new FormData(this);
+
+                // ສົ່ງຂໍ້ມູນໄປບັນທຶກລົງ Server 
+                fetch('http://localhost:3000/register', {
+                    method: 'POST',
+                    body: formData
+                }).catch(err => console.log('Background fetch error:', err));
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
+            // 2. ໃຫ້ວົງມົນໝຸນໄປ 2.5 ວິນາທີ 
+            setTimeout(() => {
+                // ປິດວົງມົນໝຸນ ແລ້ວເປີດ Icon ສີຂຽວ (ເຄື່ອງໝາຍຖືກ)
+                if (spinnerBox) spinnerBox.style.display = 'none';
+                if (successBox) successBox.style.display = 'block'; // ບັງຄັບສະແດງກ່ອງ success
+
+                // 3. ໃຫ້ໂຊວ໌ Icon ສີຂຽວຄ້າງໄວ້ 0.8 ວິນາທີ ແລ້ວຄ่อย Refresh ກັບໜ້າ 1
+                setTimeout(() => {
+                    window.location.href = 'http://localhost:3000/'; 
+                }, 800); 
+            }, 2500);
+        });
     }
-
-    // ປ່ຽນ Class active ຂອງແຕ່ລະວົງມົນ
-    steps.forEach((step, index) => {
-        const stepNum = index + 1;
-        if (stepNum <= currentStep) {
-            step.classList.add('active');
-        } else {
-            step.classList.remove('active');
-        }
-    });
-}
-// ຕົວປານເກັບໜ້າປັດຈຸບັນ
-let currentStep = 1;
-
-function updateStepIndicator() {
-    const totalSteps = 3;
-    const stepItems = document.querySelectorAll('.step-item');
-    
-    stepItems.forEach((item, index) => {
-        if (index < currentStep) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
-    });
-
-    const progressLine = document.getElementById('progressLine');
-    if (progressLine) {
-        // ປັບຄຳນວນເປີເຊັນໃໝ່ ເພື່ອໃຫ້ເສັ້ນໄປຢຸດຢູ່ກິ່ງກາງວົງມົນເລກ 3 ພໍດີ
-        // ຖ້າຢູ່ໜ້າ 3 ໃຫ້ width ເປັນປະມານ 88% - 90% (ຂຶ້ນກັບຄວາມກວ້າງຂອງ wrapper)
-        let percentage = 0;
-        if (currentStep === 1) {
-            percentage = 0;
-        } else if (currentStep === 2) {
-            percentage = 50;
-        } else if (currentStep === 3) {
-            percentage = 100; // ແກ້ໄຂໄລຍະນີ້
-        }
-        
-        // ໃຊ້ວິທີຄຳນວນແບບຫັກລบໄລຍະຂອບວົງມົນອອກ ເພື່ອບໍ່ໃຫ້ເສັ້ນກາຍ
-        let calculatedPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-        
-        // ຖ້າຢູ່ໜ້າ 3 ໃຫ້ລົດລົງໜ້ອຍໜຶ່ງເພື່ອບໍ່ໃຫ້ລື່ນຂອບວົງມົນ (ປັບເປັນ 92% ຫຼື 95% ຕາມຄວາມເໝາະສົມ)
-        if (currentStep === 3) {
-            progressLine.style.width = '92%'; 
-        } else if (currentStep === 2) {
-            progressLine.style.width = '48%';
-        } else {
-            progressLine.style.width = '0%';
-        }
-    }
-}
-
-// ເມື່ອກົດປຸ່ມ ຕໍ່ໄປ (Next)
-function nextPage() {
-    if (currentStep < 3) {
-        // ซ่อนໜ້າເກົ່າ
-        document.getElementById(`page-${currentStep}`).style.display = 'none';
-        currentStep++;
-        // ສະແດງໜ້າໃໝ່
-        document.getElementById(`page-${currentStep}`).style.display = 'block';
-        updateStepIndicator();
-    }
-}
-
-// ເເມື່ອກົດປຸ່ມ ກັບຄືນ (Back)
-function prevPage() {
-    if (currentStep > 1) {
-        // ซ่อนໜ້າເກົ່າ
-        document.getElementById(`page-${currentStep}`).style.display = 'none';
-        currentStep--;
-        // ສະແດງໜ້າເກົ່າ
-        document.getElementById(`page-${currentStep}`).style.display = 'block';
-        updateStepIndicator();
-    }
-}
-
-// ສຳຫຼັບໜ້າເລືອກຄອສແລ້ວໄປໜ້າ 3 ໂດຍກົງ (ຖ້າມີຟັງຊັນນີ້)
-function selectCourseAndPay(courseName, coursePrice) {
-    document.getElementById('selectedCourseName').innerText = courseName;
-    document.getElementById('selectedCoursePrice').innerText = coursePrice;
-    
-    // ซ่อนໜ້າ 2 แล้วໄປໜ້າ 3
-    document.getElementById(`page-${currentStep}`).style.display = 'none';
-    currentStep = 3;
-    document.getElementById(`page-${currentStep}`).style.display = 'block';
-    updateStepIndicator();
-}
-
-// ເອີ້ນໃຊ້ງານຄັ້ງທຳອິດເວລາໂຫຼດໜ້າเว็บ
-window.onload = function() {
-    updateStepIndicator();
-};
+});
