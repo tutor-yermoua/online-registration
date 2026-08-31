@@ -198,10 +198,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // ** ໃຫ້ປ່ຽນ URL ບ່ອນນີ້ເປັນ Link Server ຕົວຈິງຂອງອ້າຍ (ທີ່ Deploy ແລ້ວ) **
                 // ຖ້າເປັນ Web ທີ່ຢູ່ GitHub ມັນຕ້ອງຍິງໄປຫາ Backend ທີ່ອອນລາຍຢູ່
-                await fetch('https://URL_SERVER_ຂອງອ້າຍ.com/register', {
-                    method: 'POST',
-                    body: formData
-                });
+               await fetch('http://localhost:3000/register', {
+                method: 'POST',
+                body: formData
+            });
 
             } catch (error) {
                 console.log('Sync error:', error);
