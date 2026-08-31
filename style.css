@@ -327,7 +327,6 @@ body {
 .form-page .section-title:first-child {
     margin-top: 0px !important;
 }
-
 /* Styling ສຳລັບ Modal Loading Overlay */
 #loadingModal {
     display: none;
@@ -351,7 +350,17 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     min-width: 250px;
+}
+
+/* ຈັດກ່ອງບັນຈຸ Spinner ໃຫ້ຢູ່ກິ່ງກາງ */
+#spinnerBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 /* ວົງມົນໝຸນ (Spinner) */
@@ -363,6 +372,8 @@ body {
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @keyframes spin {
@@ -402,15 +413,13 @@ body {
     color: white;
     font-size: 28px;
     margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
     animation: popIn 0.3s ease-in-out;
 }
+
 @keyframes popIn {
     0% { transform: scale(0); }
     80% { transform: scale(1.1); }
     100% { transform: scale(1); }
-}
-/* ເພີ່ມຄວາມໝັ້ນໃຈໃຫ້ Success Icon ຢູ່ກາງພໍດີເປະ */
-.success-icon {
-    margin-left: auto;
-    margin-right: auto;
 }

@@ -3,12 +3,10 @@ let currentPage = 1;
 
 // ຟັງຊັນສະຫຼັບໜ້າ ແລະ ອັບເດດ Step Indicator ພ້ອມກັນ
 function showPage(pageNumber) {
-    // ຊ່ອນທຸກໜ້າ
     document.getElementById('page-1').style.display = 'none';
     document.getElementById('page-2').style.display = 'none';
     document.getElementById('page-3').style.display = 'none';
     
-    // ສະແດງໜ້າທີ່ຕ້ອງການ
     const targetPage = document.getElementById('page-' + pageNumber);
     if (targetPage) {
         targetPage.style.display = 'block';
@@ -16,14 +14,12 @@ function showPage(pageNumber) {
         window.scrollTo(0, 0);
     }
     
-    // ອັບເດດ Progress Bar ດ້ານເທິງ
     updateStepIndicator(currentPage);
 }
 
 // ຟັງຊັນກົດປຸ່ມ "ຕໍ່ໄປ" (ຈາກໜ້າ 1 ໄປໜ້າ 2)
 function nextPage() {
     if (currentPage === 1) {
-        // ກວດສອບວ່າປ້ອນຊື່ ແລະ ເລືອກແຂວງແລ້ວ ຫຼືຍັງ
         const provinceText = document.getElementById('provinceSelectedText').innerText;
         if (provinceText.includes('-----') || provinceText === '') {
             alert('ກະລຸນາເລືອກແຂວງ ແລະ ປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ!');
@@ -79,14 +75,12 @@ function toggleDropdown(listId) {
 
 // ຟັງຊັນເລືອກຄອສແລ້ວເກັບຄ່າລົງ Hidden Input ພ້ອມຍ້າຍໄປໜ້າ 3 (ຊຳລະເງິນ)
 function selectCourseAndPay(courseName, coursePrice) {
-    // ຍັດຄ່າໃສ່ Hidden Input ເພື່ອສົ່ງໃຫ້ Node.js / Database
     const nameInput = document.getElementById('selectedCourseNameInput');
     const priceInput = document.getElementById('selectedCoursePriceInput');
     
     if (nameInput) nameInput.value = courseName;
     if (priceInput) priceInput.value = coursePrice;
 
-    // ຍ້າຍໄປໜ້າ 3
     showPage(3);
 }
 
@@ -98,7 +92,7 @@ function copyAccountNumber() {
     });
 }
 
-// ຟັງຊັນສະແດງຕົວຢ່າງຮູບພາບກ່ອນອັບໂຫຼດ (ສະລິບ ແລະ ຮູບນັກຮຽນ)
+// ຟັງຊັນສະແດງຕົວຢ່າງຮູບພາບກ່ອນອັບໂຫຼດ
 function previewImage(event, imgId, containerId, placeholderId) {
     const file = event.target.files[0];
     if (file) {
@@ -112,9 +106,19 @@ function previewImage(event, imgId, containerId, placeholderId) {
     }
 }
 
+// ຟັງຊັນຊ່ວຍແປງ File ໃຫ້ເປັນ Base64 ສົ່ງໄປ Google Sheet
+function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
 // ໂຫຼດຂໍ້ມູນແຂວງ ແລະ ເມືອງ ພ້ອມກຳນົດຄ່າເລີ່ມຕົ້ນເມື່ອເປີດເວັບ
 document.addEventListener('DOMContentLoaded', () => {
-    showPage(1); // ໃຫ້ເລີ່ມຕົ້ນທີ່ໜ້າ 1 ສະເໝີ
+    showPage(1);
 
     const laoData = {
         "ນະຄອນຫຼວງວຽງຈັນ": ["ຈັນທະບູລີ", "ສີໂຄດຕະບອງ", "ໄຊເສດຖາ", "ສີສັດຕະນາກ", "ນາຊາຍທອງ", "ໄຊທານີ", "ຫາດຊາຍຟອງ", "ສັງທອງ", "ປາກງື່ມ"],
@@ -183,43 +187,77 @@ document.addEventListener('DOMContentLoaded', () => {
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault(); 
+            console.log("-> 1. เริ่มกดปุ่มส่งฟอร์มแล้ว");
 
             const loadingModal = document.getElementById('loadingModal');
             const spinnerBox = document.getElementById('spinnerBox');
-            const successBox = document.getElementById('successBox');
 
-            // 1. ເປີດ Modal ໃຫ້ວົງມົນໝຸນ ແລະ ສະແດງຂໍ້ຄວາມ "ກຳລັງບັນທຶກ"
             if (loadingModal) loadingModal.style.display = 'flex';
-            if (spinnerBox) spinnerBox.style.display = 'block';
-            if (successBox) successBox.style.display = 'none';
+
+            if (spinnerBox) {
+                spinnerBox.innerHTML = `
+                    <div class="spinner"></div>
+                    <div class="loading-text">ກຳລັງບັນທຶກ<span class="dots"></span></div>
+                `;
+            }
 
             try {
                 const formData = new FormData(this);
+                const data = {};
+                
+                // ດຶງຂໍ້ມູນ Text ທຳມະດາຈາກຟອມ
+                formData.forEach((value, key) => {
+                    if (typeof value === 'string') {
+                        data[key] = value;
+                    }
+                });
 
-                // ** ໃຫ້ປ່ຽນ URL ບ່ອນນີ້ເປັນ Link Server ຕົວຈິງຂອງອ້າຍ (ທີ່ Deploy ແລ້ວ) **
-                // ຖ້າເປັນ Web ທີ່ຢູ່ GitHub ມັນຕ້ອງຍິງໄປຫາ Backend ທີ່ອອນລາຍຢູ່
-               await fetch('http://localhost:3000/register', {
-                method: 'POST',
-                body: formData
-            });
+                // ດຶງໄຟລ໌ຕາມ id ທີ່ຖືກຕ້ອງໃນ HTML ຂອງທ່ານ
+                const slipFile = document.getElementById('slipInput').files[0];
+                const studentFile = document.getElementById('studentImgInput').files[0];
+
+                // แปลງຮູບສະລິບເປັນ Base64
+                if (slipFile) {
+                    data.Slip_image = await getBase64(slipFile);
+                    data.Slip_filename = slipFile.name;
+                }
+
+                // แปลງຮູບນັກຮຽນເປັນ Base64
+                if (studentFile) {
+                    data.Student_image = await getBase64(studentFile);
+                    data.Student_filename = studentFile.name;
+                }
+
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbxbUjtd5M4c8aS46YXYfKhlFSIqDfXX4OEb-z8Cd2jcJFhCsDXJE5K4F_mWpVFzB6WD/exec'; 
+                console.log("-> กำลังส่งข้อมูลไป Apps Script...", data);
+
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                console.log("-> ผลลัพธ์จาก Server:", result);
+
+                if (result.status === "success") {
+                    if (spinnerBox) {
+                        spinnerBox.innerHTML = `
+                            <div class="success-icon">✓</div>
+                            <div class="loading-text">ບັນທຶກຂໍ້ມູນສຳເລັດ!</div>
+                        `;
+                    }
+                    setTimeout(() => {
+                        window.location.reload(); 
+                    }, 1500);
+                } else {
+                    throw new Error(result.message || "ເກີດข้อผิดพลาดໃນ Server");
+                }
 
             } catch (error) {
-                console.log('Sync error:', error);
+                console.error('-> พบ Error:', error);
+                alert('ເກີດຂໍ້ຜິດພາດໃນການສົ່ງຂໍ້ມູນ: ' + error.message);
+                if (loadingModal) loadingModal.style.display = 'none';
             }
-
-            // 2. ໃຫ້ວົງມົນໝຸນ 3.5 ວິນາທີ 
-            setTimeout(() => {
-                // ປິດວົງມົນໂຫຼດ
-                if (spinnerBox) spinnerBox.style.display = 'none';
-                
-                // POP ໜ້າສຳເລັດຂຶ້ນມາ ພ້ອມ Icon ສີຂຽວ ແລະ ຂໍ້ຄວາມ "ບັນທຶກຂໍ້ມູນສຳເລັດ"
-                if (successBox) successBox.style.display = 'block';
-
-                // 3. ໃຫ້ໂຊວ໌ໜ້າສຳເລັດຄ້າງໄວ້ 1.5 ວິນາທີ ແລ້ວ Refresh ມາໜ້າລົງທະບຽນທັນທີ (ກັບມາທີ່ລິ້ງ GitHub ຂອງເວັບ)
-                setTimeout(() => {
-                    window.location.href = window.location.origin + window.location.pathname; 
-                }, 1500); 
-            }, 3500); 
         });
     }
 });
