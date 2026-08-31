@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('registrationForm');
 
@@ -187,15 +188,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const spinnerBox = document.getElementById('spinnerBox');
             const successBox = document.getElementById('successBox');
 
-            // 1. ເປີດ Modal ໃຫ້ວົງມົນໝຸນ
+            // 1. ເປີດ Modal ໃຫ້ວົງມົນໝຸນ ແລະ ສະແດງຂໍ້ຄວາມກຳລັງບັນທຶກພ້ອມ 3 ຈ້ຳ
             if (loadingModal) loadingModal.style.display = 'flex';
             if (spinnerBox) spinnerBox.style.display = 'block';
             if (successBox) successBox.style.display = 'none';
+
             try {
                 const formData = new FormData(this);
 
-                // ສົ່ງຂໍ້ມູນໄປບັນທຶກລົງ Server 
-                fetch('http://localhost:3000/register', {
+                // ສົ່ງຂໍ້ມູນໄປ Server ຜ່ານ IP Address ຂອງຄອມ
+                fetch('http://192.168.167.195:3000/register', {
                     method: 'POST',
                     body: formData
                 }).catch(err => console.log('Background fetch error:', err));
@@ -204,17 +206,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error:', error);
             }
 
-            // 2. ໃຫ້ວົງມົນໝຸນໄປ 2.5 ວິນາທີ 
+            // 2. ໃຫ້ວົງມົນໝຸນ 3.5 ວິນາທີ (ຕາມທີ່ອ້າຍຕ້ອງການ)
             setTimeout(() => {
-                // ປິດວົງມົນໝຸນ ແລ້ວເປີດ Icon ສີຂຽວ (ເຄື່ອງໝາຍຖືກ)
+                // ປິດວົງມົນໂຫຼດ
                 if (spinnerBox) spinnerBox.style.display = 'none';
-                if (successBox) successBox.style.display = 'block'; // ບັງຄັບສະແດງກ່ອງ success
+                
+                // POP ໜ້າສຳເລັດຂຶ້ນມາ ພ້ອມ Icon ສີຂຽວ ແລະ ຂໍ້ຄວາມ "ບັນທຶກຂໍ້ມູນສຳເລັດ"
+                if (successBox) successBox.style.display = 'block';
 
-                // 3. ໃຫ້ໂຊວ໌ Icon ສີຂຽວຄ້າງໄວ້ 0.8 ວິນາທີ ແລ້ວຄ่อย Refresh ກັບໜ້າ 1
+                // 3. ໃຫ້ໂຊວ໌ໜ້າສຳເລັດຄ້າງໄວ້ 1.5 ວິນາທີ ແລ້ວ Refresh ກັບມາໜ້າລົງທະບຽນ
                 setTimeout(() => {
-                    window.location.href = 'http://localhost:3000/'; 
-                }, 800); 
-            }, 2500);
+                    window.location.href = 'http://192.168.167.195:3000/'; 
+                }, 1500); 
+            }, 3500); // 3.5 ວິນາທີສຳລັບຕອນກຳລັງບັນທຶກ
         });
     }
 });
