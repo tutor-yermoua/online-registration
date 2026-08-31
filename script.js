@@ -137,3 +137,108 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+function updateStepIndicator(currentStep) {
+    const steps = document.querySelectorAll('.step-item');
+    const progressLine = document.getElementById('progressLine');
+
+    // ປັບຄວາມຍາວເສັ້ນສີຂຽວ
+    if (currentStep === 1) {
+        progressLine.style.width = '0%';
+    } else if (currentStep === 2) {
+        progressLine.style.width = '50%';
+    } else if (currentStep === 3) {
+        progressLine.style.width = '100%';
+    }
+
+    // ປ່ຽນ Class active ຂອງແຕ່ລະວົງມົນ
+    steps.forEach((step, index) => {
+        const stepNum = index + 1;
+        if (stepNum <= currentStep) {
+            step.classList.add('active');
+        } else {
+            step.classList.remove('active');
+        }
+    });
+}
+// ຕົວປານເກັບໜ້າປັດຈຸບັນ
+let currentStep = 1;
+
+function updateStepIndicator() {
+    const totalSteps = 3;
+    const stepItems = document.querySelectorAll('.step-item');
+    
+    stepItems.forEach((item, index) => {
+        if (index < currentStep) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+
+    const progressLine = document.getElementById('progressLine');
+    if (progressLine) {
+        // ປັບຄຳນວນເປີເຊັນໃໝ່ ເພື່ອໃຫ້ເສັ້ນໄປຢຸດຢູ່ກິ່ງກາງວົງມົນເລກ 3 ພໍດີ
+        // ຖ້າຢູ່ໜ້າ 3 ໃຫ້ width ເປັນປະມານ 88% - 90% (ຂຶ້ນກັບຄວາມກວ້າງຂອງ wrapper)
+        let percentage = 0;
+        if (currentStep === 1) {
+            percentage = 0;
+        } else if (currentStep === 2) {
+            percentage = 50;
+        } else if (currentStep === 3) {
+            percentage = 100; // ແກ້ໄຂໄລຍະນີ້
+        }
+        
+        // ໃຊ້ວິທີຄຳນວນແບບຫັກລบໄລຍະຂອບວົງມົນອອກ ເພື່ອບໍ່ໃຫ້ເສັ້ນກາຍ
+        let calculatedPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        
+        // ຖ້າຢູ່ໜ້າ 3 ໃຫ້ລົດລົງໜ້ອຍໜຶ່ງເພື່ອບໍ່ໃຫ້ລື່ນຂອບວົງມົນ (ປັບເປັນ 92% ຫຼື 95% ຕາມຄວາມເໝາະສົມ)
+        if (currentStep === 3) {
+            progressLine.style.width = '92%'; 
+        } else if (currentStep === 2) {
+            progressLine.style.width = '48%';
+        } else {
+            progressLine.style.width = '0%';
+        }
+    }
+}
+
+// ເມື່ອກົດປຸ່ມ ຕໍ່ໄປ (Next)
+function nextPage() {
+    if (currentStep < 3) {
+        // ซ่อนໜ້າເກົ່າ
+        document.getElementById(`page-${currentStep}`).style.display = 'none';
+        currentStep++;
+        // ສະແດງໜ້າໃໝ່
+        document.getElementById(`page-${currentStep}`).style.display = 'block';
+        updateStepIndicator();
+    }
+}
+
+// ເເມື່ອກົດປຸ່ມ ກັບຄືນ (Back)
+function prevPage() {
+    if (currentStep > 1) {
+        // ซ่อนໜ້າເກົ່າ
+        document.getElementById(`page-${currentStep}`).style.display = 'none';
+        currentStep--;
+        // ສະແດງໜ້າເກົ່າ
+        document.getElementById(`page-${currentStep}`).style.display = 'block';
+        updateStepIndicator();
+    }
+}
+
+// ສຳຫຼັບໜ້າເລືອກຄອສແລ້ວໄປໜ້າ 3 ໂດຍກົງ (ຖ້າມີຟັງຊັນນີ້)
+function selectCourseAndPay(courseName, coursePrice) {
+    document.getElementById('selectedCourseName').innerText = courseName;
+    document.getElementById('selectedCoursePrice').innerText = coursePrice;
+    
+    // ซ่อนໜ້າ 2 แล้วໄປໜ້າ 3
+    document.getElementById(`page-${currentStep}`).style.display = 'none';
+    currentStep = 3;
+    document.getElementById(`page-${currentStep}`).style.display = 'block';
+    updateStepIndicator();
+}
+
+// ເອີ້ນໃຊ້ງານຄັ້ງທຳອິດເວລາໂຫຼດໜ້າเว็บ
+window.onload = function() {
+    updateStepIndicator();
+};

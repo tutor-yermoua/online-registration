@@ -19,6 +19,17 @@
             <p>ຕິວເຕີ້ເຢີມົວ • ສອນເພີ່ມກຽມນັກຮຽນເກັ່ງ</p>
         </div>
 
+        <!-- 🌟 Step Indicator (ເພີ່ມເຂົ້າມາໄວ້ໃນກ່ອງສີຂາວ ພາຍໃຕ້ຫົວຂໍ້ສີຟ້າ) -->
+        <div class="step-indicator-container">
+            <div class="step-wrapper">
+                <div class="step-bg-line"></div>
+                <div id="progressLine" class="step-progress-line"></div>
+                <div class="step-item active" data-step="1">1</div>
+                <div class="step-item" data-step="2">2</div>
+                <div class="step-item" data-step="3">3</div>
+            </div>
+        </div>
+
         <form id="registrationForm" action="next_page.php" method="POST" enctype="multipart/form-data">
             
             <!-- ================= PAGE 1 ================= -->
@@ -92,18 +103,18 @@
                     </div>
                 </div>
 
-                <!-- ປຸ່ມຕໍ່ໄປ (ແກ້ໄຂໃຫ້ກົດໄດ້ປົກກະຕິແລ້ວ) -->
                 <button type="button" class="btn-next" onclick="nextPage()" style="position: relative; z-index: 10; width: 100%; background: #2563eb; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;">ຕໍ່ໄປ <i class="fa-solid fa-arrow-right"></i></button>
             </div>
 
 
-          <!-- ================= PAGE 2 ================= -->
+            <!-- ================= PAGE 2 ================= -->
             <div class="form-page" id="page-2" style="display: none;">
-                <div class="section-title" style="margin-bottom: 5px;">
+                <div class="section-title" style="margin-top: -35px; margin-bottom: 15px;">
                     <span class="icon-box" style="color: #0044ff;font-size: 15px;"><i class="fa-solid fa-book"></i></span> ເລືອກວິຊາ ແລະ ຄອສຮຽນ
                 </div>
-                <p style="font-size: 13px; color: #666; margin-top: -8px; margin-bottom: 16px;margin-left: 38px;">ເລືອກຄອສທີ່ທ່ານຕ້ອງການລົງທະບຽນ</p>
- <!-- Course 1 -->
+                <p style="font-size: 13px; color: #666; margin-top: -20px; margin-bottom: 16px;margin-left: 38px;">ເລືອກຄອສທີ່ທ່ານຕ້ອງການລົງທະບຽນ</p>
+                
+                <!-- Course 1 -->
                 <div class="course-card" style="background: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #3b82f6; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                     <h3 style="font-size: 16px; color: #1e293b; margin-bottom: 10px; font-weight: 700; white-space: nowrap;">ຄອສຕິວ ນຮ ເກັ່ງ ຟີຊິກ ມ.4</h3>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
@@ -171,7 +182,7 @@
                     </div>
                 </div>
                 <div>
-                    <button type="button" class="btn-prev" onclick="prevPage()" style="width: 100%; background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-arrow-left"></i> ກັບຄືນ</button>
+                    <button type="button" class="btn-prev" onclick="prevPage()" style="width: 100%; background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-arrow-left"></i> ກับຄືນ</button>
                 </div>
             </div>
 
@@ -183,8 +194,7 @@
                     <p id="selectedCoursePrice"></p>
                 </div>
 
-                <div class="section-title" style="margin-bottom: 15px;">
-                    <span class="icon-box" style="color: #10b981;"><i class="fa-solid fa-qrcode"></i></span> ຊຳລະຄ່າເທີມ
+                <div class="section-title" style="margin-top: -10px; margin-bottom: 15px;">                    <span class="icon-box" style="color: #10b981;"><i class="fa-solid fa-qrcode"></i></span> ຊຳລະຄ່າເທີມ
                 </div>
                 <p style="font-size: 14px; color: #666; margin-top: -18px; margin-bottom: 16px;margin-left: 38px;">ສະແກນ QR ຜ່ານແອບທະນາຄານ (BCEL One)</p>
 
@@ -223,7 +233,7 @@
                     </div>
                     <div id="slipPlaceholder">
                         <i class="fa-solid fa-file-lines" style="font-size: 32px; color: #f87171; margin-bottom: 8px;"></i>
-                        <p style="font-size: 14px; color: #334155; font-weight: 600;">ຄລິກ ຫຼື ລາກຮູບສະລິບໃສ່ນີ້</p>
+                        <p style="font-size: 14px; color: #334155; font-weight: 600;">ຄລິກ ຫຼື ລາກຮູບສະລິບໃສ່ນี้</p>
                         <p style="font-size: 12px; color: #64748b; margin-top: 4px;">ຮອງຮັບ PNG, JPG, JPEG</p>
                     </div>
                     <input type="file" id="slipInput" name="slip_image" accept="image/*" style="display: none;" onchange="previewImage(event, 'slipPreviewImg', 'slipPreviewContainer', 'slipPlaceholder')">
@@ -238,7 +248,7 @@
                     </div>
                     <div id="studentPlaceholder">
                         <i class="fa-solid fa-user-tie" style="font-size: 32px; color: #f87171; margin-bottom: 8px;"></i>
-                        <p style="font-size: 14px; color: #334155; font-weight: 600;">ຄລິກ ຫຼື ລາກຮູບນັກຮຽນໃສ່ນີ້</p>
+                        <p style="font-size: 14px; color: #334155; font-weight: 600;">ຄລິກ ຫຼື ລາກຮູບນັກຮຽນໃສ່ນี้</p>
                         <p style="font-size: 12px; color: #64748b; margin-top: 4px;">ຮອງຮັບ PNG, JPG, JPEG</p>
                     </div>
                     <input type="file" id="studentImgInput" name="student_image" accept="image/*" style="display: none;" onchange="previewImage(event, 'studentPreviewImg', 'studentPreviewContainer', 'studentPlaceholder')">
@@ -246,11 +256,12 @@
 
                 <div style="display: flex; gap: 10px;">
                     <button type="button" class="btn-prev" onclick="prevPage()" style="flex: 1; background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-arrow-left"></i> ກັບຄືນ</button>
-                    <button type="submit" class="btn-submit" style="flex: 2; background: #10b981; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-check"></i> ສົ່ງຂໍ້ມູນລົງທະບຽນ</button>
+                    <button type="submit" class="btn-submit" style="flex: 2; background: #10b981; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-check"></i> ສົ່ງຂໍ້ມູນລົງທะບຽນ</button>
                 </div>
             </div>
         </form>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

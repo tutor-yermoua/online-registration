@@ -263,3 +263,67 @@ body {
     color: #2563eb; /* ສີຟຳສຳລັບ Facebook */
 }
 
+/* Step Indicator Styles */
+.step-indicator-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 25px 0px 25px; /* ເພີ່ມ padding ຊ້າຍ-ຂວາ ໃຫ້ 1 ແລະ 3 ຖອຍອອກຫ່າງຂອບ */
+    background: #fff;
+    margin-bottom: 0px;
+}
+
+.step-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%; /* ປັບເປັນ 100% ເພື່ອໃຫ້ແຜ່ເຕັມຂອບຊ້າຍຮອດຂວາ */
+    justify-content: space-between;
+}
+
+.step-bg-line {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: #e0e0e0;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.step-progress-line {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    height: 1px;
+    background: #10b981;
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+.step-item {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 10px;
+    z-index: 3;
+    transition: 0.3s;
+}
+
+.step-item.active {
+    background: #10b981;
+    color: white;
+}
+
+/* ດຶງຫົວຂໍ້ທຳອິດ (ຂໍ້ມູນສ່ວນຕົວ) ໃຫ້ຂຶ້ນໄປໃກ້ກັບກ່ອງ Step ຫຼາຍຂຶ້ນ */
+.form-page .section-title:first-child {
+    margin-top: 0px !important;
+}
