@@ -88,7 +88,7 @@ function selectCourseAndPay(courseName, coursePrice) {
 function copyAccountNumber() {
     const accNo = document.getElementById('accountNumber').innerText;
     navigator.clipboard.writeText(accNo).then(() => {
-        alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
+      //  alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
     });
 }
 
@@ -211,11 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         data[key] = value;
                     }
                 });
-
                 // ດຶງໄຟລ໌ຕາມ id ທີ່ຖືກຕ້ອງໃນ HTML ຂອງທ່ານ
                 const slipFile = document.getElementById('slipInput').files[0];
                 const studentFile = document.getElementById('studentImgInput').files[0];
-
                 // แปลງຮູບສະລິບເປັນ Base64
                 if (slipFile) {
                     data.Slip_image = await getBase64(slipFile);
