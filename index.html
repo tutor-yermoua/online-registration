@@ -103,17 +103,18 @@
                         <input type="text" name="Facebook" placeholder="ຊື່ Facebook" onfocus="this.placeholder='ປ້ອນຊື່ Facebook'" onblur="this.placeholder='ຊື່ Facebook'" required>
                     </div>
                 </div>
-
-                <button type="button" class="btn-next" onclick="nextPage()" style="position: relative; z-index: 10; width: 100%; background: #2563eb; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;">ຕໍ່ໄປ <i class="fa-solid fa-arrow-right"></i></button>
+                
+                <button type="button" class="btn-next" onclick="if(validateAndNextPage()) { nextPage(); }">
+                    ຕໍ່ໄປ <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </div>
-
 
             <!-- ================= PAGE 2 ================= -->
             <div class="form-page" id="page-2" style="display: none;">
                 <div class="section-title" style="margin-top: -35px; margin-bottom: 15px;">
-                    <span class="icon-box" style="color: #0044ff;font-size: 15px;"><i class="fa-solid fa-book"></i></span> ເລືອກວິຊາ ແລະ ຄອສຮຽນ
+                    <span class="icon-box" style="color: #0044ff; font-size: 15px;"><i class="fa-solid fa-book"></i></span> ເລືອກວິຊາ ແລະ ຄອສຮຽນ
                 </div>
-                <p style="font-size: 13px; color: #666; margin-top: -20px; margin-bottom: 16px;margin-left: 38px;">ເລືອກຄອສທີ່ທ່ານຕ້ອງການລົງທະບຽນ</p>
+                <p style="font-size: 13px; color: #666; margin-top: -20px; margin-bottom: 16px; margin-left: 38px;">ເລືອກຄອສທີ່ທ່ານຕ້ອງການລົງທະບຽນ</p>
                 
                 <!-- Course 1 -->
                 <div class="course-card" style="background: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #3b82f6; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -182,14 +183,14 @@
                         <button type="button" class="btn-select-course" onclick="selectCourseAndPay('ກຽມເສັງທຶນ MEXT', '799,000 ກີບ')" style="background: #1e293b; color: white; border: none; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-family: 'Noto Sans Lao', sans-serif; white-space: nowrap; font-size: 13px;">ເລືອກຄອສນີ້</button>
                     </div>
                 </div>
+
                 <div>
                     <button type="button" class="btn-prev" onclick="prevPage()" style="width: 100%; background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;"><i class="fa-solid fa-arrow-left"></i> ກັບຄືນ</button>
                 </div>
             </div>
 
-<!-- ================= PAGE 3 ================= -->
+            <!-- ================= PAGE 3 ================= -->
             <div class="form-page" id="page-3" style="display: none;">
-                
                 <div>
                     <input type="hidden" id="selectedCourseNameInput" name="Course_name">
                     <input type="hidden" id="selectedCoursePriceInput" name="Course_price">
@@ -203,12 +204,10 @@
                 <!-- 💎 ກ່ອງໃຫຍ່ 3 ມິຕິ (ລວມ QR ແລະ ລາຍລະອຽດ) -->
                 <div style="background: linear-gradient(145deg, #ffffff, #f0f4f8); border: 1px solid #d1d5db; border-radius: 22px; padding: 20px 22px; text-align: center; margin-bottom: 20px; box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);">
                     
-                    <!-- 🌟 ປັບ QR Code ໃຫ້ໃຫຍ່ຂຶ້ນເຕັມຂອບຕາມທີ່ຂີດໝາຍ (width/height: 240px) -->
                     <div style="margin-bottom: 14px;">
                         <img src="Logo/QR Code.png" alt="BCEL One QR Code" style="width: 240px; height: 240px; object-fit: contain; border-radius: 14px; background: #ffffff; padding: 8px; border: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
                     </div>
                     
-                    <!-- 🌟 ຍັບລາຍລະອຽດບັນຊີຂຶ້ນມາໃກ້ ແລະ เอาພື້ນຫຼັງອອກ (ໃຫ້ເປັນແບບລຽບ ບໍ່ມີກ່ອງຮອງ) -->
                     <div style="text-align: left; padding: 0 5px;">
                         <div style="font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
                             <i class="fa-solid fa-circle-info" style="color: #2563eb;"></i> ລາຍລະອຽດບັນຊີ:
@@ -225,10 +224,10 @@
                             </div>
                             <button type="button" onclick="copyAccountNumber()" style="background: #ffffff; border: 1px solid #cbd5e1; color: #1e293b; font-weight: 700; cursor: pointer; font-size: 10px; font-family: 'Noto Sans Lao', sans-serif; display: flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                                 <i class="fa-regular fa-copy" style="color: #2563eb;"></i> ກ໊ອບປີ້
-                          </button>
-                      </div>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-          </div>
 
                 <!-- 🌟 ຈັດ "ຮູບສະລິບ" ແລະ "ຮູບນັກຮຽນ" ให้อยູ່ໃນແຖວດຽວກັນ ແລະ ລັອກຂະໜາດກ່ອງຄົງທີ່ -->
                 <div style="display: flex; gap: 12px; margin-bottom: 20px;">
@@ -293,26 +292,24 @@
             </div>
         </div>
     </div>
+
     <!-- ================= WELCOME / SPLASH SCREEN ================= -->
     <div id="welcome-splash-screen">
-        
-        <!-- ໂລໂກ້ (ໃຊ້ Class CSS ຄວບຄຸມຂະໜາດ ແລະ ການໝຸນ) -->
         <div class="splash-logo-container">
             <img src="Logo/Logo.jpg" alt="YMK Logo" class="splash-logo">
         </div>
 
-        <!-- ກ່ອງຂໍ້ຄວາມ 3 ແຖວ -->
         <div class="splash-text-container">
             <div class="splash-text line-1">ຍິນດີຕ້ອນຮັບເຂົ້າສູ່ການລົງທະບຽນ</div>
             <div class="splash-text line-2">ຮຽນອອນໄລນ໌ ກຽມເສັງນັກຮຽນເກັ່ງ</div>
             <div class="splash-text line-3">ວິຊາ ຟີຊິກສາດ</div>
         </div>
 
-        <!-- ປຸ່ມລົງທະບຽນຮຽນ -->
         <button type="button" onclick="enterMainForm()" class="splash-btn">
             ລົງທະບຽນຮຽນ
         </button>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

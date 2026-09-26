@@ -10,10 +10,16 @@ html, body {
 
 body {
     font-family: 'Noto Sans Lao', 'Phetsarath OT', sans-serif;
-    padding: 10px;/* 👈 ໄລຍະຫ່າງຂອບຊ້າຍ ແລະ ຂວາ 12px ທີ່ຈະເຮັດໃຫ້ເຫັນພື້ນຫຼັງ */
+    padding: 10px; /* 👈 ໄລຍະຫ່າງຂອບຊ້າຍ ແລະ ຂວາ 12px ທີ່ຈະເຮັດໃຫ້ເຫັນພື້ນຫຼັງ */
     display: flex;
     justify-content: center;
     align-items: center;
+    background: #f1f5f9; /* ສີພື້ນຫຼັງໜ້າຈໍໂດຍລວມເປັນສີເທົາອ່ອນ */
+    color: #0f172a; /* ສີຕົວໜັງສືຫຼັກ */
+}
+
+* {
+    box-sizing: border-box;
 }
 
 /* --- Form Container --- */
@@ -27,82 +33,82 @@ body {
     box-sizing: border-box;
 }
 
-* {
-    box-sizing: border-box;
-}
 /* --- Header & Logo Styling (ຈັດຂອບໂລໂກ້) --- */
 .form-header {
     background: #0033ff; /* ສີພື້ນຫຼັງສ່ວນຫົວຟອມເປັນສີຟ້າ */
-    padding: 30px 20px; /* រະຍະຫ່າງຂອບໃນຂອງສ່ວນຫົວ */
-    text-align: center; /* จัดຂໍ້ຄວາມໃຫ້ຢູ່ກິ່ງກາງ */
-    color: #ffffff; /* ສີຕົວໜັງສືເປັນສີຂາວ */
+    padding: 30px 20px;  /* ໄລຍະຫ່າງຂອບໃນຂອງສ່ວນຫົວ */
+    text-align: center;  /* ຈັດຂໍ້ຄວາມໃຫ້ຢູ່ກິ່ງກາງ */
+    color: #ffffff;      /* ສີຕົວໜັງສືເປັນສີຂາວ */
 }
 
 .logo-container {
-    display: flex; /* ໃຊ້ Flexbox ຈັດວາງຕຳແໜ່ງໂລໂກ້ */
+    display: flex;           /* ໃຊ້ Flexbox ຈັດວາງຕຳແໜ່ງໂລໂກ້ */
     justify-content: center; /* ຈັດໂລໂກ້ให้อยู่ກິ່ງກາງຕາມລວງນອນ */
-    align-items: center; /* ຈັດໂລໂກ້ให้อยู่ກິ່ງກາງຕາມລວງຕັ້ງ */
-    margin-bottom: 15px; /* រະຍະຫ່າງຂອບລຸ່ມຂອງກ່ອງໂລໂກ້ */
+    align-items: center;     /* ຈັດໂລໂກ້ให้อยູ່ກິ່ງກາງຕາມລວງຕັ້ງ */
+    margin-bottom: 15px;     /* ໄລຍະຫ່າງຂອບລຸ່ມຂອງກ່ອງໂລໂກ້ */
 }
 
-/* ຈັດຂອບຮູບໂລໂກ້ໃຫ້ເປັນວົງມົນ ມີຂອບສີຂາວ ແລະ ເງົາ */
 .logo-img {
-    width: 140px; /* ຄວາມກວ້າງຂອງຮູບໂລໂກ້ */
-    height: 140px; /* ຄວາມສູງຂອງຮູບໂລໂກ້ */
-    object-fit: cover; /* ຈັດຮູບພາບໃຫ້ເຕັມພື້ນທີ່ໂດຍບໍ່ໃຫ້ບິດເບືອນ */
-    border-radius: 50%; /* ເຮັດໃຫ້ຮູບພາບເປັນວົງມົນ */
-    border: 3px solid #ffffff; /* ເພີ່ມຂອບສີຂາວອ້ອມຮູບໂລໂກ້ */
+    width: 140px;               /* ຄວາມກວ້າງຂອງຮູບໂລໂກ້ */
+    height: 140px;              /* ຄວາມສູງຂອງຮູບໂລໂກ້ */
+    object-fit: cover;          /* ຈັດຮູບພາບໃຫ້ເຕັມພື້ນທີ່ໂດຍບໍ່ໃຫ້ບິດເບືອນ */
+    border-radius: 50%;         /* ເຮັດໃຫ້ຮູບພາບເປັນວົງມົນ */
+    border: 3px solid #ffffff;  /* ເພີ່ມຂອບສີຂາວອ້ອມຮູບໂລໂກ້ */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* ເພີ່ມເງົາໃຫ້ຮູບໂລໂກ້ */
-    background: #ffffff; /* ສີພື້ນຫຼັງສຳຮອງຂອງຮູບ */
+    background: #ffffff;        /* ສີພື້ນຫຼັງສຳຮອງຂອງຮູບ */
 }
 
 .form-header h2 {
-    margin: 0 0 5px 0; /* រະຍະຫ່າງຂອບຂອງຫົວຂໍ້ໃຫຍ່ */
-    font-size: 22px; /* ຂະໜາດຕົວໜັງສືຫົວຂໍ້ໃຫຍ່ */
-    font-weight: 700; /* ຄວາມໜາຂອງຕົວໜັງສືຫົວຂໍ້ໃຫຍ່ */
+    margin: 0 0 5px 0;                    /* ໄລຍະຫ່າງຂອບຂອງຫົວຂໍ້ໃຫຍ່ */
+    font-size: 22px;                      /* ຂະໜາດຕົວໜັງສືຫົວຂໍ້ໃຫຍ່ */
+    font-weight: 700;                     /* ຄວາມໜາຂອງຕົວໜັງສືຫົວຂໍ້ໃຫຍ່ */
     font-family: 'Noto Sans Lao', sans-serif; /* ຕັ້ງຄ່າຟອນພາສາລາວ */
 }
 
 .form-header p {
-    margin: 0; /* ຍົກເລີກໄລຍະຫ່າງຂອບ */
-    font-size: 13px; /* ຂະໜາດຕົວໜັງສືຄຳອະທິບາຍ */
-    opacity: 0.9; /* ຄວາມໂປ່ງແສງຂອງຕົວໜັງສື */
+    margin: 0;                            /* ຍົກເລີກໄລຍະຫ່າງຂອບ */
+    font-size: 13px;                      /* ຂະໜາດຕົວໜັງສືຄຳອະທິບາຍ */
+    opacity: 0.9;                         /* ຄວາມໂປ່ງແສງຂອງຕົວໜັງສື */
     font-family: 'Noto Sans Lao', sans-serif; /* ຕັ້ງຄ່າຟອນພາສາລາວ */
 }
 
 /* --- ຈັດການສ່ວນເນື້ອໃນຟອມ --- */
 .form-page {
-    padding: 10px 25px; /* រະຍະຫ່າງຂອບໃນຂອງໜ້າຟອມ */
+    padding: 10px 25px; /* ໄລຍະຫ່າງຂອບໃນຂອງໜ້າຟອມ */
 }
 
 .section-title {
-    font-size: 15px; /* ຂະໜາດຕົວໜັງສືຫົວຂໍ້ໝວດໝູ່ */
-    font-weight: 700; /* ຄວາມໜາຂອງຫົວຂໍ້ໝວດໝູ່ */
-    color: #581c87; /* ສີຕົວໜັງສືເປັນສີມ່ວງເຂັ້ມ */
-    margin: 20px 0 12px 0; /* រະຍະຫ່າງຂອບນອກຂອງຫົວຂໍ້ໝວດໝູ່ */
-    display: flex; /* ໃຊ້ Flexbox จัดລຽງໄອຄອນແລະຂໍ້ຄວາມ */
-    align-items: center; /* จัดຕຳແໜ່ງຕາມລວງຕັ້ງໃຫ້ກົງກັນ */
-    /* gap: px; រະຍະຫ່າງລະຫວ່າງໄອຄອນແລະຂໍ້ຄວາມ */
+    font-size: 15px;     /* ຂະໜາດຕົວໜັງສືຫົວຂໍ້ໝວດໝູ່ */
+    font-weight: 700;    /* ຄວາມໜາຂອງຫົວຂໍ້ໝວດໝູ່ */
+    color: #581c87;      /* ສີຕົວໜັງສືເປັນສີມ່ວງເຂັ້ມ */
+    margin: 20px 0 12px 0; /* ໄລຍະຫ່າງຂອບນອກຂອງຫົວຂໍ້ໝວດໝູ່ */
+    display: flex;       /* ໃຊ້ Flexbox ຈັດລຽງໄອຄອນແລະຂໍ້ຄວາມ */
+    align-items: center; /* ຈັດຕຳແໜ່ງຕາມລວງຕັ້ງໃຫ້ກົງກັນ */
+}
+
+/* ດຶງຫົວຂໍ້ທຳອິດ (ຂໍ້ມູນສ່ວນຕົວ) ໃຫ້ຂຶ້ນໄປໃກ້ກັບກ່ອງ Step ຫຼາຍຂຶ້ນ */
+.form-page .section-title:first-child {
+    margin-top: 0px !important;
 }
 
 /* --- Input Group Box & Floating Label --- */
 .input-group-box {
-    position: relative; /* ຕັ້ງຄ່າຕຳແໜ່ງເປັນແບບສຳພັດສຳລັບ Label ທີ່ລອຍໄດ້ */
-    margin-bottom: 20px; /* រະຍະຫ່າງຂອບລຸ່ມລະຫວ່າງກ່ອງປ້ອນຂໍ້ມູນ */
+    position: relative;  /* ຕັ້ງຄ່າຕຳແໜ່ງເປັນແບບສຳພັດສຳລັບ Label ທີ່ລອຍໄດ້ */
+    margin-bottom: 20px; /* ໄລຍະຫ່າງຂອບລຸ່ມລະຫວ່າງກ່ອງປ້ອນຂໍ້ມູນ */
 }
 
 .floating-label {
-    position: absolute; /* ຕັ້ງຕຳແໜ່ງແບບອິດສະລະ (ลອຍ) ຢູ່ເທິງກ່ອງປ້ອນຂໍ້ມູນ */
-    top: -9px; /* ຕຳແໜ່ງຂອບເທິງ */
-    left: 14px; /* ຕຳແໜ່ງຂອບຊ້າຍ */
+    position: absolute;  /* ຕັ້ງຕຳແໜ່ງແບບອິດສະລະ (ลອຍ) ຢູ່ເທິງກ່ອງປ້ອນຂໍ້ມູນ */
+    top: -9px;           /* ຕຳແໜ່ງຂອບເທິງ */
+    left: 14px;          /* ຕຳແໜ່ງຂອບຊ້າຍ */
     background: #ffffff; /* ສີພື້ນຫຼັງຂອງ Label ເພື່ອທັບເສັ້ນຂອບກ່ອງ */
-    padding: 0 6px; /* រະຍະຫ່າງຂອບໃນຊ້າຍ-ຂວາຂອງ Label */
-    font-size: 11px; /* ຂະໜາດຕົວໜັງສື Label */
-    font-weight: 700; /* ຄວາມໜາຂອງຕົວໜັງສື Label */
-    color: #0033ff; /* ສີຕົວໜັງສື Label ເປັນສີຟ້າ */
-    z-index: 10; /* ລຳດັບການວາງຊ້ອນທັບให้อยู่ດ້ານເທິງສຸດ */
-    opacity: 0; /* ຕັ້ງຄ່າຄວາມໂປ່ງແສງເປັນ 0 ເພື່ອເຊື່ອງໄວ້ໃນຕອນທຳອິດ */
-    visibility: hidden; /* ເຊື່ອງການເບິ່ງເຫັນໃນຕອນທຳອິດ */
+    padding: 0 6px;      /* ໄລຍະຫ່າງຂອບໃນຊ້າຍ-ຂວາຂອງ Label */
+    font-size: 11px;     /* ຂະໜາດຕົວໜັງສື Label */
+    font-weight: 700;    /* ຄວາມໜາຂອງຕົວໜັງສື Label */
+    color: #0033ff;      /* ສີຕົວໜັງສື Label ເປັນສີຟ້າ */
+    z-index: 10;         /* ລຳດັບການວາງຊ້ອນທັບให้อยู่ດ້ານເທິງສຸດ */
+    opacity: 0;          /* ຕັ້ງຄ່າຄວາມໂປ່ງແສງເປັນ 0 ເພື່ອເຊື່ອງໄວ້ໃນຕອນທຳອິດ */
+    visibility: hidden;  /* ເຊື່ອງການເບິ່ງເຫັນໃນຕອນທຳອິດ */
     transition: all 0.2s ease-in-out; /* ຄວາມໄວໃນການສະແດງຜົນແບບຄ່ອຍໆປ່ຽນ */
 }
 
@@ -110,77 +116,74 @@ body {
 .input-group-box:focus-within .floating-label,
 .input-group-box input:not(:placeholder-shown) ~ .floating-label,
 .input-group-box.always-show .floating-label {
-    opacity: 1; /* ປ່ຽນຄວາມໂປ່ງແສງໃຫ້ເຫັນຊັດເຈນ */
+    opacity: 1;          /* ປ່ຽນຄວາມໂປ່ງແສງໃຫ້ເຫັນຊັດເຈນ */
     visibility: visible; /* ສະແດງ Label ອອກມາ */
 }
 
 /* --- Input Field Styling --- */
+.input-field, 
+.select-wrapper {
+    border: 1.5px solid #d1d5db !important;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
 .input-field {
-    position: relative; /* ຕັ້ງຄ່າຕຳແໜ່ງພາຍໃນກ່ອງປ້ອນຂໍ້ມູນ */
-    display: flex; /* ໃຊ້ Flexbox จัดລຽງໄອຄອນແລະຊ່ອງປ້ອນຂໍ້ມູນ */
+    position: relative;  /* ຕັ້ງຄ່າຕຳແໜ່ງພາຍໃນກ່ອງປ້ອນຂໍ້ມູນ */
+    display: flex;       /* ໃຊ້ Flexbox ຈັດລຽງໄອຄອນແລະຊ່ອງປ້ອນຂໍ້ມູນ */
     align-items: center; /* ຈັດຕຳແໜ່ງให้อยู่ກິ່ງກາງຕາມລວງຕັ້ງ */
-    border: 1px solid #cbd5e1; /* ສີຂອບຂອງກ່ອງປ້ອນຂໍ້ມູນ */
     border-radius: 12px; /* ເຮັດໃຫ້ມຸມຂອງກ່ອງປ້ອນຂໍ້ມູນມົນ */
     background: #ffffff; /* ສີພື້ນຫຼັງຂອງກ່ອງປ້ອນຂໍ້ມູນເປັນສີຂາວ */
-    padding: 0 15px; /* រະຍະຫ່າງຂອບໃນຊ້າຍ-ຂວາ */
-    height: 52px; /* ຄວາມສູງຂອງກ່ອງປ້ອນຂໍ້ມູນ */
+    padding: 0 15px;     /* ໄລຍະຫ່າງຂອບໃນຊ້າຍ-ຂວາ */
+    height: 52px;        /* ຄວາມສູງຂອງກ່ອງປ້ອນຂໍ້ມູນ */
     transition: all 0.3s ease; /* ຄວາມໄວໃນການປ່ຽນແປງສະຖານະ */
 }
 
-.input-field:focus-within {
-    border-color: #0033ff; /* ປ່ຽນສີຂອບເປັນສີຟ້າເວລາຄລິກປ້ອນຂໍ້ມູນ */
+.input-field:focus-within, 
+.select-wrapper:focus-within {
+    border: 1.5px solid #2563eb !important;
     box-shadow: 0 0 0 3px rgba(0, 51, 255, 0.1); /* ເພີ່ມແສງສະຫວ່າງອ້ອມຂອບເວລາຄລິກ */
 }
 
+.input-field.input-error, 
+.select-wrapper.input-error {
+    border: 1.5px solid #dc2626 !important;
+}
+
 .input-field i.icon {
-    color: #64748b; /* ສີຂອງໄອຄອນພາຍໃນຊ່ອງປ້ອນຂໍ້ມູນ */
-    font-size: 16px; /* ຂະໜາດຂອງໄອຄອນ */
-    margin-right: 12px; /* រະຍະຫ່າງລະຫວ່າງໄອຄອນກັບຊ່ອງພິມ */
+    color: #64748b;      /* ສີຂອງໄອຄອນພາຍໃນຊ່ອງປ້ອນຂໍ້ມູນ */
+    font-size: 16px;     /* ຂະໜາດຂອງໄອຄອນ */
+    margin-right: 12px;  /* ໄລຍະຫ່າງລະຫວ່າງໄອຄອນກັບຊ່ອງພິມ */
 }
 
 .input-field input,
 .input-field select {
-    width: 100%; /* ຄວາມກວ້າງເຕັມກ່ອງ */
-    border: none; /* ຍົກເລີກເສັ້ນຂອບເດີມ */
-    outline: none; /* ຍົກເລີກເສັ້ນຂອບເວລາຄລິກ */
+    width: 100%;         /* ຄວາມກວ້າງເຕັມກ່ອງ */
+    border: none;        /* ຍົກເລີກເສັ້ນຂອບເດີມ */
+    outline: none;       /* ຍົກເລີກເສັ້ນຂອບເວລາຄລິກ */
     background: transparent; /* ພື້ນຫຼັງໂປ່ງແສງ */
-    font-size: 14px; /* ຂະໜາດຕົວໜັງສືໃນຊ່ອງປ້ອນຂໍ້ມູນ */
+    font-size: 14px;     /* ຂະໜາດຕົວໜັງສືໃນຊ່ອງປ້ອນຂໍ້ມູນ */
     font-family: 'Noto Sans Lao', sans-serif; /* ຕັ້ງຄ່າຟອນພາສາລາວ */
-    color: #1e293b; /* ສີຕົວໜັງສືທີ່ພິມລົງໄປ */
+    color: #1e293b;      /* ສີຕົວໜັງສືທີ່ພິມລົງໄປ */
+}
+
+.input-field input::placeholder {
+    color: #9ca3af !important; 
+}
+
+.input-field.input-error input,
+.input-field.input-error input::placeholder {
+    color: #dc2626 !important;
 }
 
 .dropdown-icon {
-    position: absolute; /* ຕຳແໜ່ງອິດສະລະສຳລັບໄອຄອນ Dropdown */
-    right: 15px; /* ຈັດໃຫ້ິດຢູ່ຂວາສຸດ */
-    color: #64748b; /* ສີຂອງໄອຄອນ Dropdown */
+    position: absolute;  /* ຕຳແໜ່ງອິດສະລະສຳລັບໄອຄອນ Dropdown */
+    right: 15px;         /* ຈັດໃຫ້ິດຢູ່ຂວາສຸດ */
+    color: #64748b;      /* ສີຂອງໄອຄອນ Dropdown */
     pointer-events: none; /* ປ້ອງກັນບໍ່ໃຫ້ຄລິກຖືກໄອຄອນໂດຍກົງ */
 }
 
-/* --- ປຸ່ມກົດຖัดໄປ --- */
-.btn-next {
-    width: 100%; /* ຄວາມກວ້າງເຕັມກ່ອງ */
-    height: 50px; /* ຄວາມສູງຂອງປຸ່ມ */
-    background: #0033ff; /* ສີພື້ນຫຼັງປຸ່ມເປັນສີຟ້າ */
-    color: white; /* ສີຕົວໜັງສືໃນປຸ່ມເປັນສີຂາວ */
-    border: none; /* ຍົກເລີກເສັ້ນຂອບປຸ່ມ */
-    border-radius: 12px; /* ເຮັດໃຫ້ມຸມປຸ່ມມົນ */
-    font-size: 15px; /* ຂະໜາດຕົວໜັງສືໃນປຸ່ມ */
-    font-weight: 600; /* ຄວາມໜາຂອງຕົວໜັງສືໃນປຸ່ມ */
-    font-family: 'Noto Sans Lao', sans-serif; /* ຕັ້ງຄ່າຟອນພາສາລາວ */
-    cursor: pointer; /* ປ່ຽນຮູບຮ່າງເມົ້າເປັນຮູບມືເວລາຊີ້ */
-    transition: background 0.2s; /* ຄວາມໄວໃນການປ່ຽນສີເວລາเอาເມົ້າຊີ້ */
-    margin-top: 10px; /* រະຍະຫ່າງຂອບເທິງຂອງປຸ່ມ */
-}
-
-.btn-next:hover {
-    background: #0022cc; /* ປ່ຽນສີພື້ນຫຼັງໃຫ້ເຂັ້ມຂຶ້ນເວລາเอาເມົ້າຊີ້ */
-}
-body {
-    background: #f1f5f9; /* ສີພື້ນຫຼັງໜ້າຈໍໂດຍລວມເປັນສີເທົາອ່ອນ */
-    color: #0f172a; /* ສີຕົວໜັງສືຫຼັກ */
-}
-
-/* ຈັດຮູບແບບກ່ອງ Custom Dropdown ແລະ ບັງຄັບໃຫ້ສະແດງປະມານ 5 ລາຍການພ້ອມ Scrollbar */
+/* --- Custom Dropdown --- */
 .custom-dropdown {
     position: relative;
     cursor: pointer;
@@ -192,7 +195,7 @@ body {
     display: flex;
     align-items: center;
     background: transparent;
-    border: none;
+    border: none !important; 
     outline: none;
     font-size: inherit;
     color: inherit;
@@ -227,7 +230,26 @@ body {
     background-color: #f1f1f1;
 }
 
+#provinceSelectedText,
+#districtSelectedText {
+    color: #9ca3af !important;
+    font-size: 14px !important;
+    font-weight: normal !important;
+}
 
+.select-wrapper.input-error #provinceSelectedText,
+.select-wrapper.input-error #districtSelectedText,
+.select-wrapper.input-error svg,
+.select-wrapper.input-error i {
+    color: #dc2626 !important;
+    fill: #dc2626 !important;
+}
+
+.select-wrapper span.has-value {
+    color: #111827 !important;
+}
+
+/* --- Icon Styles --- */
 .icon-box {
     display: inline-flex;
     align-items: center;
@@ -237,38 +259,36 @@ body {
     border-radius: 8px;
     margin-right: 8px;
 }
-/* 1. ຂໍ້ມູນສ່ວນຕົວ (ສີຟ້າ) */
+
 .icon-personal {
     background-color: #eff6ff;
     color: #2563eb;
 }
 
-/* 2. ທີ່ຢູ່ປັດຈຸບັນ (ສີແດງ) */
 .icon-address {
     background-color: #fef2f2;
     color: #dc2626;
 }
 
-/* 3. ຊ່ອງທາງການຕິດຕໍ່ (ສີຂຽວ) */
 .icon-contact {
     background-color: #ecfdf5;
     color: #9a3412;
 }
-/* 4. ປັບສີສະເພາະ Icon ທີ່ຢູ່ໃນ input-field ໂດຍໃຊ້ class .icon ທີ່ມີຢູ່ແລ້ວ */
+
 .input-field .fa-whatsapp.icon {
-    color: #059669; /* ສີຂຽວສຳລັບ WhatsApp */
+    color: #059669; 
 }
 
 .input-field .fa-facebook.icon {
-    color: #2563eb; /* ສີຟຳສຳລັບ Facebook */
+    color: #2563eb; 
 }
 
-/* Step Indicator Styles */
+/* --- Step Indicator Styles --- */
 .step-indicator-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px 25px 0px 25px; /* ເພີ່ມ padding ຊ້າຍ-ຂວາ ໃຫ້ 1 ແລະ 3 ຖອຍອອກຫ່າງຂອບ */
+    padding: 5px 25px 0px 25px; 
     background: #fff;
     margin-bottom: 0px;
 }
@@ -277,7 +297,7 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    width: 100%; /* ປັບເປັນ 100% ເພື່ອໃຫ້ແຜ່ເຕັມຂອບຊ້າຍຮອດຂວາ */
+    width: 100%; 
     justify-content: space-between;
 }
 
@@ -303,6 +323,7 @@ body {
     width: 0%;
     transition: width 0.3s ease;
 }
+
 .step-item {
     width: 20px;
     height: 20px;
@@ -323,11 +344,27 @@ body {
     color: white;
 }
 
-/* ດຶງຫົວຂໍ້ທຳອິດ (ຂໍ້ມູນສ່ວນຕົວ) ໃຫ້ຂຶ້ນໄປໃກ້ກັບກ່ອງ Step ຫຼາຍຂຶ້ນ */
-.form-page .section-title:first-child {
-    margin-top: 0px !important;
+/* --- Buttons --- */
+.btn-next {
+    width: 100%; 
+    height: 50px; 
+    background: #0033ff; 
+    color: white; 
+    border: none; 
+    border-radius: 12px; 
+    font-size: 15px; 
+    font-weight: 600; 
+    font-family: 'Noto Sans Lao', sans-serif; 
+    cursor: pointer; 
+    transition: background 0.2s; 
+    margin-top: 10px; 
 }
-/* Styling ສຳລັບ Modal Loading Overlay */
+
+.btn-next:hover {
+    background: #0022cc; 
+}
+
+/* --- Modal Loading & Success Overlay --- */
 #loadingModal {
     display: none;
     position: fixed;
@@ -354,7 +391,6 @@ body {
     min-width: 250px;
 }
 
-/* ຈັດກ່ອງບັນຈຸ Spinner ໃຫ້ຢູ່ກິ່ງກາງ */
 #spinnerBox {
     display: flex;
     flex-direction: column;
@@ -363,12 +399,11 @@ body {
     width: 100%;
 }
 
-/* ວົງມົນໝຸນ (Spinner) */
 .spinner {
     width: 50px;
     height: 50px;
     border: 5px solid #f3f3f3;
-    border-top: 5px solid #4CAF50; /* ສີຂຽວ */
+    border-top: 5px solid #4CAF50; 
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 15px;
@@ -381,7 +416,6 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* ຂໍ້ຄວາມກຳລັງບັນທຶກ ພ້ອມ 3 ຈ້ຳເຄື່ອນທີ່ */
 .loading-text {
     font-size: 16px;
     font-weight: 500;
@@ -401,7 +435,6 @@ body {
     75% { content: '...'; }
 }
 
-/* ຕອນສຳເລັດ (Success Icon) */
 .success-icon {
     width: 50px;
     height: 50px;
@@ -423,6 +456,7 @@ body {
     80% { transform: scale(1.1); }
     100% { transform: scale(1); }
 }
+
 /* --- SPLASH SCREEN BACKGROUND & STYLES --- */
 #welcome-splash-screen {
     position: fixed;
@@ -430,7 +464,6 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* ໃຊ້ສີພື້ນຫຼັງແບບ Gradient ໂທນຟ້າ-ກົມ ໂດຍບໍ່ມີຮູບພາບ */
     background: linear-gradient(135deg, #0f172a, #1e3a8a, #172554);
     display: flex;
     flex-direction: column;
@@ -442,7 +475,6 @@ body {
     transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-/* ຕັ້ງຄ່າການໝຸນໂລໂກ້ 3.5s ຕາມຕ້ອງການ */
 @keyframes spinLogo {
     0% {
         transform: rotate(0deg) scale(0.5);
@@ -454,7 +486,6 @@ body {
     }
 }
 
-/* ກ່ອງວົງມົນຫຸ້ມໂລໂກ້ (ຂະໜາດ 250px ຕາມທີ່ອ້າຍປັບ) */
 .splash-logo-container {
     width: 200px;
     height: 200px;
@@ -463,7 +494,7 @@ body {
     padding: 6px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     margin-bottom: 30px;
-    animation: spinLogo 3.5s ease-out forwards; /* ໝຸນ 3.5 ວິນາທີ */
+    animation: spinLogo 3.5s ease-out forwards; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -495,21 +526,18 @@ body {
     animation-fill-mode: forwards;
 }
 
-/* ແຖວທີ 1 */
 .splash-text.line-1 {
     font-size: 22px;
     color: #93c5fd;
     animation: typingLine1 0.8s steps(30, end) 0.3s forwards, fadeInText 0.1s 0.3s forwards;
 }
 
-/* ແຖວທີ 2 */
 .splash-text.line-2 {
     font-size: 22px;
     color: #ffffff;
     animation: typingLine2 1.0s steps(35, end) 1.2s forwards, fadeInText 0.1s 1.2s forwards;
 }
 
-/* ແຖວທີ 3 (ສີເຫຼືອງທອງ) */
 .splash-text.line-3 {
     font-size: 28px;
     color: #f59e0b;
@@ -536,7 +564,6 @@ body {
     to { opacity: 1; }
 }
 
-/* ປຸ່ມລົງທະບຽນຮຽນ */
 .splash-btn {
     background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: white;
@@ -551,7 +578,6 @@ body {
     transition: transform 0.2s, background 0.2s;
 }
 
-/* ເອັບເຟັກປຸ່ມເວລາກົດ/ຊີ້ */
 .splash-btn:hover {
     transform: translateY(-3px);
     background: linear-gradient(135deg, #1d4ed8, #1e40af);

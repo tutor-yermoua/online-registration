@@ -17,25 +17,17 @@ function showPage(pageNumber) {
     updateStepIndicator(currentPage);
 }
 
-// ຟັງຊັນກົດປຸ່ມ "ຕໍ່ໄປ" (ຈາກໜ້າ 1 ໄປໜ້າ 2)
-function nextPage() {
-    if (currentPage === 1) {
-        const provinceText = document.getElementById('provinceSelectedText').innerText;
-        if (provinceText.includes('-----') || provinceText === '') {
-            alert('ກະລຸນາເລືອກແຂວງ ແລະ ປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ!');
-            return;
-        }
-    }
-    
-    if (currentPage < 3) {
-        showPage(currentPage + 1);
-    }
-}
-
 // ຟັງຊັນກົດປຸ່ມ "ກັບຄືນ"
 function prevPage() {
     if (currentPage > 1) {
         showPage(currentPage - 1);
+    }
+}
+
+// ຟັງຊັນກົດປຸ່ມ "ຕໍ່ໄປ"
+function nextPage() {
+    if (currentPage < 3) {
+        showPage(currentPage + 1);
     }
 }
 
@@ -88,7 +80,7 @@ function selectCourseAndPay(courseName, coursePrice) {
 function copyAccountNumber() {
     const accNo = document.getElementById('accountNumber').innerText;
     navigator.clipboard.writeText(accNo).then(() => {
-      //  alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
+        // alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
     });
 }
 
@@ -116,9 +108,9 @@ function getBase64(file) {
     });
 }
 
-// ໂຫຼດຂໍ້ມູນແຂວງ ແລະ ເມືອງ ພ້ອມກຳນົດຄ່າເລີ່ມຕົ້ນເມື່ອເປີດເວັບ
+// --- DOMContentLoaded Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
-    showPage(1);
+    if (typeof showPage === 'function') showPage(1);
 
     const laoData = {
         "ນະຄອນຫຼວງວຽງຈັນ": ["ຈັນທະບູລີ", "ສີໂຄດຕະບອງ", "ໄຊເສດຖາ", "ສີສັດຕະນາກ", "ນາຊາຍທອງ", "ໄຊທານີ", "ຫາດຊາຍຟອງ", "ສັງທອງ", "ປາກງື່ມ"],
@@ -144,43 +136,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const provinceListEl = document.getElementById('provinceList');
     const provinceSelectedText = document.getElementById('provinceSelectedText');
     const provinceInput = document.getElementById('Province'); 
+    
     const districtListEl = document.getElementById('districtList');
     const districtSelectedText = document.getElementById('districtSelectedText');
     const districtInput = document.getElementById('District'); 
 
     if (provinceListEl && provinceSelectedText) {
         provinceListEl.innerHTML = '';
-        for (let province in laoData) {
+        Object.keys(laoData).forEach(province => {
             let li = document.createElement('li');
             li.textContent = province;
-            li.onclick = function() {
+            li.addEventListener('click', () => {
                 provinceSelectedText.textContent = province;
+                provinceSelectedText.style.setProperty("color", "#111827", "important");
+                provinceSelectedText.style.setProperty("font-size", "14px", "important");
+                
                 if (provinceInput) provinceInput.value = province; 
                 provinceListEl.style.display = 'none';
 
-                if (districtListEl && districtSelectedText) {
-                    districtSelectedText.textContent = '----- ກະລຸນາເລືອກເມືອງ -----';
-                    if (districtInput) districtInput.value = '';
-                    districtListEl.innerHTML = '';
-                    
-                    let districts = laoData[province] || [];
-                    districts.forEach(district => {
-                        let liDist = document.createElement('li');
-                        liDist.textContent = district;
-                        liDist.onclick = function() {
-                            districtSelectedText.textContent = district;
-                            if (districtInput) districtInput.value = district; 
-                            districtListEl.style.display = 'none';
-                        };
-                        districtListEl.appendChild(liDist);
-                    });
-                }
-            };
+                loadDistricts(province);
+            });
             provinceListEl.appendChild(li);
-        }
+        });
+    }
+
+    function loadDistricts(province) {
+        if (!districtListEl || !districtSelectedText) return;
+        
+        districtSelectedText.textContent = '----- ກະລຸນາເລືອກເມືອງ -----';
+        districtSelectedText.style.color = "";
+        if (districtInput) districtInput.value = '';
+        districtListEl.innerHTML = '';
+
+        let districts = laoData[province] || [];
+        districts.forEach(district => {
+            let liDist = document.createElement('li');
+            liDist.textContent = district;
+            liDist.addEventListener('click', () => {
+                districtSelectedText.textContent = district;
+                districtSelectedText.style.setProperty("color", "#111827", "important");
+                districtSelectedText.style.setProperty("font-size", "14px", "important");
+                
+                if (districtInput) districtInput.value = district; 
+                districtListEl.style.display = 'none';
+            });
+            districtListEl.appendChild(liDist);
+        });
     }
 });
 
+// --- Form Submit Handling ---
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('registrationForm');
 
@@ -205,22 +210,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const formData = new FormData(this);
                 const data = {};
                 
-                // ດຶງຂໍ້ມູນ Text ທຳມະດາຈາກຟອມ
                 formData.forEach((value, key) => {
                     if (typeof value === 'string') {
                         data[key] = value;
                     }
                 });
-                // ດຶງໄຟລ໌ຕາມ id ທີ່ຖືກຕ້ອງໃນ HTML ຂອງທ່ານ
+
                 const slipFile = document.getElementById('slipInput').files[0];
                 const studentFile = document.getElementById('studentImgInput').files[0];
-                // แปลງຮູບສະລິບເປັນ Base64
+
                 if (slipFile) {
                     data.Slip_image = await getBase64(slipFile);
                     data.Slip_filename = slipFile.name;
                 }
 
-                // แปลງຮູບນັກຮຽນເປັນ Base64
                 if (studentFile) {
                     data.Student_image = await getBase64(studentFile);
                     data.Student_filename = studentFile.name;
@@ -248,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.reload(); 
                     }, 1500);
                 } else {
-                    throw new Error(result.message || "ເກີດข้อผิดพลาดໃນ Server");
+                    throw new Error(result.message || "ເກີດຂໍ້ຜິດພາດໃນ Server");
                 }
 
             } catch (error) {
@@ -260,16 +263,148 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- FUNCTION ສຳລັບກົດປຸ່ມເຂົ້າສູ່ໜ້າຟອມຫຼັກ ---
+// --- Welcome / Splash Screen ---
 function enterMainForm() {
     const splashScreen = document.getElementById('welcome-splash-screen');
-    
-    // ເຮັດໃຫ້ໜ້າຕ້ອນຮັບຈາງລົງ
     splashScreen.style.opacity = '0';
     splashScreen.style.visibility = 'hidden';
     
-    // ລຶບອອກຈາກ DOM ຫຼັງຈາກຈາງສຳເລັດ (0.6 ວິນາທີ)
     setTimeout(function() {
         splashScreen.style.display = 'none';
     }, 600);
+}
+
+// --- Placeholders & Validation Logic ---
+const focusPlaceholders = {
+    "Fullname": "ປ້ອນຊື່ ແລະ ນາມສະກຸນ",
+    "School": "ປ້ອນຊື່ໂຮງຮຽນ",
+    "Whatsapp": "ປ້ອນເບີ WhatsApp",
+    "Facebook": "ປ້ອນຊື່ Facebook"
+};
+
+const defaultPlaceholders = {
+    "Fullname": "ຊື່ ແລະ ນາມສະກຸນ",
+    "School": "ໂຮງຮຽນ",
+    "Whatsapp": "ເບີ WhatsApp",
+    "Facebook": "ຊື່ Facebook"
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    const textInputs = document.querySelectorAll("input[required]:not([type='hidden']), .select-box-custom");
+
+    textInputs.forEach(item => {
+        let container = item.closest('.input-field') || item.closest('.select-wrapper');
+        if (!container) return;
+
+        let inputElement = container.querySelector('input');
+        if (!inputElement) return;
+        let name = inputElement.name;
+
+        inputElement.addEventListener('focus', function () {
+            document.querySelectorAll(".input-field, .select-wrapper").forEach(box => {
+                box.classList.remove('input-error');
+                let innerInput = box.querySelector('input');
+                if (innerInput) {
+                    let inName = innerInput.name;
+                    if (!innerInput.value || innerInput.value.trim() === "") {
+                        innerInput.style.color = ""; 
+                        if (defaultPlaceholders[inName]) {
+                            innerInput.placeholder = defaultPlaceholders[inName];
+                        }
+                    }
+                }
+                
+                let spanText = box.querySelector('span[id$="SelectedText"]');
+                let hiddenInputId = spanText && spanText.id.includes('province') ? 'Province' : 'District';
+                let hiddenInput = document.getElementById(hiddenInputId);
+                if (spanText && (!hiddenInput || !hiddenInput.value)) {
+                    spanText.style.color = "";
+                }
+            });
+
+            if (!this.value || this.value.trim() === "") {
+                this.style.color = "";
+                if (focusPlaceholders[name]) {
+                    this.placeholder = focusPlaceholders[name];
+                }
+            }
+        });
+
+        inputElement.addEventListener('blur', function () {
+            if (!this.value || this.value.trim() === "") {
+                this.style.color = "";
+                if (defaultPlaceholders[name]) {
+                    this.placeholder = defaultPlaceholders[name];
+                }
+            }
+        });
+
+        inputElement.addEventListener('input', function () {
+            container.classList.remove('input-error');
+            this.style.color = "";
+        });
+    });
+
+    updateSelectTextColor('Province', 'provinceSelectedText');
+    updateSelectTextColor('District', 'districtSelectedText');
+});
+
+function validateAndNextPage() {
+    let isValid = true;
+
+    const requiredInputs = document.querySelectorAll("#page-1 input[required]:not([type='hidden'])");
+    requiredInputs.forEach(input => {
+        let container = input.closest('.input-field');
+        
+        if (!input.value || input.value.trim() === "") {
+            isValid = false;
+            if (container) container.classList.add('input-error');
+            input.style.color = "#dc2626"; 
+        } else {
+            if (container) container.classList.remove('input-error');
+            input.style.color = "";
+        }
+    });
+
+    const provinceInput = document.getElementById('Province');
+    const provinceSpan = document.getElementById('provinceSelectedText');
+    let provContainer = provinceSpan ? provinceSpan.closest('.select-wrapper') : null;
+    
+    if (!provinceInput || !provinceInput.value || provinceInput.value.trim() === "") {
+        isValid = false;
+        if (provContainer) provContainer.classList.add('input-error');
+    } else {
+        if (provContainer) provContainer.classList.remove('input-error');
+    }
+
+    const districtInput = document.getElementById('District');
+    const districtSpan = document.getElementById('districtSelectedText');
+    let distContainer = districtSpan ? districtSpan.closest('.select-wrapper') : null;
+
+    if (!districtInput || !districtInput.value || districtInput.value.trim() === "") {
+        isValid = false;
+        if (distContainer) distContainer.classList.add('input-error');
+    } else {
+        if (distContainer) distContainer.classList.remove('input-error');
+    }
+
+    if (!isValid) {
+        return false;
+    }
+
+    nextPage();
+    return true;
+}
+
+function updateSelectTextColor(hiddenInputId, spanId) {
+    const hiddenInput = document.getElementById(hiddenInputId);
+    const spanText = document.getElementById(spanId);
+    
+    if (hiddenInput && spanText) {
+        if (hiddenInput.value && hiddenInput.value.trim() !== "") {
+            spanText.style.color = "#111827"; 
+        } else {
+            spanText.style.color = ""; 
+        }
+    }
 }
