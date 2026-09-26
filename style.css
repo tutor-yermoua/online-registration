@@ -423,3 +423,99 @@ body {
     80% { transform: scale(1.1); }
     100% { transform: scale(1); }
 }
+/* --- SPLASH SCREEN BACKGROUND IMAGE & STYLES --- */
+#welcome-splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* ດຶງຮູບจากโฟลເດີ Logo ມາເປັນພື້ນຫຼັງ ພ້ອມໃສ່ຊັ້ນສີດໍາໂປ່ງໃສທັບໃຫ້ຕົວໜັງສືເຫັນຊັດເຈນ */
+    background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(30, 58, 138, 0.85)), url('Logo/student-bg.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    text-align: center;
+    padding: 20px;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+@keyframes spinLogo {
+    0% {
+        transform: rotate(0deg) scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+    }
+}
+
+.splash-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.splash-text {
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-bottom: 10px;
+    width: 0;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+/* ແຖວທີ 1: ຂະໜາດຟອນທ໌ 22px */
+.splash-text.line-1 {
+    font-size: 22px;
+    color: #93c5fd;
+    animation: typingLine1 1.5s steps(30, end) 0.5s forwards, fadeInText 0.1s 0.5s forwards;
+}
+
+/* ແຖວທີ 2: ຂະໜາດຟອນທ໌ 22px */
+.splash-text.line-2 {
+    font-size: 22px;
+    color: #ffffff;
+    animation: typingLine2 1.8s steps(35, end) 2.0s forwards, fadeInText 0.1s 2.0s forwards;
+}
+
+/* ແຖວທີ 3: ຂະໜາດຟອນທ໌ 28px (ໃຫຍ່ກວ່າ) */
+.splash-text.line-3 {
+    font-size: 28px;
+    color: #f59e0b;
+    text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
+    animation: typingLine3 1s steps(15, end) 3.9s forwards, fadeInText 0.1s 3.9s forwards;
+}
+
+@keyframes typingLine1 {
+    from { width: 0; }
+    to { width: 380px; }
+}
+
+@keyframes typingLine2 {
+    from { width: 0; }
+    to { width: 420px; }
+}
+
+@keyframes typingLine3 {
+    from { width: 0; }
+    to { width: 220px; }
+}
+
+@keyframes fadeInText {
+    to { opacity: 1; }
+}
+
+/* ເອັບເֆັກປຸ່ມເວລາກົດ */
+button[onclick="enterMainForm()"]:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}

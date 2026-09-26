@@ -259,3 +259,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// --- FUNCTION ສຳລັບກົດປຸ່ມເຂົ້າສູ່ໜ້າຟອມຫຼັກ ---
+function enterMainForm() {
+    const splashScreen = document.getElementById('welcome-splash-screen');
+    
+    // ເຮັດໃຫ້ໜ້າຕ້ອນຮັບຈາງລົງ
+    splashScreen.style.opacity = '0';
+    splashScreen.style.visibility = 'hidden';
+    
+    // ລຶບອອກຈາກ DOM ຫຼັງຈາກຈາງສຳເລັດ (0.6 ວິນາທີ)
+    setTimeout(function() {
+        splashScreen.style.display = 'none';
+    }, 600);
+}
