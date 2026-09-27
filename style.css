@@ -340,7 +340,6 @@ body {
     z-index: 3;
     transition: 0.3s;
 }
-
 .step-item.active {
     background: #10b981;
     color: white;
