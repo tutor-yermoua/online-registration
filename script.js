@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault(); 
-            console.log("-> 1. เริ่มกดปุ่มส่งฟอร์มแล้ว");
+            console.log("-> 1. ເລີ່ມສົ່ງຟອມໄປ Node.js Server...");
 
             const loadingModal = document.getElementById('loadingModal');
             const spinnerBox = document.getElementById('spinnerBox');
@@ -202,41 +202,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="loading-text">ກຳລັງບັນທຶກ<span class="dots"></span></div>
                 `;
             }
+
             try {
+                // 💡 ໃຊ້ FormData ໄດ້ເລີຍ ເພາະ Node.js (multer) ຈະເປັນຜູ້ຮັບ Files ແລະ Text ໂດຍກົງ
                 const formData = new FormData(this);
-                const data = {};
-                
-                // ດຶງຂໍ້ມູນ Text ທຳມະດາຈາກຟອມ
-                formData.forEach((value, key) => {
-                    if (typeof value === 'string') {
-                        data[key] = value;
-                    }
-                });
-                // ດຶງໄຟລ໌ຕາມ id ທີ່ຖືກຕ້ອງໃນ HTML ຂອງທ່ານ
-                const slipFile = document.getElementById('slipInput').files[0];
-                const studentFile = document.getElementById('studentImgInput').files[0];
-                // แปลງຮູບສະລິບເປັນ Base64
-                if (slipFile) {
-                    data.Slip_image = await getBase64(slipFile);
-                    data.Slip_filename = slipFile.name;
-                }
 
-                // แปลງຮູບນັກຮຽນເປັນ Base64
-                if (studentFile) {
-                    data.Student_image = await getBase64(studentFile);
-                    data.Student_filename = studentFile.name;
-                }
-
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbxbUjtd5M4c8aS46YXYfKhlFSIqDfXX4OEb-z8Cd2jcJFhCsDXJE5K4F_mWpVFzB6WD/exec'; 
-                console.log("-> กำลังส่งข้อมูลไป Apps Script...", data);
-
+                // 🔗 ຊີ້ URL ໄປທີ່ Node.js Server ຂອງເຮົາ
+                const scriptURL = 'http://192.168.32.195:3000/api/register';
                 const response = await fetch(scriptURL, {
                     method: 'POST',
-                    body: JSON.stringify(data)
+                    body: formData // ⚠️ ຫ້າມ JSON.stringify ເດັດຂາດ ເພາະສົ່ງແບບ FormData
                 });
 
                 const result = await response.json();
-                console.log("-> ผลลัพธ์จาก Server:", result);
+                console.log("-> ຜົນລັບຈາກ Server:", result);
 
                 if (result.status === "success") {
                     if (spinnerBox) {
@@ -249,11 +228,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.reload(); 
                     }, 1500);
                 } else {
-                    throw new Error(result.message || "ເກີດข้อผิดพลาดໃນ Server");
+                    throw new Error(result.message || "ເກີດຂໍ້ຜິດພາດໃນ Server");
                 }
 
             } catch (error) {
-                console.error('-> พบ Error:', error);
+                console.error('-> ພົບ Error:', error);
                 alert('ເກີດຂໍ້ຜິດພາດໃນການສົ່ງຂໍ້ມູນ: ' + error.message);
                 if (loadingModal) loadingModal.style.display = 'none';
             }
@@ -432,7 +411,6 @@ function updateSelectTextColor(hiddenInputId, spanId) {
         }
     }
 }
-
 // ຟັງຊັນກວດຈັບການຄລິກ ຖ້າຄລິກ ບ່ອນອື່ນ ໃຫ້ປິດ Dropdown ລົງ
 document.addEventListener('click', function(event) {
     // ກວດສອບວ່າ ສິ່ງທີ່ຖືກຄລິກ ບໍ່ໄດ້ຢູ່ໃນກ່ອງ dropdown ຫຼື ປຸ່ມເລືອກ
