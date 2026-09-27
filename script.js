@@ -17,17 +17,12 @@ function showPage(pageNumber) {
     updateStepIndicator(currentPage);
 }
 
+
+
 // ຟັງຊັນກົດປຸ່ມ "ກັບຄືນ"
 function prevPage() {
     if (currentPage > 1) {
         showPage(currentPage - 1);
-    }
-}
-
-// ຟັງຊັນກົດປຸ່ມ "ຕໍ່ໄປ"
-function nextPage() {
-    if (currentPage < 3) {
-        showPage(currentPage + 1);
     }
 }
 
@@ -64,7 +59,12 @@ function toggleDropdown(listId) {
         list.style.display = (list.style.display === 'none') ? 'block' : 'none';
     }
 }
-
+// ຟັງຊັນກົດປຸ່ມ "ຕໍ່ໄປ"
+function nextPage() {
+    if (currentPage < 3) {
+        showPage(currentPage + 1);
+    }
+}
 // ຟັງຊັນເລືອກຄອສແລ້ວເກັບຄ່າລົງ Hidden Input ພ້ອມຍ້າຍໄປໜ້າ 3 (ຊຳລະເງິນ)
 function selectCourseAndPay(courseName, coursePrice) {
     const nameInput = document.getElementById('selectedCourseNameInput');
@@ -80,7 +80,7 @@ function selectCourseAndPay(courseName, coursePrice) {
 function copyAccountNumber() {
     const accNo = document.getElementById('accountNumber').innerText;
     navigator.clipboard.writeText(accNo).then(() => {
-        // alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
+      //  alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
     });
 }
 
@@ -107,8 +107,6 @@ function getBase64(file) {
         reader.onerror = error => reject(error);
     });
 }
-
-// --- DOMContentLoaded Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof showPage === 'function') showPage(1);
 
@@ -154,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (provinceInput) provinceInput.value = province; 
                 provinceListEl.style.display = 'none';
 
+                // โหลดເມືອງຕາມແຂວງທີ່ເລືອກ
                 loadDistricts(province);
             });
             provinceListEl.appendChild(li);
@@ -184,8 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-// --- Form Submit Handling ---
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('registrationForm');
 
@@ -210,20 +207,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const formData = new FormData(this);
                 const data = {};
                 
+                // ດຶງຂໍ້ມູນ Text ທຳມະດາຈາກຟອມ
                 formData.forEach((value, key) => {
                     if (typeof value === 'string') {
                         data[key] = value;
                     }
                 });
-
+                // ດຶງໄຟລ໌ຕາມ id ທີ່ຖືກຕ້ອງໃນ HTML ຂອງທ່ານ
                 const slipFile = document.getElementById('slipInput').files[0];
                 const studentFile = document.getElementById('studentImgInput').files[0];
-
+                // แปลງຮູບສະລິບເປັນ Base64
                 if (slipFile) {
                     data.Slip_image = await getBase64(slipFile);
                     data.Slip_filename = slipFile.name;
                 }
 
+                // แปลງຮູບນັກຮຽນເປັນ Base64
                 if (studentFile) {
                     data.Student_image = await getBase64(studentFile);
                     data.Student_filename = studentFile.name;
@@ -251,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.reload(); 
                     }, 1500);
                 } else {
-                    throw new Error(result.message || "ເກີດຂໍ້ຜິດພາດໃນ Server");
+                    throw new Error(result.message || "ເກີດข้อผิดพลาดໃນ Server");
                 }
 
             } catch (error) {
@@ -263,18 +262,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- Welcome / Splash Screen ---
+// --- FUNCTION ສຳລັບກົດປຸ່ມເຂົ້າສູ່ໜ້າຟອມຫຼັກ ---
 function enterMainForm() {
     const splashScreen = document.getElementById('welcome-splash-screen');
+    
+    // ເຮັດໃຫ້ໜ້າຕ້ອນຮັບຈາງລົງ
     splashScreen.style.opacity = '0';
     splashScreen.style.visibility = 'hidden';
     
+    // ລຶບອອກຈາກ DOM ຫຼັງຈາກຈາງສຳເລັດ (0.6 ວິນາທີ)
     setTimeout(function() {
         splashScreen.style.display = 'none';
     }, 600);
 }
-
-// --- Placeholders & Validation Logic ---
 const focusPlaceholders = {
     "Fullname": "ປ້ອນຊື່ ແລະ ນາມສະກຸນ",
     "School": "ປ້ອນຊື່ໂຮງຮຽນ",
@@ -289,6 +289,13 @@ const defaultPlaceholders = {
     "Facebook": "ຊື່ Facebook"
 };
 
+const errorPlaceholders = {
+    "Fullname": "ກະລຸນາປ້ອນຊື່ ແລະ ນາມສະກຸນ",
+    "School": "ກະລຸນາປ້ອນຊື່ໂຮງຮຽນ",
+    "Whatsapp": "ກະລຸນາປ້ອນເບີ WhatsApp",
+    "Facebook": "ກະລຸນາປ້ອນຊື່ Facebook"
+};
+
 document.addEventListener("DOMContentLoaded", function () {
     const textInputs = document.querySelectorAll("input[required]:not([type='hidden']), .select-box-custom");
 
@@ -300,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!inputElement) return;
         let name = inputElement.name;
 
+        // ເວລາກົດເຂົ້າມາພິມ (Focus)
         inputElement.addEventListener('focus', function () {
             document.querySelectorAll(".input-field, .select-wrapper").forEach(box => {
                 box.classList.remove('input-error');
@@ -330,6 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
+        // ເວລາກົດອອກຈາກກ່ອງ (Blur)
         inputElement.addEventListener('blur', function () {
             if (!this.value || this.value.trim() === "") {
                 this.style.color = "";
@@ -339,33 +348,42 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
+        // ເວລາກຳລັງພິມ (Input)
         inputElement.addEventListener('input', function () {
             container.classList.remove('input-error');
             this.style.color = "";
         });
     });
 
+    // ເອີ້ນໃຊ້ງານທັນຕອນໂຫຼດໜ້າຈໍ
     updateSelectTextColor('Province', 'provinceSelectedText');
     updateSelectTextColor('District', 'districtSelectedText');
 });
-
 function validateAndNextPage() {
     let isValid = true;
 
+    // 1. ກວດສອບ input ທົ່ວໄປໃນໜ້າ 1
     const requiredInputs = document.querySelectorAll("#page-1 input[required]:not([type='hidden'])");
     requiredInputs.forEach(input => {
         let container = input.closest('.input-field');
+        let name = input.name; // ດຶງຊື່ name ຂອງ input ເພື່ອມາ ຜູກກັບ errorPlaceholders
         
         if (!input.value || input.value.trim() === "") {
             isValid = false;
             if (container) container.classList.add('input-error');
-            input.style.color = "#dc2626"; 
+            input.style.color = "#dc2626"; // ຂໍ້ຄວາມເປັນສີແດງ
+            
+            // ປ່ຽນ placeholder ໃຫ້ເປັນຂໍ້ຄວາມແຈ້ງເຕືອນສີແດງ
+            if (errorPlaceholders[name]) {
+                input.placeholder = errorPlaceholders[name];
+            }
         } else {
             if (container) container.classList.remove('input-error');
             input.style.color = "";
         }
     });
 
+    // 2. ກວດສອບແຂວງ (ໃຫ້ຮັກສາແບບເດີມ ແຕ່ປ່ຽນແຄ່ຂອບ ແລະ ສີຕາມສະຖານະ error-class)
     const provinceInput = document.getElementById('Province');
     const provinceSpan = document.getElementById('provinceSelectedText');
     let provContainer = provinceSpan ? provinceSpan.closest('.select-wrapper') : null;
@@ -373,10 +391,13 @@ function validateAndNextPage() {
     if (!provinceInput || !provinceInput.value || provinceInput.value.trim() === "") {
         isValid = false;
         if (provContainer) provContainer.classList.add('input-error');
+        if (provinceSpan) provinceSpan.style.color = "#dc2626"; // ໃຫ້ຂໍ້ຄວາມແຂວງເປັນສີແດງນຳ
     } else {
         if (provContainer) provContainer.classList.remove('input-error');
+        provinceSpan.style.color = "";
     }
 
+    // 3. ກວດສອບເມືອງ
     const districtInput = document.getElementById('District');
     const districtSpan = document.getElementById('districtSelectedText');
     let distContainer = districtSpan ? districtSpan.closest('.select-wrapper') : null;
@@ -384,27 +405,31 @@ function validateAndNextPage() {
     if (!districtInput || !districtInput.value || districtInput.value.trim() === "") {
         isValid = false;
         if (distContainer) distContainer.classList.add('input-error');
+        if (districtSpan) districtSpan.style.color = "#dc2626"; // ໃຫ້ຂໍ້ຄວາມເມືອງເປັນສີແດງນຳ
     } else {
         if (distContainer) distContainer.classList.remove('input-error');
+        districtSpan.style.color = "";
     }
 
+    // ຖ້າຂໍ້ມູນຍັງບໍ່ຄົບ ໃຫ້ຢຸດການໄປຕໍ່
     if (!isValid) {
         return false;
     }
 
+    // ຖ້າຜ່ານໝົດ ໃຫ້ໄປໜ້າ 2 ທັນປີ!
     nextPage();
     return true;
 }
-
+// ຟັງຊັນກວດສອບ ແລະ ປ່ຽນສີຂໍ້ຄວາມແຂວງ-ເມືອງ ອັດຕະໂນມັດ
 function updateSelectTextColor(hiddenInputId, spanId) {
     const hiddenInput = document.getElementById(hiddenInputId);
     const spanText = document.getElementById(spanId);
     
     if (hiddenInput && spanText) {
         if (hiddenInput.value && hiddenInput.value.trim() !== "") {
-            spanText.style.color = "#111827"; 
+            spanText.style.color = "#111827"; // ເລືອກແລ້ວ: ໃຫ້ເປັນສີດຳປົກກະຕິ
         } else {
-            spanText.style.color = ""; 
+            spanText.style.color = ""; // ຍັງບໍ່ເລືອກ: ໃຫ້ກັບຄືນເປັນສີເທົາຕາມ CSS
         }
     }
 }
