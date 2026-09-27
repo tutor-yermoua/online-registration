@@ -122,7 +122,7 @@ body {
     border: 1px solid #cbd5e1; /* ສີຂອບຂອງກ່ອງປ້ອນຂໍ້ມູນ */
     border-radius: 12px; /* ເຮັດໃຫ້ມຸມຂອງກ່ອງປ້ອນຂໍ້ມູນມົນ */
     background: #ffffff; /* ສີພື້ນຫຼັງຂອງກ່ອງປ້ອນຂໍ້ມູນເປັນສີຂາວ */
-    padding: 0 15px; /* រະຍະຫ່າງຂອບໃນຊ້າຍ-ຂວາ */
+    padding: 0 11px; /* រະຍະຫ່າງຂອບໃນຊ້າຍ-ຂວາ */
     height: 52px; /* ຄວາມສູງຂອງກ່ອງປ້ອນຂໍ້ມູນ */
     transition: all 0.3s ease; /* ຄວາມໄວໃນການປ່ຽນແປງສະຖານະ */
 }
@@ -133,7 +133,7 @@ body {
 }
 
 .input-field i.icon {
-    color: #64748b; /* ສີຂອງໄອຄອນພາຍໃນຊ່ອງປ້ອນຂໍ້ມູນ */
+    color: #9ca3af; /* ສີຂອງໄອຄອນພາຍໃນຊ່ອງປ້ອນຂໍ້ມູນ */
     font-size: 16px; /* ຂະໜາດຂອງໄອຄອນ */
     margin-right: 12px; /* រະຍະຫ່າງລະຫວ່າງໄອຄອນກັບຊ່ອງພິມ */
 }
@@ -198,7 +198,6 @@ body {
     color: inherit;
     padding-left: 4px;
 }
-
 .dropdown-list {
     position: absolute;
     top: 100%;
@@ -207,7 +206,7 @@ body {
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 6px;
-    max-height: 200px; /* ຄວາມສູງພໍດີປະມານ 5 ລາຍການ */
+    max-height: 212px; /* ຄວາມສູງພໍດີປະມານ 5 ລາຍການ */
     overflow-y: auto;  /* ເພີ່ມລູກເລື່ອນ (Scrollbar) ເວລາລາຍການຫຼາຍ */
     z-index: 9999;
     padding: 0;
@@ -215,7 +214,6 @@ body {
     list-style: none;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
-
 .dropdown-list li {
     padding: 10px 15px;
     border-bottom: 1px solid #f0f0f0;
@@ -276,8 +274,9 @@ body {
 /* ໃຫ້ຂະໜາດຕົວໜັງສືຂອງແຂວງ ແລະ ເມືອງ ເທົ່າກັບກ່ອງຂໍ້ຄວາມປົກກະຕິ (ເຊັ່ນ: ໂຮງຮຽນ) */
 #provinceSelectedText, 
 #districtSelectedText {
-    font-size: 14px !important; /* ຫຼື ປັບຂະໜາດຕາມທີ່ອ້າຍຕ້ອງການ ເຊັ່ນ: 14px ຫຼື 16px */
-    font-weight: normal !important;
+    font-size: 14px; /* ຫຼື ປັບຂະໜາດຕາມທີ່ອ້າຍຕ້ອງການ ເຊັ່ນ: 14px ຫຼື 16px */
+    font-weight: normal ;
+    padding-left: 4px ;
 }
 /* Step Indicator Styles */
 .step-indicator-container {
@@ -296,32 +295,38 @@ body {
     width: 100%; /* ປັບເປັນ 100% ເພື່ອໃຫ້ແຜ່ເຕັມຂອບຊ້າຍຮອດຂວາ */
     justify-content: space-between;
 }
-
+/* ເສັ້ນພື້ນຫຼັງສີເທົາ (ໃຫ້ຍືດໄປຮອດຂອບຂອງວົງມົນທີ 3) */
 .step-bg-line {
     position: absolute;
     top: 50%;
-    left: 20px;
-    right: 20px;
-    height: 1px;
+    left: 10px;   /* ຍັບຈຸດເລີ່ມຕົ້ນທາງຊ້າຍ */
+    right: 10px;  /* ຍັບຈຸດສິ້ນສຸດທາງຂວາໃຫ້ໄປຮອດວົງມົນ 3 */
+    height: 0.25px;  /* 👈 ປັບຄວາມໜາຂອງເສັ້ນໃຫ້ quies (ເຊັ່ນ: 2px ຫຼື 3px) */
     background: #e0e0e0;
     transform: translateY(-50%);
     z-index: 1;
 }
 
+/*1. ເສັ້ນສີຂຽວທີ່ວລີ້ໄປຕາມ Step (ປັບ height ໃຫ້ເທົ່າກັນ) */
 .step-progress-line {
     position: absolute;
     top: 50%;
-    left: 15px;
-    height: 1px;
+    left: 10px;
+    height: 0.25px;  /* 👈 ປັບຄວາມໜາໃຫ້เท่าກັບເສັ້ນພື້ນຫຼັງ (3px) */
     background: #10b981;
     transform: translateY(-50%);
     z-index: 1;
     width: 0%;
     transition: width 0.3s ease;
 }
+/* 2. ເອົາຍັດໃສ່ລຸ່ມສຸດ: ຕອນຢູ່ Step 3 ໃຫ້ເສັ້ນສີຂຽວຍືດເຕັມທີ່ */
+.step-item.active-step-3 ~ .step-progress-line, 
+.step-progress-line.is-step-3 {
+    width: calc(100% + 100px); /* 👈 ຖ້າ 20px ຍັງບໍ່ຮອດ ຫຼື ຫຼາຍໂພດ ให้น້ອງລອງປ່ຽນເປັນ 15px ຫຼື 25px ເບິ່ງຕາມຄວາມເໝາະສົມ */
+}
 .step-item {
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: #e0e0e0;
     color: #64748b;
@@ -329,7 +334,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 10px;
+    font-size: 8px;
     z-index: 3;
     transition: 0.3s;
 }

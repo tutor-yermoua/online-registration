@@ -44,11 +44,10 @@ function updateStepIndicator(step) {
         } else if (step === 2) {
             progressLine.style.width = '48%';
         } else if (step === 3) {
-            progressLine.style.width = '92%';
+            progressLine.style.width = '95%';
         }
     }
 }
-
 // 1. ເປີດ-ປິດ ປຸ່ມ Dropdown ຂອງແຂວງ-ເມືອງ
 function toggleDropdown(listId) {
     document.querySelectorAll('.dropdown-list').forEach(list => {
@@ -433,3 +432,13 @@ function updateSelectTextColor(hiddenInputId, spanId) {
         }
     }
 }
+
+// ຟັງຊັນກວດຈັບການຄລິກ ຖ້າຄລິກ ບ່ອນອື່ນ ໃຫ້ປິດ Dropdown ລົງ
+document.addEventListener('click', function(event) {
+    // ກວດສອບວ່າ ສິ່ງທີ່ຖືກຄລິກ ບໍ່ໄດ້ຢູ່ໃນກ່ອງ dropdown ຫຼື ປຸ່ມເລືອກ
+    if (!event.target.closest('.select-wrapper') && !event.target.closest('.custom-dropdown')) {
+        document.querySelectorAll('.dropdown-list').forEach(list => {
+            list.style.display = 'none';
+        });
+    }
+});
