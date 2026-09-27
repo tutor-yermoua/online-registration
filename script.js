@@ -77,9 +77,11 @@ function selectCourseAndPay(courseName, coursePrice) {
 
 // ຟັງຊັນກ໊ອບປີ້ເລກບັນຊີ
 function copyAccountNumber() {
-    const accNo = document.getElementById('accountNumber').innerText;
+    const rawAccNo = document.getElementById('accountNumber').innerText;
+    const accNo = rawAccNo.replace(/-/g, ''); // 👈 ຕັດເຄື່ອງໝາຍຂີດ (-) ອອກໃຫ້ເຫຼືອແຕ່ຕົວເລກ
+    
     navigator.clipboard.writeText(accNo).then(() => {
-      //  alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
+        // alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
     });
 }
 
