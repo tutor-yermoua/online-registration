@@ -374,7 +374,6 @@ function validateAndNextPage() {
         if (provContainer) provContainer.classList.remove('input-error');
         provinceSpan.style.color = "";
     }
-
     // 3. ກວດສອບເມືອງ
     const districtInput = document.getElementById('District');
     const districtSpan = document.getElementById('districtSelectedText');

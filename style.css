@@ -452,16 +452,34 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* ໃຊ້ສີພື້ນຫຼັງແບບ Gradient ໂທນຟ້າ-ກົມ ໂດຍບໍ່ມີຮູບພາບ */
-    background: linear-gradient(135deg, #0f172a, #1e3a8a, #172554);
+    /* ປ່ຽນຂະໜາດເມັດດາວໃຫ້ລົງມາເຫຼືອ 0.5px ໃຫ້ເບິ່ງເປັນເມັດນ້ອຍໆ ລະອຽດໆ */
+    background: 
+        radial-gradient(white 0.7071px, transparent 0),
+        linear-gradient(135deg, #0f172a, #1e3a8a, #172554);
+    background-size: 120px 120px, 100% 100%;
+    background-position: 0 0, 0 0;
+    
+    /* ຫຼຸດເວລາລົງເຫຼືອ 2s ເພື່ອໃຫ້ມັນເຄື່ອນທີ່ໄວກວ່ານີ້ */
+    animation: moveStarsNEtoSW 2s linear infinite;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 99999;
+    z-index: 9999;
     text-align: center;
     padding: 20px;
     transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+/* --- ທິດທາງການເຄື່ອນທີ່ຈາກ NE ໄປ SW --- */
+@keyframes moveStarsNEtoSW {
+    0% {
+        background-position: 0px 0px, 0 0;
+    }
+    100% {
+        background-position: -120px 120px, 0 0;
+    }
 }
 
 /* ຕັ້ງຄ່າການໝຸນໂລໂກ້ 3.5s ຕາມຕ້ອງການ */
@@ -483,14 +501,14 @@ body {
     border-radius: 50%;
     background: white;
     padding: 6px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+   /* box-shadow: 0 10px 25px rgba(0,0,0,0.3);*/
+   box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 10px 30px rgba(0, 0, 0, 0.5);
     margin-bottom: 30px;
     animation: spinLogo 3.5s ease-out forwards; /* ໝຸນ 3.5 ວິນາທີ */
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 .splash-logo {
     width: 100%;
     height: 100%;
@@ -626,3 +644,4 @@ body {
 .select-wrapper span.has-value {
     color: #111827 !important;
 }
+
