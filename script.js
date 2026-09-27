@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 provinceSelectedText.textContent = province;
                 provinceSelectedText.style.setProperty("color", "#111827", "important");
                 provinceSelectedText.style.setProperty("font-size", "14px", "important");
-                
+                provinceSelectedText.classList.add('has-value');
                 if (provinceInput) provinceInput.value = province; 
                 provinceListEl.style.display = 'none';
 
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 districtSelectedText.textContent = district;
                 districtSelectedText.style.setProperty("color", "#111827", "important");
                 districtSelectedText.style.setProperty("font-size", "14px", "important");
-                
+                districtSelectedText.classList.add('has-value');
                 if (districtInput) districtInput.value = district; 
                 districtListEl.style.display = 'none';
             });
@@ -201,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="loading-text">ກຳລັງບັນທຶກ<span class="dots"></span></div>
                 `;
             }
-
             try {
                 const formData = new FormData(this);
                 const data = {};

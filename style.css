@@ -261,22 +261,25 @@ body {
 .input-field .fa-facebook.icon {
     color: #2563eb; /* ສີຟຳສຳລັບ Facebook */
 }
-/* 5. ຕັ້ງຄ່າສີຂໍ້ຄວາມເລືອກແຂວງ ແລະ ເມືອງ ໃຫ້ເປັນສີເທົາອ່ອນໃນສະຖານະປົກກະຕິ */
-#provinceSelectedText,
-#districtSelectedText {
-    color: #9ca3af !important;
-}
-/* 1. ຕອນຍັງບໍ່ເລືອກ (ສະຖານະປົກກະຕິ): ໃຫ້ຂໍ້ຄວາມເປັນສີເທົາອ່ອນ */
-#provinceSelectedText,
-#districtSelectedText {
-    color: #9ca3af !important;
-}
-/* ໃຫ້ຂະໜາດຕົວໜັງສືຂອງແຂວງ ແລະ ເມືອງ ເທົ່າກັບກ່ອງຂໍ້ຄວາມປົກກະຕິ (ເຊັ່ນ: ໂຮງຮຽນ) */
+/* 1. ຕັ້ງຄ່າຂະໜາດ ແລະ ໄລຍະຫ່າງຂອງຂໍ້ຄວາມແຂວງ ແລະ ເມືອງ */
 #provinceSelectedText, 
 #districtSelectedText {
-    font-size: 14px; /* ຫຼື ປັບຂະໜາດຕາມທີ່ອ້າຍຕ້ອງການ ເຊັ່ນ: 14px ຫຼື 16px */
-    font-weight: normal ;
-    padding-left: 4px ;
+    font-size: 14px;
+    font-weight: normal;
+    padding-left: 4px;
+}
+
+/* 2. ຖ້າຫາກວ່າເປັນສະຖານະປົກກະຕິ (ຍັງບໍ່ທັນເລືອກ ຫຼື ບໍ່ມີ Class has-value) ໃຫ້ເປັນສີເທົາອ່ອນ */
+#provinceSelectedText:not(.has-value),
+#districtSelectedText:not(.has-value) {
+    color: #9ca3af !important;
+}
+
+/* 3. ຖ້າເລືອກແລ້ວ ຫຼື ມີ Class has-value (ລວມເຖິງຕອນກົດ Back กลับມາແລ້ວມີຂໍ້ມູນ) ໃຫ້ເປັນສີດຳ */
+#provinceSelectedText.has-value,
+#districtSelectedText.has-value,
+.select-wrapper span.has-value {
+    color: #111827 !important;
 }
 /* Step Indicator Styles */
 .step-indicator-container {
@@ -287,7 +290,6 @@ body {
     background: #fff;
     margin-bottom: 0px;
 }
-
 .step-wrapper {
     display: flex;
     align-items: center;
