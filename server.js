@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ໃຊ້ memoryStorage ເພື່ອນຳໄຟລ໌ຮູບພາບມາເປັນ Buffer ແລ້ວບັນທຶກລົງ LONGBLOB
+// ใช้ memoryStorage ເກັບຮູບເປັນ Buffer
 const upload = multer({ storage: multer.memoryStorage() });
 
 // ເຊື່ອມຕໍ່ຖານຂໍ້ມູນ db_Regis_Online
@@ -40,11 +40,12 @@ app.post('/api/register', upload.fields([
         Course_price      
     } = req.body;
     
-    // ດຶງ Buffer ຂອງຮູບພາບ
+    // ດຶງ Buffer  ຂອງຮູບພາບ
     const slipImageBuffer = req.files['Slip_image'] ? req.files['Slip_image'][0].buffer : null;
     const studentImageBuffer = req.files['Student_image'] ? req.files['Student_image'][0].buffer : null;
 
-    const sql = `INSERT INTO tbRegistration 
+    // ຄຳສັ່ງ SQL ບັນທຶກລົງ Table tbregistration
+    const sql = `INSERT INTO tbregistration 
         (FullName, School, Whatsapp, Facebook, Province, District, CourseName, CoursePrice, SlipImage, StudentImage) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     
@@ -69,8 +70,8 @@ app.post('/api/register', upload.fields([
         res.json({ status: 'success', message: 'ບັນທຶກຂໍ້ມູນ ແລະ ຮູບພາບລົງ Database ສຳເລັດ!' });
     });
 });
-// 👈 ປ່ຽນຈຸດນີ້ໃຫ້ຮັບ IP '0.0.0.0' ເພື່ອໃຫ້ມືຖື ຫຼື ຄອມເຄື່ອງອື່ນໃນວົງ Wi-Fi ດຽວກันເຂົ້າເถิงໄດ້
+
 const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on http://192.168.32.195:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

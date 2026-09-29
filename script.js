@@ -189,13 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault(); 
-            console.log("-> 1. ເລີ່ມສົ່ງຟອມໄປ Node.js Server...");
-
+            
             const loadingModal = document.getElementById('loadingModal');
             const spinnerBox = document.getElementById('spinnerBox');
 
             if (loadingModal) loadingModal.style.display = 'flex';
-
             if (spinnerBox) {
                 spinnerBox.innerHTML = `
                     <div class="spinner"></div>
@@ -204,29 +202,37 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                // 💡 ໃຊ້ FormData ໄດ້ເລີຍ ເພາະ Node.js (multer) ຈະເປັນຜູ້ຮັບ Files ແລະ Text ໂດຍກົງ
+                // ໃຊ້ FormData ດຶງຂໍ້ມູນທັງໝົດໃນ Form (ລວມທັງໄຟລ໌ຮູບ)
                 const formData = new FormData(this);
 
-                // 🔗 ຊີ້ URL ໄປທີ່ Node.js Server ຂອງເຮົາ
-                const scriptURL = 'http://192.168.32.195:3000/api/register';
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    body: formData // ⚠️ ຫ້າມ JSON.stringify ເດັດຂາດ ເພາະສົ່ງແບບ FormData
-                });
+                // ສົ່ງໄປຫາ Node.js Server ພ້ອມກັບໜ່ວງເວລາຕອນກຳລັງບັນທຶກ 1 ວິນາທີ (1000ms)
+                const scriptURL = 'http://localhost:3000/api/register';
+                const [response] = await Promise.all([
+                    fetch(scriptURL, {
+                        method: 'POST',
+                        body: formData // ⚠️ ຫ້າມ JSON.stringify ເດັດຂາດ
+                    }),
+                    new Promise(resolve => setTimeout(resolve, 1000))
+                ]);
 
                 const result = await response.json();
-                console.log("-> ຜົນລັບຈາກ Server:", result);
 
                 if (result.status === "success") {
                     if (spinnerBox) {
                         spinnerBox.innerHTML = `
-                            <div class="success-icon">✓</div>
-                            <div class="loading-text">ບັນທຶກຂໍ້ມູນສຳເລັດ!</div>
+                            <div class="success-circle" style="width: 60px !important; height: 60px !important; min-width: 60px !important; min-height: 60px !important; max-width: 60px !important; max-height: 60px !important; background-color: #4CAF50 !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin: 0 auto 12px auto !important; flex-shrink: 0 !important; aspect-ratio: 1 / 1 !important; box-sizing: border-box !important;">
+                                <svg style="width: 30px !important; height: 30px !important; display: block !important;" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="loading-text" style="color: #4CAF50; font-weight: bold;">ບັນທຶກຂໍ້ມູນສຳເລັດ</div>
                         `;
                     }
+                    
+                    // ເມື່ອສຳເລັດແລ້ວ ໃຫ້ຖ້າອີກ 1 ວິນາທີ (1000ms) ຈຶ່ງค่อย Refresh ຫນ້າເວັບ
                     setTimeout(() => {
                         window.location.reload(); 
-                    }, 1500);
+                    }, 1000);
                 } else {
                     throw new Error(result.message || "ເກີດຂໍ້ຜິດພາດໃນ Server");
                 }
@@ -239,7 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 // --- FUNCTION ສຳລັບກົດປຸ່ມເຂົ້າສູ່ໜ້າຟອມຫຼັກ ---
 function enterMainForm() {
     const splashScreen = document.getElementById('welcome-splash-screen');
@@ -393,7 +398,7 @@ function validateAndNextPage() {
         return false;
     }
 
-    // ຖ້າຜ່ານໝົດ ໃຫ້ໄປໜ້າ 2 ທັນປີ!
+    // ຖ້າຜ່ານໝົດ ໃຫ້ໄປໜ້າ 2 ທັນປີ
     nextPage();
     return true;
 }
