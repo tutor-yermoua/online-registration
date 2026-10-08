@@ -1,7 +1,8 @@
-// ປະກາດຕົວແປຄວບຄຸມໜ້າປັດຈຸບັນ
+// ==========================================
+// 1. ຕົວແປຄວບຄຸມໜ້າ ແລະ ລະບົບປ່ຽນໜ້າ
+// ==========================================
 let currentPage = 1;
 
-// ຟັງຊັນສະຫຼັບໜ້າ ແລະ ອັບເດດ Step Indicator ພ້ອມກັນ
 function showPage(pageNumber) {
     document.getElementById('page-1').style.display = 'none';
     document.getElementById('page-2').style.display = 'none';
@@ -17,16 +18,18 @@ function showPage(pageNumber) {
     updateStepIndicator(currentPage);
 }
 
-
-
-// ຟັງຊັນກົດປຸ່ມ "ກັບຄືນ"
 function prevPage() {
     if (currentPage > 1) {
         showPage(currentPage - 1);
     }
 }
 
-// ຟັງຊັນຈັດການ Progress Bar ດ້ານເທິງ
+function nextPage() {
+    if (currentPage < 3) {
+        showPage(currentPage + 1);
+    }
+}
+
 function updateStepIndicator(step) {
     const stepItems = document.querySelectorAll('.step-item');
     stepItems.forEach((item, index) => {
@@ -48,7 +51,10 @@ function updateStepIndicator(step) {
         }
     }
 }
-// 1. ເປີດ-ປິດ ປຸ່ມ Dropdown ຂອງແຂວງ-ເມືອງ
+
+// ==========================================
+// 2. ລະບົບ Dropdown ແຂວງ-ເມືອງ ແລະ ຄອສຮຽນ
+// ==========================================
 function toggleDropdown(listId) {
     document.querySelectorAll('.dropdown-list').forEach(list => {
         if (list.id !== listId) list.style.display = 'none';
@@ -58,13 +64,7 @@ function toggleDropdown(listId) {
         list.style.display = (list.style.display === 'none') ? 'block' : 'none';
     }
 }
-// ຟັງຊັນກົດປຸ່ມ "ຕໍ່ໄປ"
-function nextPage() {
-    if (currentPage < 3) {
-        showPage(currentPage + 1);
-    }
-}
-// ຟັງຊັນເລືອກຄອສແລ້ວເກັບຄ່າລົງ Hidden Input ພ້ອມຍ້າຍໄປໜ້າ 3 (ຊຳລະເງິນ)
+
 function selectCourseAndPay(courseName, coursePrice) {
     const nameInput = document.getElementById('selectedCourseNameInput');
     const priceInput = document.getElementById('selectedCoursePriceInput');
@@ -75,17 +75,13 @@ function selectCourseAndPay(courseName, coursePrice) {
     showPage(3);
 }
 
-// ຟັງຊັນກ໊ອບປີ້ເລກບັນຊີ
 function copyAccountNumber() {
     const rawAccNo = document.getElementById('accountNumber').innerText;
-    const accNo = rawAccNo.replace(/-/g, ''); // 👈 ຕັດເຄື່ອງໝາຍຂີດ (-) ອອກໃຫ້ເຫຼືອແຕ່ຕົວເລກ
+    const accNo = rawAccNo.replace(/-/g, ''); 
     
-    navigator.clipboard.writeText(accNo).then(() => {
-        // alert('ກ໊ອບປີ້ເລກບັນຊີສຳເລັດແລ້ວ: ' + accNo);
-    });
+    navigator.clipboard.writeText(accNo).then(() => {});
 }
 
-// ຟັງຊັນສະແດງຕົວຢ່າງຮູບພາບກ່ອນອັບໂຫຼດ
 function previewImage(event, imgId, containerId, placeholderId) {
     const file = event.target.files[0];
     if (file) {
@@ -99,7 +95,6 @@ function previewImage(event, imgId, containerId, placeholderId) {
     }
 }
 
-// ຟັງຊັນຊ່ວຍແປງ File ໃຫ້ເປັນ Base64 ສົ່ງໄປ Google Sheet
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -108,6 +103,10 @@ function getBase64(file) {
         reader.onerror = error => reject(error);
     });
 }
+
+// ==========================================
+// 3. DOMContentLoaded & ລະບົບສົ່ງຂໍ້ມູນໄປ Google Apps Script
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof showPage === 'function') showPage(1);
 
@@ -115,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "ນະຄອນຫຼວງວຽງຈັນ": ["ເມືອງຈັນທະບູລີ", "ເມືອງສີໂຄດຕະບອງ",  "ເມືອງສີສັດຕະນາກ","ເມືອງໄຊເສດຖາ", "ເມືອງຫາດຊາຍຟອງ",  "ເມືອງສັງທອງ","ເມືອງນາຊາຍທອງ", "ເມືອງໄຊທານີ", "ເມືອງປາກງື່ມ"],
         "ຜົ້ງສາລີ": ["ເມືອງຜົ້ງສາລີ", "ເມືອງໄໝ່", "ເມືອງຂວາ", "ເມືອງສຳພັນ", "ເມືອງບູນເໜືອ", "ເມືອງຍອດອູ", "ເມືອງບູນໃຕ້"],
         "ຫຼວງນ້ຳທາ": ["ເມືອງນ້ຳທາ", "ເມືອງສິງ", "ເມືອງລອງ", "ເມືອງວຽງພູຄາ", "ເມືອງນາແລ້"],
-        "ອຸດົມໄຊ": ["ເມືອງໄຊ","ເມືອງນາໝໍ້", "ເມືອງຫຼາ",  "ເມືອງງາ", "ເມືອງແບງ", , "ເມືອງປາກແບ່ງ","ເມືອງຮຸນ"],
+        "ອຸດົມໄຊ": ["ເມືອງໄຊ","ເມືອງນາໝໍ້", "ເມືອງຫຼາ",  "ເມືອງງາ", "ເມືອງແບງ", "ເມືອງປາກແບ່ງ","ເມືອງຮຸນ"],
         "ບໍ່ແກ້ວ": ["ເມືອງຫວ້ຍຊາຍ", "ເມືອງຕົ້ນເຜິ້ງ", "ເມືອງເມິງ", "ເມືອງຜາອຸດົມ", "ເມືອງປາກທາ"],
         "ຫຼວງພະບາງ": ["ເມືອງຫຼວງພະບາງ", "ເມືອງຊຽງເງິນ", "ເມືອງນານ", "ເມືອງປາກອູ", "ເມືອງນ້ຳບາກ", "ເມືອງງອຍ", "ເມືອງປາກແຊງ", "ເມືອງໂພນໄຊ", "ເມືອງຈອມເພັດ", "ເມືອງວຽງຄຳ", "ເມືອງພູຄູນ", "ເມືອງໂພນທອງ"],
         "ຫົວພັນ": ["ເມືອງຊຳເໜືອ", "ເມືອງຊຽງຄໍ້", "ເມືອງວຽງທອງ", "ເມືອງວຽງໄຊ", "ເມືອງຫົວເມືອງ", "ເມືອງຊຳໃຕ້", "ສົບເບົ້າ", "ແອດ"],
@@ -131,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "ອັດຕະປື": ["ໄຊເສດຖາ", "ສາມັກຄີໄຊ", "ສະໜາມໄຊ", "ສານໄຊ", "ພູວົງ"],
         "ໄຊສົມບູນ": ["ເມືອງອານຸວົງ", "ເມືອງລ້ອງຊານ", "ເມືອງລ້ອງແຈ້ງ", "ເມືອງຮົ່ມ", "ເມືອງທ່າໂທມ"]
     };
+
     const provinceListEl = document.getElementById('provinceList');
     const provinceSelectedText = document.getElementById('provinceSelectedText');
     const provinceInput = document.getElementById('Province'); 
@@ -151,8 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 provinceSelectedText.classList.add('has-value');
                 if (provinceInput) provinceInput.value = province; 
                 provinceListEl.style.display = 'none';
-
-                // โหลดເມືອງຕາມແຂວງທີ່ເລືອກ
                 loadDistricts(province);
             });
             provinceListEl.appendChild(li);
@@ -182,8 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
             districtListEl.appendChild(liDist);
         });
     }
-});
-document.addEventListener('DOMContentLoaded', () => {
+
+    updateSelectTextColor('Province', 'provinceSelectedText');
+    updateSelectTextColor('District', 'districtSelectedText');
+
+    // ------------------------------------------
+    // ລະບົບສົ່ງຂໍ້ມູນ (Form Submission) ໄປ Google Apps Script
+    // ------------------------------------------
     const form = document.getElementById('registrationForm');
 
     if (form) {
@@ -197,31 +200,70 @@ document.addEventListener('DOMContentLoaded', () => {
             if (spinnerBox) {
                 spinnerBox.innerHTML = `
                     <div class="spinner"></div>
-                    <div class="loading-text">ກຳລັງບັນທຶກ<span class="dots"></span></div>
+                    <div class="loading-text">ກຳລັງບັນທຶກຂໍ້ມູນ<span class="dots"></span></div>
                 `;
             }
 
             try {
-                // ໃຊ້ FormData ດຶງຂໍ້ມູນທັງໝົດໃນ Form (ລວມທັງໄຟລ໌ຮູບ)
-                const formData = new FormData(this);
+                const slipFileinput = document.querySelector('input[name="Slip_image"]');
+                const studentFileInput = document.querySelector('input[name="Student_image"]');
 
-                // ສົ່ງໄປຫາ Node.js Server ພ້ອມກັບໜ່ວງເວລາຕອນກຳລັງບັນທຶກ 1 ວິນາທີ (1000ms)
-                const scriptURL = 'http://localhost:3000/api/register';
+                let slipImageBase64 = "";
+                let slipImageName = "";
+                let slipImageMimeType = "";
+
+                let studentImageBase64 = "";
+                let studentImageName = "";
+                let studentImageMimeType = "";
+
+                if (slipFileinput && slipFileinput.files[0]) {
+                    slipImageBase64 = await getBase64(slipFileinput.files[0]);
+                    slipImageName = slipFileinput.files[0].name;
+                    slipImageMimeType = slipFileinput.files[0].type;
+                }
+
+                if (studentFileInput && studentFileInput.files[0]) {
+                    studentImageBase64 = await getBase64(studentFileInput.files[0]);
+                    studentImageName = studentFileInput.files[0].name;
+                    studentImageMimeType = studentFileInput.files[0].type;
+                }
+
+                const formDataPayload = {
+                    studentName: document.querySelector('input[name="Fullname"]')?.value || "",
+                    school: document.querySelector('input[name="School"]')?.value || "",
+                    whatsapp: document.querySelector('input[name="Whatsapp"]')?.value || "",
+                    facebook: document.querySelector('input[name="Facebook"]')?.value || "",
+                    province: document.querySelector('input[name="Province"]')?.value || "",
+                    district: document.querySelector('input[name="District"]')?.value || "",
+                    Course_name: document.querySelector('input[name="Course_name"]')?.value || "",        
+                    Course_price: document.querySelector('input[name="Course_price"]')?.value || "",
+                    slipImageBase64: slipImageBase64,
+                    slipImageName: slipImageName,
+                    slipImageMimeType: slipImageMimeType,
+                    
+                    studentImageBase64: studentImageBase64,
+                    studentImageName: studentImageName,
+                    studentImageMimeType: studentImageMimeType
+                };
+
+                // ⚠️ ໃຫ້ເອົາ Web App URL ທີ່ໄດ້ຈາກການ Deploy Google Apps Script ມາວາງໃສ່ນີ້
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbwOJ_lrVdjLptHxEbJjcrglOJ5kVnjjXGMdLV9d06xh0B5fsUMOGhJ0owmxB9Vpf84/exec'; 
+
                 const [response] = await Promise.all([
                     fetch(scriptURL, {
                         method: 'POST',
-                        body: formData // ⚠️ ຫ້າມ JSON.stringify ເດັດຂາດ
+                        body: JSON.stringify(formDataPayload)
                     }),
                     new Promise(resolve => setTimeout(resolve, 1000))
                 ]);
 
                 const result = await response.json();
 
-                if (result.status === "success") {
+                if (result.result === "success" || result.status === "success") {
                     if (spinnerBox) {
                         spinnerBox.innerHTML = `
-                            <div class="success-circle" style="width: 60px !important; height: 60px !important; min-width: 60px !important; min-height: 60px !important; max-width: 60px !important; max-height: 60px !important; background-color: #4CAF50 !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin: 0 auto 12px auto !important; flex-shrink: 0 !important; aspect-ratio: 1 / 1 !important; box-sizing: border-box !important;">
-                                <svg style="width: 30px !important; height: 30px !important; display: block !important;" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                            <div class="success-circle" style="width: 60px !important; height: 60px !important; min-width: 60px !important; min-height: 60px !important; background-color: #4CAF50 !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin: 0 auto 12px auto !important;">
+                                <svg style="width: 30px !important; height: 30px !important;" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="20 6 9 17 4 12"></polyline>
                                 </svg>
                             </div>
@@ -229,10 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         `;
                     }
                     
-                    // ເມື່ອສຳເລັດແລ້ວ ໃຫ້ຖ້າອີກ 1 ວິນາທີ (1000ms) ຈຶ່ງค่อย Refresh ຫນ້າເວັບ
                     setTimeout(() => {
                         window.location.reload(); 
-                    }, 1000);
+                    }, 1200);
                 } else {
                     throw new Error(result.message || "ເກີດຂໍ້ຜິດພາດໃນ Server");
                 }
@@ -245,19 +286,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-// --- FUNCTION ສຳລັບກົດປຸ່ມເຂົ້າສູ່ໜ້າຟອມຫຼັກ ---
+
+// ==========================================
+// 4. ຟັງຊັນຊ່ວຍເຫຼືອເພີ່ມເຕີມ (UI & Validation)
+// ==========================================
 function enterMainForm() {
     const splashScreen = document.getElementById('welcome-splash-screen');
-    
-    // ເຮັດໃຫ້ໜ້າຕ້ອນຮັບຈາງລົງ
-    splashScreen.style.opacity = '0';
-    splashScreen.style.visibility = 'hidden';
-    
-    // ລຶບອອກຈາກ DOM ຫຼັງຈາກຈາງສຳເລັດ (0.6 ວິນາທີ)
-    setTimeout(function() {
-        splashScreen.style.display = 'none';
-    }, 600);
+    if (splashScreen) {
+        splashScreen.style.opacity = '0';
+        splashScreen.style.visibility = 'hidden';
+        setTimeout(function() {
+            splashScreen.style.display = 'none';
+        }, 600);
+    }
 }
+
 const focusPlaceholders = {
     "Fullname": "ປ້ອນຊື່ ແລະ ນາມສະກຸນ",
     "School": "ປ້ອນຊື່ໂຮງຮຽນ",
@@ -290,7 +333,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!inputElement) return;
         let name = inputElement.name;
 
-        // ເວລາກົດເຂົ້າມາພິມ (Focus)
         inputElement.addEventListener('focus', function () {
             document.querySelectorAll(".input-field, .select-wrapper").forEach(box => {
                 box.classList.remove('input-error');
@@ -304,13 +346,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     }
                 }
-                
-                let spanText = box.querySelector('span[id$="SelectedText"]');
-                let hiddenInputId = spanText && spanText.id.includes('province') ? 'Province' : 'District';
-                let hiddenInput = document.getElementById(hiddenInputId);
-                if (spanText && (!hiddenInput || !hiddenInput.value)) {
-                    spanText.style.color = "";
-                }
             });
 
             if (!this.value || this.value.trim() === "") {
@@ -321,7 +356,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // ເວລາກົດອອກຈາກກ່ອງ (Blur)
         inputElement.addEventListener('blur', function () {
             if (!this.value || this.value.trim() === "") {
                 this.style.color = "";
@@ -331,32 +365,25 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // ເວລາກຳລັງພິມ (Input)
         inputElement.addEventListener('input', function () {
             container.classList.remove('input-error');
             this.style.color = "";
         });
     });
-
-    // ເອີ້ນໃຊ້ງານທັນຕອນໂຫຼດໜ້າຈໍ
-    updateSelectTextColor('Province', 'provinceSelectedText');
-    updateSelectTextColor('District', 'districtSelectedText');
 });
+
 function validateAndNextPage() {
     let isValid = true;
 
-    // 1. ກວດສອບ input ທົ່ວໄປໃນໜ້າ 1
     const requiredInputs = document.querySelectorAll("#page-1 input[required]:not([type='hidden'])");
     requiredInputs.forEach(input => {
         let container = input.closest('.input-field');
-        let name = input.name; // ດຶງຊື່ name ຂອງ input ເພື່ອມາ ຜູກກັບ errorPlaceholders
+        let name = input.name;
         
         if (!input.value || input.value.trim() === "") {
             isValid = false;
             if (container) container.classList.add('input-error');
-            input.style.color = "#dc2626"; // ຂໍ້ຄວາມເປັນສີແດງ
-            
-            // ປ່ຽນ placeholder ໃຫ້ເປັນຂໍ້ຄວາມແຈ້ງເຕືອນສີແດງ
+            input.style.color = "#dc2626"; 
             if (errorPlaceholders[name]) {
                 input.placeholder = errorPlaceholders[name];
             }
@@ -366,7 +393,6 @@ function validateAndNextPage() {
         }
     });
 
-    // 2. ກວດສອບແຂວງ (ໃຫ້ຮັກສາແບບເດີມ ແຕ່ປ່ຽນແຄ່ຂອບ ແລະ ສີຕາມສະຖານະ error-class)
     const provinceInput = document.getElementById('Province');
     const provinceSpan = document.getElementById('provinceSelectedText');
     let provContainer = provinceSpan ? provinceSpan.closest('.select-wrapper') : null;
@@ -374,12 +400,12 @@ function validateAndNextPage() {
     if (!provinceInput || !provinceInput.value || provinceInput.value.trim() === "") {
         isValid = false;
         if (provContainer) provContainer.classList.add('input-error');
-        if (provinceSpan) provinceSpan.style.color = "#dc2626"; // ໃຫ້ຂໍ້ຄວາມແຂວງເປັນສີແດງນຳ
+        if (provinceSpan) provinceSpan.style.color = "#dc2626";
     } else {
         if (provContainer) provContainer.classList.remove('input-error');
-        provinceSpan.style.color = "";
+        if (provinceSpan) provinceSpan.style.color = "";
     }
-    // 3. ກວດສອບເມືອງ
+
     const districtInput = document.getElementById('District');
     const districtSpan = document.getElementById('districtSelectedText');
     let distContainer = districtSpan ? districtSpan.closest('.select-wrapper') : null;
@@ -387,37 +413,34 @@ function validateAndNextPage() {
     if (!districtInput || !districtInput.value || districtInput.value.trim() === "") {
         isValid = false;
         if (distContainer) distContainer.classList.add('input-error');
-        if (districtSpan) districtSpan.style.color = "#dc2626"; // ໃຫ້ຂໍ້ຄວາມເມືອງເປັນສີແດງນຳ
+        if (districtSpan) districtSpan.style.color = "#dc2626";
     } else {
         if (distContainer) distContainer.classList.remove('input-error');
-        districtSpan.style.color = "";
+        if (districtSpan) districtSpan.style.color = "";
     }
 
-    // ຖ້າຂໍ້ມູນຍັງບໍ່ຄົບ ໃຫ້ຢຸດການໄປຕໍ່
     if (!isValid) {
         return false;
     }
 
-    // ຖ້າຜ່ານໝົດ ໃຫ້ໄປໜ້າ 2 ທັນປີ
     nextPage();
     return true;
 }
-// ຟັງຊັນກວດສອບ ແລະ ປ່ຽນສີຂໍ້ຄວາມແຂວງ-ເມືອງ ອັດຕະໂນມັດ
+
 function updateSelectTextColor(hiddenInputId, spanId) {
     const hiddenInput = document.getElementById(hiddenInputId);
     const spanText = document.getElementById(spanId);
     
     if (hiddenInput && spanText) {
         if (hiddenInput.value && hiddenInput.value.trim() !== "") {
-            spanText.style.color = "#111827"; // ເລືອກແລ້ວ: ໃຫ້ເປັນສີດຳປົກກະຕິ
+            spanText.style.color = "#111827"; 
         } else {
-            spanText.style.color = ""; // ຍັງບໍ່ເລືອກ: ໃຫ້ກັບຄືນເປັນສີເທົາຕາມ CSS
+            spanText.style.color = ""; 
         }
     }
 }
-// ຟັງຊັນກວດຈັບການຄລິກ ຖ້າຄລິກ ບ່ອນອື່ນ ໃຫ້ປິດ Dropdown ລົງ
+
 document.addEventListener('click', function(event) {
-    // ກວດສອບວ່າ ສິ່ງທີ່ຖືກຄລິກ ບໍ່ໄດ້ຢູ່ໃນກ່ອງ dropdown ຫຼື ປຸ່ມເລືອກ
     if (!event.target.closest('.select-wrapper') && !event.target.closest('.custom-dropdown')) {
         document.querySelectorAll('.dropdown-list').forEach(list => {
             list.style.display = 'none';

@@ -494,26 +494,30 @@ body {
     }
 }
 
-/* ກ່ອງວົງມົນຫຸ້ມໂລໂກ້ (ຂະໜາດ 250px ຕາມທີ່ອ້າຍປັບ) */
+/* ກ່ອງວົງມົນຫຸ້ມໂລໂກ້ (ລັອກອັດຕາສ່ວນໃຫ້ເປັນວົງມົນສະເໝີ) */
 .splash-logo-container {
     width: 200px;
     height: 200px;
+    aspect-ratio: 1 / 1; /* 👈 ບັງຄັບໃຫ້ກວ້າງ ແລະ ສູງເທົ່າກັນຕະຫຼອດເວລາ */
+    flex-shrink: 0;      /* 👈 ປ້ອງກັນບໍ່ໃຫ້ກ່ອງຖືກບີບເວລາຊູມ ຫຼື ຫຍໍ້ຈໍ */
     border-radius: 50%;
     background: white;
     padding: 6px;
-   /* box-shadow: 0 10px 25px rgba(0,0,0,0.3);*/
-   box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 10px 30px rgba(0, 0, 0, 0.5);
     margin-bottom: 30px;
-    animation: spinLogo 3.5s ease-out forwards; /* ໝຸນ 3.5 ວິນາທີ */
+    animation: spinLogo 3.5s ease-out forwards;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 }
+
 .splash-logo {
     width: 100%;
     height: 100%;
+    aspect-ratio: 1 / 1; /* 👈 ບັງຄັບຮູບພາບໃຫ້ເປັນສີ່ຫຼ່ຽມຈัตุรัส */
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: cover;   /* ໃຫ້ຮູບເຕັມວົງມົນພດີໂດຍບໍ່ໃຫ້ບິດເບືອນ */
 }
 
 .splash-text-container {
@@ -602,37 +606,25 @@ body {
     border: 1.5px solid #d1d5db !important;
     box-sizing: border-box;
     transition: border-color 0.2s ease;
-}
-
-/* 2. ສະຖານະກຳລັງກົດ (Focus): ຂອບສີຟ້າ */
+}                                                           /* 2. ສະຖານະກຳລັງກົດ (Focus): ຂອບສີຟ້າ */
 .input-field:focus-within, 
 .select-wrapper:focus-within {
     border: 1.5px solid #2563eb !important;
-}
-
-/* ຕັດຂອບໃນຂອງກ່ອງແຂວງ/ເມືອງ */
+}                                                         /* ຕັດຂອບໃນຂອງກ່ອງແຂວງ/ເມືອງ */
 .select-box-custom {
     border: none !important; 
-}
-
-/* 3. ສະຖານະ Error (ຕອນກົດປຸ່ມຕໍ່ໄປແລ້ວຫວ່າງ): ຂອບສີແດງ */
+}                                                         /* 3. ສະຖານະ Error (ຕອນກົດປຸ່ມຕໍ່ໄປແລ້ວຫວ່າງ): ຂອບສີແດງ */
 .input-field.input-error, 
 .select-wrapper.input-error {
     border: 1.5px solid #dc2626 !important;
-}
-
-/* ສີ Placeholder ປົກກະຕິ */
+}                                                                    /* ສີ Placeholder ປົກກະຕິ */
 .input-field input::placeholder {
     color: #9ca3af !important; 
-}
-
-/* ສີ Placeholder ແລະ ຕົວໜັງສື ເວລາເກີດ Error */
+}                                                        /* ສີ Placeholder ແລະ ຕົວໜັງສື ເວລາເກີດ Error */
 .input-field.input-error input,
 .input-field.input-error input::placeholder {
     color: #dc2626 !important;
-}
-
-/* ສະເພາະຕົວໜັງສືແຂວງ ແລະ ເມືອງ ເວລາ Error ໃຫ້ເປັນສີແດງ (ແຕ່ຂໍ້ຄວາມຍັງຄືເກົ່າ) */
+}                                                      /* ສະເພາະຕົວໜັງສືແຂວງ ແລະ ເມືອງ ເວລາ Error ໃຫ້ເປັນສີແດງ (ແຕ່ຂໍ້ຄວາມຍັງຄືເກົ່າ) */
 .select-wrapper.input-error #provinceSelectedText,
 .select-wrapper.input-error #districtSelectedText,
 .select-wrapper.input-error svg,
