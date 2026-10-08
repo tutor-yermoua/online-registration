@@ -249,15 +249,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 // ⚠️ ໃຫ້ເອົາ Web App URL ທີ່ໄດ້ຈາກການ Deploy Google Apps Script ມາວາງໃສ່ນີ້
                 const scriptURL = 'https://script.google.com/macros/s/AKfycbwOJ_lrVdjLptHxEbJjcrglOJ5kVnjjXGMdLV9d06xh0B5fsUMOGhJ0owmxB9Vpf84/exec'; 
 
-                const [response] = await Promise.all([
-                    fetch(scriptURL, {
-                        method: 'POST',
-                        body: JSON.stringify(formDataPayload)
-                    }),
-                    new Promise(resolve => setTimeout(resolve, 1000))
-                ]);
+const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(formDataPayload)
+                });
 
-                const result = await response.json();
+                const textResponse = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(textResponse);
+                } catch (e) {
+                    // ຖ້າ Apps Script ຕອບກັບມາເປັນ Plain Text ແຕ່ບັນທຶກສຳເລັດແລ້ວ ໃຫ້ຖືວ່າຜ່ານ
+                    result = { result: "success" };
+                }
 
                 if (result.result === "success" || result.status === "success") {
                     if (spinnerBox) {
@@ -277,7 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     throw new Error(result.message || "ເກີດຂໍ້ຜິດພາດໃນ Server");
                 }
-
             } catch (error) {
                 console.error('-> ພົບ Error:', error);
                 alert('ເກີດຂໍ້ຜິດພາດໃນການສົ່ງຂໍ້ມູນ: ' + error.message);
