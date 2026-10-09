@@ -312,5 +312,14 @@
         </button>
     </div>
     <script src="script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('./sw.js').catch(function (err) {
+            console.warn('Service Worker registration failed:', err);
+          });
+        });
+      }
+    </script>
 </body>
 </html>

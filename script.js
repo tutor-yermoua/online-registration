@@ -107,6 +107,98 @@ function getBase64(file) {
 // ==========================================
 // 3. DOMContentLoaded & ລະບົບສົ່ງຂໍ້ມູນໄປ Google Apps Script
 // ==========================================
+// ==========================================
+// ຟັງຊັນເພີ່ມໃໝ່: IndexedDB Offline Queue + Auto Sync
+// ==========================================
+const OFFLINE_DB_NAME = 'YMKRegistrationOfflineDB';
+const OFFLINE_STORE_NAME = 'pendingRegistrations';
+const OFFLINE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymaocWJw--oVGjMgxRvOhUJu1pucUWUIIIa_iXsQs4pMWYRIPdW4mXtFGH0kEuJfiEHQ/exec';
+let offlineSyncRunning = false;
+
+function createSubmissionId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+    return 'sub-' + Date.now() + '-' + Math.random().toString(36).slice(2, 12);
+}
+
+function openOfflineDatabase() {
+    return new Promise((resolve, reject) => {
+        if (!('indexedDB' in window)) return reject(new Error('ບຣາວເຊີນີ້ບໍ່ຮອງຮັບ IndexedDB'));
+        const request = indexedDB.open(OFFLINE_DB_NAME, 1);
+        request.onupgradeneeded = () => {
+            const db = request.result;
+            if (!db.objectStoreNames.contains(OFFLINE_STORE_NAME)) db.createObjectStore(OFFLINE_STORE_NAME, { keyPath: 'submissionId' });
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error('ເປີດຖານຂໍ້ມູນອອບລາຍບໍ່ສຳເລັດ'));
+    });
+}
+
+async function savePendingRegistration(payload) {
+    const db = await openOfflineDatabase();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(OFFLINE_STORE_NAME, 'readwrite');
+        tx.objectStore(OFFLINE_STORE_NAME).put(payload);
+        tx.oncomplete = () => { db.close(); resolve(); };
+        tx.onerror = () => { db.close(); reject(tx.error || new Error('ເກັບຂໍ້ມູນອອບລາຍບໍ່ສຳເລັດ')); };
+        tx.onabort = () => { db.close(); reject(tx.error || new Error('ການເກັບຂໍ້ມູນຖືກຍົກເລີກ')); };
+    });
+}
+
+async function getPendingRegistrations() {
+    const db = await openOfflineDatabase();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(OFFLINE_STORE_NAME, 'readonly');
+        const req = tx.objectStore(OFFLINE_STORE_NAME).getAll();
+        req.onsuccess = () => { const values = req.result || []; db.close(); resolve(values); };
+        req.onerror = () => { db.close(); reject(req.error || new Error('ອ່ານຄິວອອບລາຍບໍ່ສຳເລັດ')); };
+    });
+}
+
+async function deletePendingRegistration(submissionId) {
+    const db = await openOfflineDatabase();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(OFFLINE_STORE_NAME, 'readwrite');
+        tx.objectStore(OFFLINE_STORE_NAME).delete(submissionId);
+        tx.oncomplete = () => { db.close(); resolve(); };
+        tx.onerror = () => { db.close(); reject(tx.error || new Error('ລຶບລາຍການທີ່ສົ່ງແລ້ວບໍ່ສຳເລັດ')); };
+    });
+}
+
+async function syncPendingRegistrations() {
+    if (offlineSyncRunning || !navigator.onLine) return;
+    offlineSyncRunning = true;
+    try {
+        const pending = await getPendingRegistrations();
+        for (const payload of pending) {
+            if (!navigator.onLine) break;
+            try {
+                const response = await fetch(OFFLINE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const responseText = await response.text();
+                let result;
+                try { result = JSON.parse(responseText); } catch (_) { result = null; }
+                if (response.ok && result && (result.result === 'success' || result.status === 'success' || result.result === 'duplicate')) {
+                    await deletePendingRegistration(payload.submissionId);
+                } else {
+                    // ຖ້າຕອບກັບບໍ່ຊັດເຈນ ເກັບຄ້າງໄວ້ ແລ້ວລອງອີກຄັ້ງ.
+                    console.warn('Offline item remains queued:', payload.submissionId, responseText);
+                    break;
+                }
+            } catch (err) {
+                console.warn('Offline sync failed; will retry later:', err);
+                break;
+            }
+        }
+    } catch (err) {
+        console.warn('Could not process offline queue:', err);
+    } finally {
+        offlineSyncRunning = false;
+    }
+}
+
+window.addEventListener('online', () => { syncPendingRegistrations(); });
+window.addEventListener('load', () => { if (navigator.onLine) syncPendingRegistrations(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && navigator.onLine) syncPendingRegistrations(); });
+
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof showPage === 'function') showPage(1);
 
@@ -185,111 +277,67 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSelectTextColor('District', 'districtSelectedText');
 
     // ------------------------------------------
-    // ລະບົບສົ່ງຂໍ້ມູນ (Form Submission) ໄປ Google Apps Script
+    // ລະບົບສົ່ງຂໍ້ມູນ: ອອນລາຍ + ເກັບຄ້າງໄວ້ເມື່ອອອບລາຍ
     // ------------------------------------------
     const form = document.getElementById('registrationForm');
 
     if (form) {
         form.addEventListener('submit', async function(e) {
-            e.preventDefault(); 
-            
+            e.preventDefault();
             const loadingModal = document.getElementById('loadingModal');
             const spinnerBox = document.getElementById('spinnerBox');
-
+            const loadingStartedAt = Date.now();
+            const minimumLoadingMs = 1500; // ໃຫ້ spinner ແລະ 3 ຈຸດສະແດງຢ່າງໜ້ອຍ 1.5 ວິນາທີ
             if (loadingModal) loadingModal.style.display = 'flex';
-            if (spinnerBox) {
-                spinnerBox.innerHTML = `
-                    <div class="spinner"></div>
-                    <div class="loading-text">ກຳລັງບັນທຶກຂໍ້ມູນ<span class="dots"></span></div>
-                `;
-            }
+            if (spinnerBox) spinnerBox.innerHTML = '<div class="spinner"></div><div class="loading-text">ກຳລັງບັນທຶກຂໍ້ມູນ<span class="dots"></span></div>';
 
             try {
-                const slipFileinput = document.querySelector('input[name="Slip_image"]');
-                const studentFileInput = document.querySelector('input[name="Student_image"]');
-
-                let slipImageBase64 = "";
-                let slipImageName = "";
-                let slipImageMimeType = "";
-
-                let studentImageBase64 = "";
-                let studentImageName = "";
-                let studentImageMimeType = "";
-
-                if (slipFileinput && slipFileinput.files[0]) {
-                    slipImageBase64 = await getBase64(slipFileinput.files[0]);
-                    slipImageName = slipFileinput.files[0].name;
-                    slipImageMimeType = slipFileinput.files[0].type;
-                }
-
-                if (studentFileInput && studentFileInput.files[0]) {
-                    studentImageBase64 = await getBase64(studentFileInput.files[0]);
-                    studentImageName = studentFileInput.files[0].name;
-                    studentImageMimeType = studentFileInput.files[0].type;
-                }
-
+                const slipInput = document.querySelector('input[name="Slip_image"]');
+                const studentInput = document.querySelector('input[name="Student_image"]');
+                const slipFile = slipInput && slipInput.files ? slipInput.files[0] : null;
+                const studentFile = studentInput && studentInput.files ? studentInput.files[0] : null;
+                const slipImageBase64 = slipFile ? await getBase64(slipFile) : '';
+                const studentImageBase64 = studentFile ? await getBase64(studentFile) : '';
                 const formDataPayload = {
-                    studentName: document.querySelector('input[name="Fullname"]')?.value || "",
-                    school: document.querySelector('input[name="School"]')?.value || "",
-                    whatsapp: document.querySelector('input[name="Whatsapp"]')?.value || "",
-                    facebook: document.querySelector('input[name="Facebook"]')?.value || "",
-                    province: document.querySelector('input[name="Province"]')?.value || "",
-                    district: document.querySelector('input[name="District"]')?.value || "",
-                    Course_name: document.querySelector('input[name="Course_name"]')?.value || "",        
-                    Course_price: document.querySelector('input[name="Course_price"]')?.value || "",
+                    submissionId: createSubmissionId(),
+                    studentName: document.querySelector('input[name="Fullname"]')?.value || '',
+                    school: document.querySelector('input[name="School"]')?.value || '',
+                    whatsapp: document.querySelector('input[name="Whatsapp"]')?.value || '',
+                    facebook: document.querySelector('input[name="Facebook"]')?.value || '',
+                    province: document.querySelector('input[name="Province"]')?.value || '',
+                    district: document.querySelector('input[name="District"]')?.value || '',
+                    Course_name: document.querySelector('input[name="Course_name"]')?.value || '',
+                    Course_price: document.querySelector('input[name="Course_price"]')?.value || '',
                     slipImageBase64: slipImageBase64,
-                    slipImageName: slipImageName,
-                    slipImageMimeType: slipImageMimeType,
-                    
+                    slipImageName: slipFile ? slipFile.name : '',
+                    slipImageMimeType: slipFile ? slipFile.type : '',
                     studentImageBase64: studentImageBase64,
-                    studentImageName: studentImageName,
-                    studentImageMimeType: studentImageMimeType
+                    studentImageName: studentFile ? studentFile.name : '',
+                    studentImageMimeType: studentFile ? studentFile.type : ''
                 };
 
-                // ⚠️ ໃຫ້ເອົາ Web App URL ທີ່ໄດ້ຈາກການ Deploy Google Apps Script ມາວາງໃສ່ນີ້
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbzhJjW-d5QRoB_jmRpnXPSgsY9Xb0Mjbs0dIwLWr9EHX0N86Cb2H3AHVILWLHadn844/exec'; 
+                // ເກັບຂໍ້ມູນໃນ browser ກ່ອນທຸກຄັ້ງ; ຈຶ່ງຄ່ອຍພະຍາຍາມສົ່ງຖ້າມີແນັດ.
+                // ຂໍ້ຄວາມທີ່ນັກຮຽນເຫັນຈະຄືກັນທັງ online ແລະ offline.
+                await savePendingRegistration(formDataPayload);
+                if (navigator.onLine) await syncPendingRegistrations();
 
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    body: JSON.stringify(formDataPayload)
-                });
-
-                const textResponse = await response.text();
-                let result;
-                try {
-                    result = JSON.parse(textResponse);
-                } catch (e) {
-                    // ຖ້າ Apps Script ຕອບກັບມາເປັນ Plain Text ແຕ່ບັນທຶກສຳເລັດແລ້ວ ໃຫ້ຖືວ່າຜ່ານ
-                    result = { result: "success" };
+                // ຖ້າອອບລາຍ ໃຫ້ spinner ສະແດງຕໍ່ຈົນຄົບ 1.5 ວິນາທີ ເພື່ອໃຫ້ອາລົມການໃຊ້ງານຄືກັນກັບຕອນອອນລາຍ.
+                const elapsedLoadingMs = Date.now() - loadingStartedAt;
+                const remainingLoadingMs = minimumLoadingMs - elapsedLoadingMs;
+                if (remainingLoadingMs > 0) {
+                    await new Promise(resolve => setTimeout(resolve, remainingLoadingMs));
                 }
 
-                if (result.result === "success" || result.status === "success") {
-                    if (spinnerBox) {
-                        spinnerBox.innerHTML = `
-                            <div class="success-circle" style="width: 60px !important; height: 60px !important; min-width: 60px !important; min-height: 60px !important; background-color: #4CAF50 !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin: 0 auto 12px auto !important;">
-                                <svg style="width: 30px !important; height: 30px !important;" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-                            <div class="loading-text" style="color: #4CAF50; font-weight: bold;">ບັນທຶກຂໍ້ມູນສຳເລັດ</div>
-                        `;
-                    }
-                    
-                    setTimeout(() => {
-                        window.location.reload(); 
-                    }, 1200);
-                } else {
-                    throw new Error(result.message || "ເກີດຂໍ້ຜິດພາດໃນ Server");
-                }
+                if (spinnerBox) spinnerBox.innerHTML = '<div class="success-circle" style="width:60px;height:60px;background:#4CAF50;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg style="width:30px;height:30px" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg></div><div class="loading-text" style="color:#4CAF50;font-weight:bold">ບັນທຶກຂໍ້ມູນສຳເລັດ</div>';
+                        setTimeout(() => window.location.reload(), 1500);
             } catch (error) {
-                console.error('-> ພົບ Error:', error);
-                // 🛠️ ຈຸດທີ່ແກ້ໄຂ: ป้องกันไม่ให้แสดงคำว่า undefined
-                const errorMsg = error && error.message ? error.message : "ການເຊື່ອມຕໍ່ມີບັນຫາ ຫຼື ເຊີເວີບໍ່ຕອບສະໜອງ";
-                alert('ເກີດຂໍ້ຜິດພາດໃນການສົ່ງຂໍ້ມູນ: ' + errorMsg);
+                console.error('Submission error:', error);
+                alert('ບັນທຶກບໍ່ສຳເລັດ: ' + (error?.message || 'ກະລຸນາລອງອີກຄັ້ງ'));
                 if (loadingModal) loadingModal.style.display = 'none';
             }
         });
     }
+
 });
 
 // ==========================================
