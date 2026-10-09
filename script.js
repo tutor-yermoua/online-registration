@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // ⚠️ ໃຫ້ເອົາ Web App URL ທີ່ໄດ້ຈາກການ Deploy Google Apps Script ມາວາງໃສ່ນີ້
                 const scriptURL = 'https://script.google.com/macros/s/AKfycbwOJ_lrVdjLptHxEbJjcrglOJ5kVnjjXGMdLV9d06xh0B5fsUMOGhJ0owmxB9Vpf84/exec'; 
 
-const response = await fetch(scriptURL, {
+                const response = await fetch(scriptURL, {
                     method: 'POST',
                     body: JSON.stringify(formDataPayload)
                 });
@@ -283,7 +283,9 @@ const response = await fetch(scriptURL, {
                 }
             } catch (error) {
                 console.error('-> ພົບ Error:', error);
-                alert('ເກີດຂໍ້ຜິດພາດໃນການສົ່ງຂໍ້ມູນ: ' + error.message);
+                // 🛠️ ຈຸດທີ່ແກ້ໄຂ: ป้องกันไม่ให้แสดงคำว่า undefined
+                const errorMsg = error && error.message ? error.message : "ການເຊື່ອມຕໍ່ມີບັນຫາ ຫຼື ເຊີເວີບໍ່ຕອບສະໜອງ";
+                alert('ເກີດຂໍ້ຜິດພາດໃນການສົ່ງຂໍ້ມູນ: ' + errorMsg);
                 if (loadingModal) loadingModal.style.display = 'none';
             }
         });
