@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 // ⚠️ ໃຫ້ເອົາ Web App URL ທີ່ໄດ້ຈາກການ Deploy Google Apps Script ມາວາງໃສ່ນີ້
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbzzEJXDjjiWM5aaGxfB3lP__Ph43O3YxvIgV-YOW6N3kftUbHYvdBZxXFJprEbVq-Ey/exec'; 
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbwr8d71ar5pzb9GGauooXen_Ujjnj7vPhcLHRwRLl0oDJVl-5db_76D1jShtoNfuirNsw/exec'; 
 
                 const response = await fetch(scriptURL, {
                     method: 'POST',
