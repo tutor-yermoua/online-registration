@@ -104,6 +104,36 @@ function getBase64(file) {
     });
 }
 
+// ຟັງຊັນເພີ່ມໃໝ່: ບີບອັດຂະຫນາດຮູບພາບກ່ອນສົ່ງ ເພື່ອປ້ອງກັນ Error ເວລາເນັດຊ້າ
+function compressImage(file, maxWidth = 800, quality = 0.7) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(event) {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                
+                if (width > maxWidth) {
+                    height = Math.round((height * maxWidth) / width);
+                    width = maxWidth;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.onerror = () => resolve(event.target.result);
+        };
+        reader.onerror = () => resolve('');
+    });
+}
+
 // ==========================================
 // 3. DOMContentLoaded & ລະບົບສົ່ງຂໍ້ມູນໄປ Google Apps Script
 // ==========================================
@@ -296,8 +326,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const studentInput = document.querySelector('input[name="Student_image"]');
                 const slipFile = slipInput && slipInput.files ? slipInput.files[0] : null;
                 const studentFile = studentInput && studentInput.files ? studentInput.files[0] : null;
-                const slipImageBase64 = slipFile ? await getBase64(slipFile) : '';
-                const studentImageBase64 = studentFile ? await getBase64(studentFile) : '';
+                
+                // ປ່ຽນມາໃຊ້ compressImage ເພື່ອບີບອັດຮູບໃຫ້ຂະຫນາດເລ็กลົງກ່ອນສົ່ງ
+                const slipImageBase64 = slipFile ? await compressImage(slipFile, 800, 0.7) : '';
+                const studentImageBase64 = studentFile ? await compressImage(studentFile, 800, 0.7) : '';
+
                 const formDataPayload = {
                     submissionId: createSubmissionId(),
                     studentName: document.querySelector('input[name="Fullname"]')?.value || '',
