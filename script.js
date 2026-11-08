@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // ຫນ່ວຍເວລາໄວ້ 1.5 ວິນາທີ (1500ms) ເພື່ອໃຫ້ວົງມົນປິ່ນສະແດງໃຫ້ເຫັນຢ່າງຊັດເຈນ
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 1500));
 
                 // ຫຼັງຈາກ 1.5s ແລ້ວ ໃຫ້ສະແດງເຄື່ອງໝາຍສຳເລັດ
                 if (spinnerBox) {
