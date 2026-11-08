@@ -7,6 +7,7 @@ self.addEventListener('install', event => {
     await self.skipWaiting();
   })());
 });
+
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
@@ -14,6 +15,7 @@ self.addEventListener('activate', event => {
     await self.clients.claim();
   })());
 });
+
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;

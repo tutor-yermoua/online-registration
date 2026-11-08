@@ -306,8 +306,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSelectTextColor('Province', 'provinceSelectedText');
     updateSelectTextColor('District', 'districtSelectedText');
 
-    // ------------------------------------------
-    // ລະບົບສົ່ງຂໍ້ມູນ: ອອນລາຍ + ເກັບຄ້າງໄວ້ເມື່ອອອບລາຍ
+// ------------------------------------------
+    // ລະບົບສົ່ງຂໍ້ມູນ: ອອນລາຍ + ເກັບຄ້າງໄວ້ເມື່ອອອບລາຍ (ໂຊວົງມົນປິ່ນ 1.5s)
     // ------------------------------------------
     const form = document.getElementById('registrationForm');
 
@@ -316,8 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const loadingModal = document.getElementById('loadingModal');
             const spinnerBox = document.getElementById('spinnerBox');
-            const loadingStartedAt = Date.now();
-            const minimumLoadingMs = 1500; // ໃຫ້ spinner ແລະ 3 ຈຸດສະແດງຢ່າງໜ້ອຍ 1.5 ວິນາທີ
+            
             if (loadingModal) loadingModal.style.display = 'flex';
             if (spinnerBox) spinnerBox.innerHTML = '<div class="spinner"></div><div class="loading-text">ກຳລັງບັນທຶກຂໍ້ມູນ<span class="dots"></span></div>';
 
@@ -327,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const slipFile = slipInput && slipInput.files ? slipInput.files[0] : null;
                 const studentFile = studentInput && studentInput.files ? studentInput.files[0] : null;
                 
-                // ປ່ຽນມາໃຊ້ compressImage ເພື່ອບີບອັດຮູບໃຫ້ຂະຫນາດເລ็กลົງກ່ອນສົ່ງ
+                // ບີບອັດຮູບພາບ
                 const slipImageBase64 = slipFile ? await compressImage(slipFile, 800, 0.7) : '';
                 const studentImageBase64 = studentFile ? await compressImage(studentFile, 800, 0.7) : '';
 
@@ -349,20 +348,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     studentImageMimeType: studentFile ? studentFile.type : ''
                 };
 
-                // ເກັບຂໍ້ມູນໃນ browser ກ່ອນທຸກຄັ້ງ; ຈຶ່ງຄ່ອຍພະຍາຍາມສົ່ງຖ້າມີແນັດ.
-                // ຂໍ້ຄວາມທີ່ນັກຮຽນເຫັນຈະຄືກັນທັງ online ແລະ offline.
+                // ບັນທຶກຂໍ້ມູນລົງ IndexedDB ແລະ ສິ້ງເບື້ອງຫຼັງ
                 await savePendingRegistration(formDataPayload);
-                if (navigator.onLine) await syncPendingRegistrations();
-
-                // ຖ້າອອບລາຍ ໃຫ້ spinner ສະແດງຕໍ່ຈົນຄົບ 1.5 ວິນາທີ ເພື່ອໃຫ້ອາລົມການໃຊ້ງານຄືກັນກັບຕອນອອນລາຍ.
-                const elapsedLoadingMs = Date.now() - loadingStartedAt;
-                const remainingLoadingMs = minimumLoadingMs - elapsedLoadingMs;
-                if (remainingLoadingMs > 0) {
-                    await new Promise(resolve => setTimeout(resolve, remainingLoadingMs));
+                if (navigator.onLine) {
+                    syncPendingRegistrations();
                 }
 
-                if (spinnerBox) spinnerBox.innerHTML = '<div class="success-circle" style="width:60px;height:60px;background:#4CAF50;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg style="width:30px;height:30px" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg></div><div class="loading-text" style="color:#4CAF50;font-weight:bold">ບັນທຶກຂໍ້ມູນສຳເລັດ</div>';
-                        setTimeout(() => window.location.reload(), 1500);
+                // ຫນ່ວຍເວລາໄວ້ 1.5 ວິນາທີ (1500ms) ເພື່ອໃຫ້ວົງມົນປິ່ນສະແດງໃຫ້ເຫັນຢ່າງຊັດເຈນ
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // ຫຼັງຈາກ 1.5s ແລ້ວ ໃຫ້ສະແດງເຄື່ອງໝາຍສຳເລັດ
+                if (spinnerBox) {
+                    spinnerBox.innerHTML = '<div class="success-circle" style="width:60px;height:60px;background:#4CAF50;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg style="width:30px;height:30px" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg></div><div class="loading-text" style="color:#4CAF50;font-weight:bold">ບັນທຶກຂໍ້ມູນສຳເລັດ</div>';
+                }
+                
+                // ຣີໂຫຼດໜ້າຫຼັງຈາກຂຶ້ນສຳເລັດອີກ 1 ວິນາທີ
+                setTimeout(() => window.location.reload(), 1000);
+
             } catch (error) {
                 console.error('Submission error:', error);
                 alert('ບັນທຶກບໍ່ສຳເລັດ: ' + (error?.message || 'ກະລຸນາລອງອີກຄັ້ງ'));
@@ -372,7 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
-
 // ==========================================
 // 4. ຟັງຊັນຊ່ວຍເຫຼືອເພີ່ມເຕີມ (UI & Validation)
 // ==========================================
