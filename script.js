@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 // ຣີໂຫຼດໜ້າຫຼັງຈາກໝັ້ນໃຈວ່າສົ່ງຂໍ້ມູນທັງໝົດ (ລວມທັງຮູບ) ຂຶ້ນ Google Sheets ครบຖ້ວນແລ້ວ
-                setTimeout(() => window.location.reload(), 1800);
+                setTimeout(() => window.location.reload(), 2000);
 
             } catch (error) {
                 console.error('Submission error:', error);
