@@ -348,22 +348,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     studentImageMimeType: studentFile ? studentFile.type : ''
                 };
 
-                // ບັນທຶກຂໍ້ມູນລົງ IndexedDB ແລະ ສິ້ງເບື້ອງຫຼັງ
+               // ບັນທຶກຂໍ້ມູນລົງ IndexedDB
                 await savePendingRegistration(formDataPayload);
+                
+                // ຖ້າອອນລາຍ ໃຫ້ "ລໍຖ້າ" ໃຫ້ການສົ່ງຂໍ້ມູນ ແລະ ຮູບພາບຂຶ້ນ Server ສຳເລັດແທ້ໆ ກ່ອນຈຶ່ງໄປຂັ້ນຕອນຕໍ່ໄປ
                 if (navigator.onLine) {
-                    syncPendingRegistrations();
+                    await syncPendingRegistrations();
                 }
 
-                // ຫນ່ວຍເວລາໄວ້ 1.5 ວິນາທີ (1500ms) ເພື່ອໃຫ້ວົງມົນປິ່ນສະແດງໃຫ້ເຫັນຢ່າງຊັດເຈນ
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                // ຫຼັງຈາກ 1.5s ແລ້ວ ໃຫ້ສະແດງເຄື່ອງໝາຍສຳເລັດ
+                // ຫຼັງຈາກສົ່ງຮູບ ແລະ ຂໍ້ມູນສຳເລັດແທ້ໆແລ້ວ ຈຶ່ງສະແດງເຄື່ອງໝາຍຕິກຖືກ
                 if (spinnerBox) {
                     spinnerBox.innerHTML = '<div class="success-circle" style="width:60px;height:60px;background:#4CAF50;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><svg style="width:30px;height:30px" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg></div><div class="loading-text" style="color:#4CAF50;font-weight:bold">ບັນທຶກຂໍ້ມູນສຳເລັດ</div>';
                 }
                 
-                // ຣີໂຫຼດໜ້າຫຼັງຈາກຂຶ້ນສຳເລັດອີກ 1 ວິນາທີ
-                setTimeout(() => window.location.reload(), 1000);
+                // ຣີໂຫຼດໜ້າຫຼັງຈາກໝັ້ນໃຈວ່າສົ່ງຂໍ້ມູນທັງໝົດ (ລວມທັງຮູບ) ຂຶ້ນ Google Sheets ครบຖ້ວນແລ້ວ
+                setTimeout(() => window.location.reload(), 1500);
 
             } catch (error) {
                 console.error('Submission error:', error);
