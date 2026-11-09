@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+<!-- 🌟 ເພີ່ມ id="menuBtn" ໃສ່ປຸ່ມ -->
+    <div id="menuBtn" onclick="openMenuModal()" style="position: fixed !important; top: 15px !important; right: 15px !important; z-index: 999999 !important; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+        <i class="fa-solid fa-bars" style="color: white; font-size: 20px;"></i>
+    </div>
+    
     <div class="form-container">
         <div class="form-header">
             <div class="logo-container">
@@ -326,6 +332,88 @@
             ລົງທະບຽນຮຽນ
         </button>
     </div>
+
+
+
+    <!-- 🌟 Modal / ໜ້າຕ່າງສະແດງເມນູ (ກ່ຽວກັບພວກເຮົາ & ຕິດຕໍ່) -->
+    <div id="infoMenuModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 10000; padding: 15px;">
+        <div style="background: white; width: 100%; max-width: 450px; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2); animation: fadeInScale 0.3s ease;">
+            
+            <!-- Header Modal -->
+            <div style="background: linear-gradient(135deg, #1e293b, #0f172a); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 16px; font-weight: 700; font-family: 'Noto Sans Lao', sans-serif;">
+                    <i class="fa-solid fa-circle-info" style="color: #38bdf8; margin-right: 6px;"></i> ຊ່ອງທາງການຕິດຕໍ່
+                </div>
+                <button type="button" onclick="closeMenuModal()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+<!-- Body Content -->
+            <div style="padding: 25px 20px; max-height: 75vh; overflow-y: auto; font-family: 'Saysettha OT', 'Noto Sans Lao', sans-serif;">
+                
+                <!-- 🌟 ຫົວຂໍ້ ແລະ ຄຳອະທິບາຍ -->
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0;">ຕິດຕໍ່ພວກເຮົາ</h2>
+                    <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin: 0;">
+                        ພ້ອມຮັບຄຳຖາມ ແລະ ປຶກສາແຜນການຮຽນ. ເລືອກຊ່ອງທາງທີ່ສະດວກ ແລ້ວພວກພວກເຮົາຈະຕອບກັບໂດຍໄວ.
+                    </p>
+                </div>
+
+                <!-- 🌟 ກ່ອງລາຍການຊ່ອງທາງຕິດຕໍ່ -->
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    
+                    <!-- 1. WhatsApp Card -->
+                    <a href="https://wa.me/8562076526120" target="_blank" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e2e8f0; padding: 14px 16px; border-radius: 16px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.02); transition: 0.2s;">
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <!-- ໄອຄອນພື້ນຫຼັງວົງມົນສີຟ້າອ່ອນ -->
+                            <div style="width: 44px; height: 44px; background: #eff6ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; flex-shrink: 0;">
+                                <i class="fa-brands fa-whatsapp" style="font-size: 24px; color: #2563eb;"></i>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; color: #64748b; margin-bottom: 2px;">WhatsApp · ແຊັດໄດ້ທັນທີ</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0f172a;">+856 20 76526120</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color: #94a3b8; font-size: 14px;"></i>
+                    </a>
+                    
+                    <!-- 2. Facebook Card -->
+                    <a href="https://www.facebook.com/share/1KAyt46o6e/" target="_blank" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e2e8f0; padding: 14px 16px; border-radius: 16px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.02); transition: 0.2s;">
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <div style="width: 44px; height: 44px; background: #eff6ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; flex-shrink: 0;">
+                                <i class="fa-brands fa-facebook" style="font-size: 24px; color: #2563eb;"></i>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; color: #64748b; margin-bottom: 2px;">Facebook · ຂ່າວສານ ແລະ ບົດຮຽນ</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0f172a;">ຕິວເຕີ້ເຢີມົວ ສອນເພີ່ມຟີຊິກສາດ</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color: #94a3b8; font-size: 14px;"></i>
+                    </a>
+                    
+                    <!-- 3. TikTok Card -->
+                    <a href="https://www.tiktok.com/@yermouaker" target="_blank" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e2e8f0; padding: 14px 16px; border-radius: 16px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.02); transition: 0.2s;">
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <div style="width: 44px; height: 44px; background: #f1f5f9; border-radius: 12px; display: flex; justify-content: center; align-items: center; flex-shrink: 0;">
+                                <i class="fa-brands fa-tiktok" style="font-size: 22px; color: #0f172a;"></i>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; color: #64748b; margin-bottom: 2px;">TikTok · ວິດີໂອສອນ ແລະ ຄວາມຮູ້</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0f172a;">@Tutor Yermoua</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color: #94a3b8; font-size: 14px;"></i>
+                    </a>
+
+                </div>
+
+            </div>
+            
+            <!-- Footer Modal -->
+            <div style="background: #f8fafc; padding: 12px 20px; text-align: right; border-top: 1px solid #e2e8f0;">
+                <button type="button" onclick="closeMenuModal()" style="background: #64748b; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans Lao', sans-serif;">ປິດ</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
       if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {

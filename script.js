@@ -533,3 +533,46 @@ document.addEventListener('click', function(event) {
         });
     }
 });
+
+// ==========================================
+// ລະບົບຄວບຄຸມປຸ່ມສາມຂີດ (Menu Modal)
+// ==========================================
+function openMenuModal() {
+    const modal = document.getElementById('infoMenuModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeMenuModal() {
+    const modal = document.getElementById('infoMenuModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// ປິດ Modal ເວລາກົດ ພື້ນຫຼັງສີດຳດ້ານນອກ
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('infoMenuModal');
+    if (event.target === modal) {
+        closeMenuModal();
+    }
+});
+
+function enterMainForm() {
+    const splashScreen = document.getElementById('welcome-splash-screen');
+    
+    // 🌟 ເພີ່ມຄຳສັ່ງຊ່ອນປຸ່ມສາມຂີດຢູ່ບ່ອນນີ້
+    const menuBtn = document.getElementById('menuBtn');
+    if (menuBtn) {
+        menuBtn.style.display = 'none';
+    }
+
+    if (splashScreen) {
+        splashScreen.style.opacity = '0';
+        splashScreen.style.visibility = 'hidden';
+        setTimeout(function() {
+            splashScreen.style.display = 'none';
+        }, 600);
+    }
+}
