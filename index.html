@@ -344,7 +344,9 @@
                 <div style="font-size: 16px; font-weight: 700; font-family: 'Noto Sans Lao', sans-serif;">
                     <i class="fa-solid fa-circle-info" style="color: #38bdf8; margin-right: 6px;"></i> ຊ່ອງທາງການຕິດຕໍ່
                 </div>
-                <button type="button" onclick="closeMenuModal()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+              
+                <button type="button" onclick="closeMenuModal()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='white'"><i class="fa-solid fa-xmark"></i></button>
+
             </div>
 <!-- Body Content -->
             <div style="padding: 25px 20px; max-height: 75vh; overflow-y: auto; font-family: 'Saysettha OT', 'Noto Sans Lao', sans-serif;">
@@ -353,19 +355,20 @@
                 <div style="margin-bottom: 20px;">
                     <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0;">ຕິດຕໍ່ພວກເຮົາ</h2>
                     <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin: 0;">
-                        ພ້ອມຮັບຄຳຖາມ ແລະ ປຶກສາແຜນການຮຽນ. ເລືອກຊ່ອງທາງທີ່ສະດວກ ແລ້ວພວກພວກເຮົາຈະຕອບກັບໂດຍໄວ.
+                        ພ້ອມຮັບຄຳຖາມ ແລະ ປຶກສາແຜນການຮຽນ. ເລືອກຊ່ອງທາງທີ່ສະດວກ ແລ້ວພວກເຮົາຈະຕອບກັບໂດຍໄວ.
                     </p>
                 </div>
 
                 <!-- 🌟 ກ່ອງລາຍການຊ່ອງທາງຕິດຕໍ່ -->
                 <div style="display: flex; flex-direction: column; gap: 12px;">
                     
-                    <!-- 1. WhatsApp Card -->
+                   <!-- 1. WhatsApp Card -->
                     <a href="https://wa.me/8562076526120" target="_blank" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e2e8f0; padding: 14px 16px; border-radius: 16px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.02); transition: 0.2s;">
                         <div style="display: flex; align-items: center; gap: 14px;">
-                            <!-- ໄອຄອນພື້ນຫຼັງວົງມົນສີຟ້າອ່ອນ -->
-                            <div style="width: 44px; height: 44px; background: #eff6ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; flex-shrink: 0;">
-                                <i class="fa-brands fa-whatsapp" style="font-size: 24px; color: #2563eb;"></i>
+                            <!-- 🌟 ປ່ຽນພື້ນຫຼັງເປັນສີຂຽວອ່ອນ (#dcfce7) -->
+                            <div style="width: 44px; height: 44px; background: #dcfce7; border-radius: 12px; display: flex; justify-content: center; align-items: center; flex-shrink: 0;">
+                                <!-- 🌟 ປ່ຽນສີໄອຄອນເປັນສີຂຽວ (#16a34a) -->
+                                <i class="fa-brands fa-whatsapp" style="font-size: 24px; color: #16a34a;"></i>
                             </div>
                             <div>
                                 <div style="font-size: 12px; color: #64748b; margin-bottom: 2px;">WhatsApp · ແຊັດໄດ້ທັນທີ</div>
@@ -396,7 +399,7 @@
                                 <i class="fa-brands fa-tiktok" style="font-size: 22px; color: #0f172a;"></i>
                             </div>
                             <div>
-                                <div style="font-size: 12px; color: #64748b; margin-bottom: 2px;">TikTok · ວິດີໂອສອນ ແລະ ຄວາມຮູ້</div>
+                                <div style="font-size: 12px; color: #64748b; margin-bottom: 2px;">TikTok · ວິດີໂອສອນ</div>
                                 <div style="font-size: 15px; font-weight: 700; color: #0f172a;">@Tutor Yermoua</div>
                             </div>
                         </div>
@@ -405,11 +408,6 @@
 
                 </div>
 
-            </div>
-            
-            <!-- Footer Modal -->
-            <div style="background: #f8fafc; padding: 12px 20px; text-align: right; border-top: 1px solid #e2e8f0;">
-                <button type="button" onclick="closeMenuModal()" style="background: #64748b; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans Lao', sans-serif;">ປິດ</button>
             </div>
         </div>
     </div>
