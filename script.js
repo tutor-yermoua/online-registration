@@ -81,18 +81,140 @@ function copyAccountNumber() {
     
     navigator.clipboard.writeText(accNo).then(() => {});
 }
-
-function previewImage(event, imgId, containerId, placeholderId) {
+// ຟັງຊັນຈັດການການອັບໂຫຼດຮູບ ພ້ອມແລ່ນ % ຢູ່ເຄິ່ງກາງ, ຕິກຖືກໜາໆ ແລ້ວຈາງຫາຍໄປ
+function handleImageUpload(event, type) {
     const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById(imgId).src = e.target.result;
-            document.getElementById(containerId).style.display = "block";
-            document.getElementById(placeholderId).style.display = "none";
+    if (!file) return;
+
+    const overlay = document.getElementById(type === 'slip' ? 'slipLoadingOverlay' : 'studentLoadingOverlay');
+    const dotsEl = overlay.querySelector('.loading-spinner-dots');
+    const percentEl = overlay.querySelector('.loading-percent-text');
+    
+    overlay.style.display = 'flex';
+    
+    let percent = 0;
+    let dotCount = 0;
+
+    let interval = setInterval(() => {
+        percent += 20;
+        dotCount = (dotCount % 3) + 1;
+        dotsEl.innerHTML = '.'.repeat(dotCount);
+        percentEl.innerHTML = `${percent}%`;
+
+        if (percent >= 100) {
+            clearInterval(interval);
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgId = type === 'slip' ? 'slipPreviewImg' : 'studentPreviewImg';
+                const containerId = type === 'slip' ? 'slipPreviewContainer' : 'studentPreviewContainer';
+                const placeholderId = type === 'slip' ? 'slipPlaceholder' : 'studentPlaceholder';
+                const actionBtnsId = type === 'slip' ? 'slipActionBtns' : 'studentActionBtns';
+                const checkmarkId = type === 'slip' ? 'slipCheckmark' : 'studentCheckmark';
+
+                document.getElementById(imgId).src = e.target.result;
+                document.getElementById(containerId).style.display = 'flex';
+                document.getElementById(placeholderId).style.display = 'none';
+                document.getElementById(actionBtnsId).style.display = 'flex'; // ສະແດງປຸ່ມຊູມ ແລະ ລຶບຊື່ກັບຂອບ
+                
+                // ຊ່ອນหน้าກຳລັງໂຫຼດ %
+                overlay.style.display = 'none';
+
+                // ສະແດງເຄື່ອງໝາຍຕິກສີຂຽວແບບໜາ ໃຫ້ສະແດງຂຶ້ນມາແລ້ວຈາງຫາຍໄປ (1 ວິນາທີ)
+                const checkmark = document.getElementById(checkmarkId);
+                checkmark.style.display = 'block';
+                checkmark.style.opacity = '1';
+                checkmark.style.transition = 'opacity 0.5s ease';
+
+                setTimeout(() => {
+                    checkmark.style.opacity = '0';
+                    setTimeout(() => {
+                        checkmark.style.display = 'none';
+                        checkmark.style.opacity = '1'; // ຕັ້ງຄ່າກັບຄືນສຳລັບຄັ້ງຕໍ່ໄປ
+                    }, 500);
+                }, 1000);
+            }
+            reader.readAsDataURL(file);
         }
-        reader.readAsDataURL(file);
+    }, 100);
+}
+
+// ຟັງຊັນຈຳລອງການແລ່ນເປີເຊັນ 0% ຫາ 100%
+function showUploadProgressModal(callback) {
+    let modal = document.getElementById('loadingModal');
+    let spinnerBox = document.getElementById('spinnerBox');
+    let successBox = document.getElementById('successBox');
+    
+    if (!modal) {
+        callback();
+        return;
     }
+
+    spinnerBox.style.display = 'block';
+    successBox.style.display = 'none';
+    modal.style.display = 'flex';
+
+    let percent = 0;
+    let textEl = spinnerBox.querySelector('.loading-text');
+    
+    let interval = setInterval(() => {
+        percent += 10;
+        if (textEl) textEl.innerHTML = `ກຳລັງໂຫຼດຮູບ... ${percent}%`;
+        
+        if (percent >= 100) {
+            clearInterval(interval);
+            spinnerBox.style.display = 'none';
+            successBox.style.display = 'block';
+            successBox.querySelector('.loading-text').innerHTML = 'ອັບໂຫຼດສຳເລັດ ✓';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                callback();
+            }, 600);
+        }
+    }, 80);
+}
+
+// ຟັງຊັນລຶບຮູບ
+function removeImage(type, event) {
+    if (event) event.stopPropagation();
+    const inputId = type === 'slip' ? 'slipInput' : 'studentImgInput';
+    const containerId = type === 'slip' ? 'slipPreviewContainer' : 'studentPreviewContainer';
+    const placeholderId = type === 'slip' ? 'slipPlaceholder' : 'studentPlaceholder';
+    const actionBtnsId = type === 'slip' ? 'slipActionBtns' : 'studentActionBtns';
+    const checkmarkId = type === 'slip' ? 'slipCheckmark' : 'studentCheckmark';
+
+    document.getElementById(inputId).value = '';
+    document.getElementById(containerId).style.display = 'none';
+    document.getElementById(placeholderId).style.display = 'block';
+    document.getElementById(actionBtnsId).style.display = 'none';
+    document.getElementById(checkmarkId).style.display = 'none';
+}
+
+// ຟັງຊັນສຸມເບິ່ງຮູບ (Zoom Modal)
+function zoomImage(imgId) {
+    let src = document.getElementById(imgId).src;
+    if (!src) return;
+
+    let zoomModal = document.getElementById('zoomModal');
+    if (!zoomModal) {
+        zoomModal = document.createElement('div');
+        zoomModal.id = 'zoomModal';
+        zoomModal.style.cssText = "display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999999; justify-content:center; align-items:center;";
+        zoomModal.innerHTML = `
+            <button type="button" onclick="closeZoomModal()" style="position:absolute; top:20px; right:20px; background:#ef4444; color:white; border:none; width:40px; height:40px; border-radius:50%; font-size:20px; cursor:pointer; display:flex; justify-content:center; align-items:center;"><i class="fa-solid fa-xmark"></i></button>
+            <img id="zoomedImg" src="" style="max-width:90%; max-height:90%; border-radius:8px; object-fit:contain;">
+        `;
+        document.body.appendChild(zoomModal);
+    }
+
+    document.getElementById('zoomedImg').src = src;
+    zoomModal.style.display = 'flex';
+}
+
+function closeZoomModal() {
+    let zoomModal = document.getElementById('zoomModal');
+    if (zoomModal) zoomModal.style.display = 'none';
 }
 
 function getBase64(file) {
